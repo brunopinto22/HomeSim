@@ -2,50 +2,43 @@
 #include <string>
 #include <ctime>
 #include <sstream>
-#include "Terminal.h"
-#include "Prompt.h"
+#include <vector>
 
-using namespace std;
-using namespace term;
+#include "Terminal.h"
+#include "Simulador.h"
+
 
 int main() {
     // criar o terminal
-    Terminal &t = Terminal::instance();
+    term::Terminal &t = term::Terminal::instance();
+    // iniciar cores
+    for(int i=1; i<20; i++) { t.init_color(i, i, 0); }
 
     // vars
-    cmd::Prompt prompt;
-    ostringstream oss;
-    string text;
+    std::string text;
+    int width, height;
 
-    int i = 0;
-
-    do{
-        // limpar memoria
+    // menu principal
+    bool end = false;
+    while(!end){
         srand( (unsigned)time( NULL ) );
-        oss.str("");
-        oss.clear();
 
-        // criar janelas
-        Window field = Window(1, 1, 57, 21);
-        Window reader = Window(1,22,57,7);
-        Window info = Window(59,1,60,28);
-        reader << " CMD \n >> ";
-
-        // imprimir output
-        oss << prompt << endl;
-        if(!prompt.eValido()){
-
-            info << prompt.pedirErro();
-        }
-        else
-            info << oss.str();
+        term::Window reader = term::Window(1,1,60,7, false);
+        reader << " Bem Vindo \n CMD >> ";
 
         // ler comando
         reader >> text;
-        prompt = text;
 
-    }while(prompt.continuar());
+        if(text == "hnova"){
+            // criar simulador
+            simulador::Simulador sim(t, 2, 2);
 
-    std::cout << "\nAdeus ;)\n";
+            // comecar a simulacao
+            sim.start();
+
+        } else if(text == "sair")
+            end = true;
+    }
+
     return 0;
 }
