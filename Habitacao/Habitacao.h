@@ -30,6 +30,12 @@ namespace habitacao {
         int getNumberOfZones() const;
         // devolve o número de Zonas existentes
 
+        bool isZoneTacken(int x, int y);
+        // verifica se existe uma zona nas coords
+
+        zona::Zona* getZone(int i) const;
+        // devolve uma zona
+
         void addZone(int x, int y);
         // adiciona uma zona
     };

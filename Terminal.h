@@ -16,6 +16,11 @@
 #include <ncurses.h>
 #endif
 
+constexpr int COLOR_DEFAULT = 0;
+constexpr int COLOR_ERROR = 12;
+constexpr int COLOR_SUCCESS = 10;
+constexpr int COLOR_MESSAGE = 14;
+
 namespace term {
 
 

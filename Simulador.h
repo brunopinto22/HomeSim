@@ -9,12 +9,28 @@
 #include "Habitacao/Zona.h"
 
 
+namespace utils{
+
+    std::string getError();
+
+    void splitCMD(std::string prompt, std::string* cmd, std::string* args);
+    // divide o comando em comando e argumentos
+
+    bool verifyCMD(std::string& comando, std::string& argumentos);
+    // verifica o comando
+
+}
+
+
 namespace simulador {
 
     class Simulador {
     private:
         // terminal
         term::Terminal* t;
+
+        // janelas
+        std::vector<term::Window*> zonas;
 
         // habitacao
         habitacao::Habitacao h;
@@ -29,14 +45,20 @@ namespace simulador {
         void start();
         // iniciar a simulacao
 
-        bool verifyCMD(std::string prompt);
-        // verifica o comando
+        void executeCommand(std::string& cmd, std::string& args, term::Window& output, bool isFromExec);
+        // executa os comandos
 
-        void printZones() const;
+        bool step(term::Window& output);
+        // avanca um instante da simulacao
+
+        void printZones();
         // imprime as zonas
 
     };
 
+
 } // simulador
+
+
 
 #endif //HOMESIM_SIMULADOR_H

@@ -1,3 +1,4 @@
+#include <stdexcept>
 #include "Habitacao.h"
 
 namespace habitacao {
@@ -14,9 +15,28 @@ namespace habitacao {
 
     int Habitacao::getNumberOfZones() const { return number_of_zones; }
 
+    bool Habitacao::isZoneTacken(int x, int y){
+        for(auto & z : zonas)
+            if(z->getPosY() == y && z->getPosX() == x)
+                return true;
+        return false;
+    }
+
+    zona::Zona* Habitacao::getZone(int i) const {
+
+        try{
+            zona::Zona* z = this->zonas.at(i);
+            return z;
+
+        } catch(const std::out_of_range& e) {
+            return nullptr;
+        }
+    }
+
     void Habitacao::addZone(int x, int y) {
         this->zonas.push_back(new zona::Zona(getNumberID(), x, y));
         number_of_zones++;
     }
+
 
 } // habitacao
