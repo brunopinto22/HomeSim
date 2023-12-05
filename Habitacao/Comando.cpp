@@ -8,32 +8,63 @@ std::string Comando::getError() const {
 }
 
 
-Znova::Znova(int x, int y) : x(x), y(y) {}
 
-bool Znova::Execute(habitacao::Habitacao &h) {
+Znova::Znova() {}
+bool Znova::Execute(habitacao::Habitacao &h, std::string args) {
     std::ostringstream oss;
+    std::istringstream iss(args);
+    int x,y;
 
-    if(h.getNumberOfZones() >= h.getHeight()*h.getWidth()){
-        defineError("A Habitacao esta cheia");
-        return false;
-    }
+    if(iss >> x >> y){
 
-    if(h.isZoneTacken(this->x,this->y)){
-        oss << "A posicao (" << this->x << "," << this->y <<") esta preenchida";
+        if(h.getNumberOfZones() >= h.getHeight()*h.getWidth()){
+            defineError("A Habitacao esta cheia");
+            return false;
+
+        } else if(x < 1 || x > h.getHeight() || y < 1 || y > h.getWidth()){
+            oss << "O valor de x e de y tem de estar compreendidos entre (1," << h.getHeight() << ") e (1," << h.getWidth()<<")";
+            defineError(oss.str());
+            return false;
+
+        } else if(h.isZoneTacken(x,y)){
+            oss << "A posicao (" << x << "," << y <<") esta preenchida";
+            defineError(oss.str());
+            return false;
+        }
+
+
+        h.addZone(x, y);
+        oss << "Foi criada a zona em (" << x << "," << y << ")";
         defineError(oss.str());
-        return false;
+        return true;
+
     }
+    defineError("Erro de formatacao : znova <x> <y>");
+    return false;
 
-    if(x < 1 || x > h.getHeight() || y < 1 || y > h.getWidth()){
-        oss << "o valor de x e de y tem de estar compreendidos entre (1," << h.getHeight() << ") e (1," << h.getWidth()<<")";
-        defineError(oss.str());
-        return false;
-    }
-
-    // verificar se existe algo nessas coordenadas
-    // .... \\
-
-    h.addZone(this->x, this->y);
-    return true;
 }
 
+
+Zrem::Zrem() {}
+bool Zrem::Execute(habitacao::Habitacao &h, std::string args) {
+    std::ostringstream oss;
+    std::istringstream iss(args);
+    int id;
+    if (iss >> id) {
+
+        if(!h.checkID(id)){
+            oss << "A Zona com o id=" << id << " nao existe";
+            defineError(oss.str());
+            return false;
+        }
+
+        h.removeZone(id);
+        oss << "A Zona_" << id << " foi removida";
+        defineError(oss.str());
+        return true;
+
+    }
+    defineError("Erro de formatacao : zrem <ID zona>");
+    return false;
+
+}

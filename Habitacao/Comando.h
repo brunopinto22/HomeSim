@@ -7,12 +7,13 @@
 class Comando {
 private:
     std::string error;
+    std:: string args;
 
 public:
 // -- FUNCS VIRTUAIS
     virtual ~Comando(){}
 
-    virtual bool Execute(habitacao::Habitacao& h) = 0;
+    virtual bool Execute(habitacao::Habitacao &h, std::string args) = 0;
     // funcao para executar o comando
 
 // -- FUNCS GLOBAIS
@@ -27,23 +28,18 @@ public:
 
 
 class Znova : public Comando {
-private:
-    int x, y;
-
 public:
-    Znova(int x, int y);
+    Znova();
 
-    bool Execute(habitacao::Habitacao& h) override;
+    bool Execute(habitacao::Habitacao &h, std::string args) override;
 };
 
 
 class Zrem : public Comando {
-private:
-    int id;
 public:
-    Zrem(int id);
+    Zrem();
 
-    bool Execute(habitacao::Habitacao& h) override;
+    bool Execute(habitacao::Habitacao &h, std::string args) override;
 };
 
 
@@ -51,50 +47,39 @@ class Zlista : public Comando {
 public:
     Zlista();
 
-    bool Execute(habitacao::Habitacao& h) override;
+    bool Execute(habitacao::Habitacao &h, std::string args) override;
 };
 
 
 class Zcomp : public Comando {
-private:
-    int id;
 public:
-    Zcomp(int id);
+    Zcomp();
 
-    bool Execute(habitacao::Habitacao& h) override;
+    bool Execute(habitacao::Habitacao &h, std::string args) override;
 };
 
 
 class Zprops : public Comando {
-private:
-    int id;
 public:
-    Zprops(int id);
+    Zprops();
 
-    bool Execute(habitacao::Habitacao& h) override;
+    bool Execute(habitacao::Habitacao &h, std::string args) override;
 };
 
 
 class Pmod : public Comando {
-private:
-    int id, value;
-    std::string name;
 public:
-    Pmod(int id, std::string name, int value);
+    Pmod();
 
-    bool Execute(habitacao::Habitacao& h) override;
+    bool Execute(habitacao::Habitacao &h, std::string args) override;
 };
 
 
 class Cnovo : public Comando {
-private:
-    int idZona;
-    char type;
-    std::string typeOrCmd;
 public:
-    Cnovo(int idZona, char type, std::string typeOrCmd);
+    Cnovo();
 
-    bool Execute(habitacao::Habitacao& h) override;
+    bool Execute(habitacao::Habitacao &h, std::string args) override;
 };
 
 
