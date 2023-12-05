@@ -20,6 +20,8 @@ constexpr int COLOR_DEFAULT = 0;
 constexpr int COLOR_ERROR = 12;
 constexpr int COLOR_SUCCESS = 10;
 constexpr int COLOR_MESSAGE = 14;
+constexpr int COLOR_ID = 11;
+
 
 namespace term {
 
