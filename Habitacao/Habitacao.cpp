@@ -3,7 +3,7 @@
 #include "Habitacao.h"
 
 namespace habitacao {
-    Habitacao::Habitacao(int width, int height):width(width), height(height),number_id(0), number_of_zones(0) {}
+    Habitacao::Habitacao(int width, int height):width(width), height(height),number_id(0), ticks(0), number_of_zones(0) {}
 
     int Habitacao::getNumberID() {
         number_id++;
@@ -13,6 +13,10 @@ namespace habitacao {
     int Habitacao::getWidth() const { return width; }
 
     int Habitacao::getHeight() const { return height; }
+
+    int Habitacao::getTicks() const { return ticks; }
+
+    std::string Habitacao::getError() const { return error; }
 
     int Habitacao::getNumberOfZones() const { return number_of_zones; }
 
@@ -54,6 +58,10 @@ namespace habitacao {
         number_of_zones--;
     }
 
+    bool Habitacao::tick() {
+        ticks++;
+        return true;
+    }
 
 
 } // habitacao

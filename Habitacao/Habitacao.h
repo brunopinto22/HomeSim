@@ -10,9 +10,12 @@ namespace habitacao {
     private:
         int number_id;
         int width, height; // tamanho da habitacao
-        int number_of_zones; // contador de zonas
+        int ticks;
 
+        int number_of_zones; // contador de zonas
         std::vector<zona::Zona*> zonas;
+
+        std::string error;
 
     public:
         Habitacao();
@@ -26,6 +29,12 @@ namespace habitacao {
 
         int getHeight() const;
         // devolve a 'altura' da habitacao
+
+        int getTicks() const;
+        // devolve os ticks da habitacao
+
+        std::string getError() const;
+        // devolve o ultimo erro ocorrido na habitacao
 
         int getNumberOfZones() const;
         // devolve o número de Zonas existentes
@@ -44,6 +53,11 @@ namespace habitacao {
 
         void removeZone(int id);
         // remove uma zona
+
+        bool tick();
+        // avanca 1 tick na habitacao
+        // retorna:     true caso corra tudo bem
+        //              false em caso de algum erro
 
     };
 
