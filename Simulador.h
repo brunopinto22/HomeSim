@@ -37,11 +37,11 @@ namespace simulador {
         void executeCommand(std::string& prompt, term::Window& output, bool isFromExec);
         // executa os comandos
 
-        bool step(term::Window& output);
-        // avanca um instante da simulacao
-
         void printZones();
         // imprime as zonas
+
+        void printHelp(term::Window& output);
+        // imprime uma lista de comandos
 
     };
 

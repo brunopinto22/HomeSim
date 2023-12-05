@@ -17,13 +17,14 @@ namespace simulador {
         // criacao das janelas
         term::Window title = term::Window(1,1,70,5, false);
         term::Window reader = term::Window(1,6,70,7, true);
-        term::Window output = term::Window(1, 13, 70, 35, true);
+        term::Window output = term::Window(1, 13, 70, 33, true);
+        term::Window info = term::Window(72,1,120,5, true);
 
         title << term::set_color(COLOR_MESSAGE)
-              << " _____ _____ _____ _____    _____ _____ _____\n"
-              << "|  |  |     |     |   __|  |   __|     |     |\n"
-              << "|     |  |  | | | |   __|  |__   |-   -| | | |\n"
-              << "|__|__|_____|_|_|_|_____|  |_____|_____|_|_|_|";
+              << "   _____ _____ _____ _____    _____ _____ _____\n"
+              << "  |  |  |     |     |   __|  |   __|     |     |\n"
+              << "  |     |  |  | | | |   __|  |__   |-   -| | | |\n"
+              << "  |__|__|_____|_|_|_|_____|  |_____|_____|_|_|_|";
 
         isOn = true;
         do{
@@ -34,6 +35,15 @@ namespace simulador {
 
             // imprimir zonas
             printZones();
+
+            // imprimir informacao sobre a simulacao
+            info.clear();
+            if(h != nullptr)
+                info << term::set_color(COLOR_MESSAGE)<< "\n\tHabitacao:" << term::set_color(COLOR_DEFAULT) << h->getWidth() << "x" << h->getHeight()
+                << term::set_color(COLOR_MESSAGE)  <<"\tTicks:" << term::set_color(COLOR_DEFAULT) << h->getTicks()
+                << term::set_color(COLOR_MESSAGE)  <<"\tNum. Zonas:" << term::set_color(COLOR_DEFAULT) << h->getNumberOfZones();
+            else
+                info << term::set_color(COLOR_ERROR) << "\n\tAinda nao existe uma Habitacao";
 
             // ler comando
             reader >> prompt;
@@ -79,25 +89,32 @@ namespace simulador {
         if(cmd.empty()){
             output << term::set_color(COLOR_ERROR) << "Comando vazio";
 
-        } else if(h == nullptr && cmd != "hnova" && cmd != "sair"){
+        } else if(h == nullptr && cmd != "hnova" && cmd != "sair" && cmd != "help"){
             output << term::set_color(COLOR_ERROR) << "Tem primeiro de criar uma habitacao: hnova <numLinhas> <numColunas>\n";
 
         } else if(cmd == "prox"){
-            if(!args.empty())
-                output << term::set_color(COLOR_ERROR) << "Erro de formatacao : prox";
+            exe = new Step;
+            if(exe->Execute(*h, args))
+                output << term::set_color(COLOR_SUCCESS) << exe->getError();
             else
-                step(output);
+                output << term::set_color(COLOR_ERROR) << exe->getError();
+            return;
 
         } else if(cmd == "avanca"){
 
             int n;
-            if (iss >> n)
-                for(int i=0; i < n; i++){
-                    output << term::set_color(COLOR_SUCCESS) << i+1 << " - ";
-                    step(output);
+            if (iss >> n) {
+                exe = new Step;
+                for (int i = 0; i < n; i++) {
+                    if (exe->Execute(*h, ""))
+                        output << term::set_color(COLOR_SUCCESS) << exe->getError();
+                    else
+                        output << term::set_color(COLOR_ERROR) << exe->getError();
                 }
-            else
+            } else
                 output << term::set_color(COLOR_ERROR) << "Erro de formatacao : avanca <n>";
+
+            return;
 
         } else if(cmd == "hnova"){
 
@@ -115,6 +132,8 @@ namespace simulador {
                 }
 
                 h = new habitacao::Habitacao(width, height);
+
+                output << term::set_color(COLOR_SUCCESS) << "Habitacao " << width << "x" << height << " criada";
 
             } else
                 output << term::set_color(COLOR_ERROR) << "Erro de formatacao : hnova <num linhas> <num colunas>";
@@ -331,6 +350,9 @@ namespace simulador {
 
             return;
 
+        } else if (cmd == "help") {
+            printHelp(output);
+
         } else {
             output << term::set_color(COLOR_ERROR) << "Erro de formatacao : comando nao existe";
             return;
@@ -344,12 +366,6 @@ namespace simulador {
         else
             output << term::set_color(COLOR_ERROR) << exe->getError();
 
-    }
-
-
-    bool Simulador::step(term::Window& output){
-        output << term::set_color(COLOR_SUCCESS) << "Avancei um instante\n";
-        return true;
     }
 
 
@@ -392,6 +408,36 @@ namespace simulador {
 
             }
         }
+
+    }
+
+    void Simulador::printHelp(term::Window &output) {
+
+        output
+        << term::set_color(COLOR_ID) << " prox\n" << term::set_color(COLOR_DEFAULT)
+        << term::set_color(COLOR_ID) << " avanca " << term::set_color(COLOR_DEFAULT) << "<n>\n"
+        << term::set_color(COLOR_ID) << " hnova " << term::set_color(COLOR_DEFAULT) << "<num linhas> <num colunas>\n"
+        << term::set_color(COLOR_ID) << " hrem\n" << term::set_color(COLOR_DEFAULT)
+        << term::set_color(COLOR_ID) << " znova " << term::set_color(COLOR_DEFAULT) << "<linha> <coluna>\n"
+        << term::set_color(COLOR_ID) << " zrem " << term::set_color(COLOR_DEFAULT) << "<ID zona>\n"
+        << term::set_color(COLOR_ID) << " zlista\n" << term::set_color(COLOR_DEFAULT)
+        << term::set_color(COLOR_ID) << " zcomp " << term::set_color(COLOR_DEFAULT) << "<ID zona>\n"
+        << term::set_color(COLOR_ID) << " zprops " << term::set_color(COLOR_DEFAULT) << "<ID zona>\n"
+        << term::set_color(COLOR_ID) << term::set_color(COLOR_ID) << " pmod " << term::set_color(COLOR_DEFAULT) << "<ID zona> <nome> <valor> \n"
+        << term::set_color(COLOR_ID) << " cnovo " << term::set_color(COLOR_DEFAULT) << "<ID zona> <s | p | a> <tipo | comando>\n"
+        << term::set_color(COLOR_ID) << " crem " << term::set_color(COLOR_DEFAULT) << "<ID zona> <s | p | a> <ID>\n"
+        << term::set_color(COLOR_ID) << " rnova " << term::set_color(COLOR_DEFAULT) << "<ID zona> <ID regras> <regra> <ID sensor> [par1] [par2] [..]\n"
+        << term::set_color(COLOR_ID) << " pmuda " << term::set_color(COLOR_DEFAULT) << "<ID zona> <ID regras> <novo comando>\n"
+        << term::set_color(COLOR_ID) << " rlista " << term::set_color(COLOR_DEFAULT) << "<ID zona> <ID regras>\n"
+        << term::set_color(COLOR_ID) << " asoc " << term::set_color(COLOR_DEFAULT) << "<ID zona> <ID regras> <ID aparelho>\n"
+        << term::set_color(COLOR_ID) << " ades " << term::set_color(COLOR_DEFAULT) << "<ID zona> <ID regras> <ID aparelho>\n"
+        << term::set_color(COLOR_ID) << " acom " << term::set_color(COLOR_DEFAULT) << "<ID zona> <ID aparelho> <comando>\n"
+        << term::set_color(COLOR_ID) << " psalva " << term::set_color(COLOR_DEFAULT) << "<ID zona> <ID proc. regras> <nome>\n"
+        << term::set_color(COLOR_ID) << " prepoe " << term::set_color(COLOR_DEFAULT) << "<nome> \n"
+        << term::set_color(COLOR_ID) << " prem " << term::set_color(COLOR_DEFAULT) << "<nome> \n"
+        << term::set_color(COLOR_ID) << " plista\n" << term::set_color(COLOR_DEFAULT)
+        << term::set_color(COLOR_ID) << " exec " << term::set_color(COLOR_DEFAULT) << "<nome de ficheiro>\n"
+        << term::set_color(COLOR_ID) << " sair\n" << term::set_color(COLOR_DEFAULT);
 
     }
 
