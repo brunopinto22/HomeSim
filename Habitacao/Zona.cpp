@@ -10,4 +10,11 @@ namespace zona {
 
     int Zona::getPosY() const { return pos_y; }
 
+    std::string Zona::getProps() const {
+        std::ostringstream oss;
+
+
+        return oss.str();
+    }
+
 } // zona
