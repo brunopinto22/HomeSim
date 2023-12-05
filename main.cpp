@@ -1,7 +1,3 @@
-#include <iostream>
-#include <string>
-#include <sstream>
-
 #include "Terminal.h"
 #include "Simulador.h"
 
@@ -12,8 +8,6 @@ int main() {
 
     // criar simulador
     simulador::Simulador sim(t);
-
-    _sleep(200);
 
     // comecar a simulacao
     sim.run();
