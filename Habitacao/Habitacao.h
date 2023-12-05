@@ -36,8 +36,15 @@ namespace habitacao {
         zona::Zona* getZone(int i) const;
         // devolve uma zona
 
+        bool checkID(int id) const;
+        // verifica se o ID existe
+
         void addZone(int x, int y);
         // adiciona uma zona
+
+        void removeZone(int id);
+        // remove uma zona
+
     };
 
 } // habitacao

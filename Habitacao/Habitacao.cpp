@@ -1,4 +1,5 @@
 #include <stdexcept>
+#include <algorithm>
 #include "Habitacao.h"
 
 namespace habitacao {
@@ -33,10 +34,26 @@ namespace habitacao {
         }
     }
 
+    bool Habitacao::checkID(int id) const{
+
+        auto it = std::find_if(zonas.begin(), zonas.end(), [id](const zona::Zona* zona) {return zona->getID() == id;});
+        if(it != zonas.end())
+            return true;
+        return false;
+
+    }
+
     void Habitacao::addZone(int x, int y) {
         this->zonas.push_back(new zona::Zona(getNumberID(), x, y));
         number_of_zones++;
     }
+
+
+    void Habitacao::removeZone(int id) {
+        zonas.erase(std::remove_if(zonas.begin(),zonas.end(), [id](const zona::Zona* zona) { return zona->getID() == id; }), zonas.end());
+        number_of_zones--;
+    }
+
 
 
 } // habitacao
