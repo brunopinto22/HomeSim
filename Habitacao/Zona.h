@@ -2,6 +2,7 @@
 #define HOMESIM_ZONA_H
 
 #include <string>
+#include "Propriedades.h"
 
 namespace zona {
 
@@ -9,6 +10,7 @@ namespace zona {
     private:
         int id;
         int pos_x, pos_y; // coordenadas
+        propriedades::Propriedades props;
 
     public:
         Zona(int number_id, int x, int y);
