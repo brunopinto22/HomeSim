@@ -9,6 +9,22 @@ std::string Comando::getError() const {
 
 
 
+Step::Step() {}
+bool Step::Execute(habitacao::Habitacao &h, std::string args){
+    if(!args.empty()){
+        defineError("Erro de formatacao : prox");
+        return false;
+    }
+
+    if(!h.tick()){
+        defineError(h.getError());
+        return false;
+    }
+    return true;
+
+}
+
+
 Znova::Znova() {}
 bool Znova::Execute(habitacao::Habitacao &h, std::string args) {
     std::ostringstream oss;

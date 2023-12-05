@@ -27,6 +27,14 @@ public:
 
 
 
+class Step : public Comando {
+public:
+    Step();
+
+    bool Execute(habitacao::Habitacao &h, std::string args) override;
+};
+
+
 class Znova : public Comando {
 public:
     Znova();
