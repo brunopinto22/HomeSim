@@ -31,7 +31,7 @@ namespace simulador {
         void run();
         // executar a simulacao
 
-        void splitCMD(std::string prompt, std::string* cmd, std::string* args);
+        static void splitCMD(std::string prompt, std::string* cmd, std::string* args);
         // divide o comando em comando e argumentos
 
         void executeCommand(std::string& prompt, term::Window& output, bool isFromExec);
@@ -40,7 +40,10 @@ namespace simulador {
         void printZones();
         // imprime as zonas
 
-        void printHelp(term::Window& output);
+        static void printZoneProps(const zona::Zona& z, term::Window& output);
+        // imprime as propriedades de uma zona
+
+        static void printHelp(term::Window& output);
         // imprime uma lista de comandos
 
     };

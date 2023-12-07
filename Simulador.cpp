@@ -75,15 +75,17 @@ namespace simulador {
         std::string cmd, args;
         splitCMD(prompt, &cmd, &args);
 
+        // guardar os argumentos
+        std::istringstream iss(args);
+
+        Comando* exe = nullptr;
+
+        // parte visual
         if(isFromExec)
             output << "\n";
         else
             output.clear();
         output << term::set_color(COLOR_DEFAULT);
-        std::istringstream iss(args);
-
-
-        Comando* exe = nullptr;
 
 
         if(cmd.empty()){
@@ -122,7 +124,7 @@ namespace simulador {
             if (iss >> width >> height){
 
                 if(h != nullptr){
-                    output << term::set_color(COLOR_ERROR) << "Ja tem uma habitacao criada";
+                    output << term::set_color(COLOR_ERROR) << "Ja tem uma Habitacao criada";
                     return;
 
                 } else if(width < 0 || height < 0 || width > 4 || height > 4){
@@ -142,11 +144,13 @@ namespace simulador {
 
             if(!args.empty()){
                 output << term::set_color(COLOR_ERROR) << "Erro de formatacao : hrem";
-                return;
-            }
 
-            delete h;
-            h = nullptr;
+            } else {
+                delete h;
+                h = nullptr;
+                output << term::set_color(COLOR_SUCCESS) << "A Habitacao foi removida";
+            }
+            return;
 
         } else if(cmd == "znova"){
 
@@ -169,8 +173,8 @@ namespace simulador {
             }
 
             for(int i=0; i < h->getNumberOfZones(); i++){
-                zona::Zona* z = h->getZone(i);
-                output << term::set_color(COLOR_MESSAGE) << "Zona_" << z->getID() << term::set_color(COLOR_DEFAULT) << " : (" << z->getPosX() << "," << z->getPosY() << ")\n";
+                zona::Zona z = h->getZone(i);
+                output << term::set_color(COLOR_MESSAGE) << "Zona_" << z.getID() << term::set_color(COLOR_DEFAULT) << " : (" << z.getPosX() << "," << z.getPosY() << ")\n";
             }
 
         } else if(cmd == "zcomp"){
@@ -181,6 +185,16 @@ namespace simulador {
 
             } else
                 output << term::set_color(COLOR_ERROR) << "Erro de formatacao : zcomp <ID zona>";
+
+
+        }  else if(cmd == "zprops"){
+
+            int id;
+            if (iss >> id)
+                printZoneProps(h->getZoneByID(id), output);
+
+            else
+                output << term::set_color(COLOR_ERROR) << "Erro de formatacao : zprops <ID zona>";
 
 
         } else if(cmd == "pmod"){
@@ -370,45 +384,71 @@ namespace simulador {
 
 
     void Simulador::printZones() {
+        // limpa o vetor
         for(auto & zona : zonas)
             delete zona;
         zonas.clear();
 
+        // verifica se existe uma habitacao
         if(h == nullptr)
             return;
 
-        // criar as janelas das zonas
+        // cria as janelas das zonas
         for(int x=0; x < h->getHeight(); x++)
             for(int y=0; y < h->getWidth(); y++)
                 zonas.push_back(new term::Window(72+30*x, 6+10*y, 30, 10, true));
 
-
-        zona::Zona* z;
-        int count = 0;
-
+        // verifica se existem zonas
         if(h->getNumberOfZones() <= 0)
             return;
 
+        // imprime a informacao de cada zona
+        int count = 0;
         for(int x=0; x < h->getHeight(); x++){
             for(int y=0; y < h->getWidth(); y++){
-                int i = 0;
-                do{
-                    z = h->getZone(i);
-                    if(z != nullptr && z->getPosX() == y+1 && z->getPosY() == x+1)
-                        break;
-                    i++;
-                } while(z != nullptr);
 
-                if(z == nullptr)
-                    *zonas.at(count) << "";
-                else
-                    *zonas.at(count) << term::set_color(COLOR_ID) << "Zona_" << z->getID() << term::set_color(0);
+                // vai buscar a zona correspodente
+                zona::Zona current_zone = h->getZone(y + 1, x + 1);
+                if (current_zone.getID() != -1)
+                    *zonas.at(count) << term::set_color(COLOR_ID) << "Zona_" << current_zone.getID() << term::set_color(0);
 
                 count++;
 
             }
         }
 
+    }
+
+    void Simulador::printZoneProps(const zona::Zona& z, term::Window& output) {
+        if(z.getID() == -1){
+            output << term::set_color(COLOR_ERROR) << "Essa Zona nao existe";
+            return;
+        }
+
+        output << term::set_color(COLOR_ID) << "Propriedades da Zona_" << z.getID() << "\n\n";
+
+        if (z.getTemperature() != propriedades::UNSET)
+            output << term::set_color(COLOR_MESSAGE) << "Temperatura: " << term::set_color(COLOR_DEFAULT) << z.getTemperatureStr() << "\n";
+
+        if (z.getLight() != propriedades::UNSET)
+            output << term::set_color(COLOR_MESSAGE) << "Luz: " << term::set_color(COLOR_DEFAULT) << z.getLightStr() << "\n";
+
+        if (z.getRadiation() != propriedades::UNSET)
+            output << term::set_color(COLOR_MESSAGE) << "Radiacao: " << term::set_color(COLOR_DEFAULT) << z.getRadiationStr() << "\n";
+
+        if (z.getVibration() != propriedades::UNSET)
+            output << term::set_color(COLOR_MESSAGE) << "Vibracao: " << term::set_color(COLOR_DEFAULT) << z.getVibrationStr() << "\n";
+
+        if (z.getHumidity() != propriedades::UNSET)
+            output << term::set_color(COLOR_MESSAGE) << "Humidade: " << term::set_color(COLOR_DEFAULT) << z.getHumidityStr() << "\n";
+
+        if (z.getSmoke() != propriedades::UNSET)
+            output << term::set_color(COLOR_MESSAGE) << "Fumo: " << term::set_color(COLOR_DEFAULT) << z.getSmokeStr() << "\n";
+
+        if (z.getSound() != propriedades::UNSET)
+            output << term::set_color(COLOR_MESSAGE) << "Som: " << term::set_color(COLOR_DEFAULT) << z.getSoundStr() << "\n";
+
+        output << term::set_color(COLOR_DEFAULT);
     }
 
     void Simulador::printHelp(term::Window &output) {
