@@ -51,30 +51,6 @@ public:
 };
 
 
-class Zlista : public Comando {
-public:
-    Zlista();
-
-    bool Execute(habitacao::Habitacao &h, std::string args) override;
-};
-
-
-class Zcomp : public Comando {
-public:
-    Zcomp();
-
-    bool Execute(habitacao::Habitacao &h, std::string args) override;
-};
-
-
-class Zprops : public Comando {
-public:
-    Zprops();
-
-    bool Execute(habitacao::Habitacao &h, std::string args) override;
-};
-
-
 class Pmod : public Comando {
 public:
     Pmod();
