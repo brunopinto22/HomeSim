@@ -42,7 +42,13 @@ namespace habitacao {
         bool isZoneTacken(int x, int y);
         // verifica se existe uma zona nas coords
 
-        zona::Zona* getZone(int i) const;
+        zona::Zona getZone(int index) const;
+        // devolve uma zona
+
+        zona::Zona getZone(int x, int y) const;
+        // devolve uma zona
+
+        zona::Zona getZoneByID(int id) const;
         // devolve uma zona
 
         bool checkID(int id) const;

@@ -1,5 +1,6 @@
 #include <stdexcept>
 #include <algorithm>
+#include <sstream>
 #include "Habitacao.h"
 
 namespace habitacao {
@@ -27,15 +28,30 @@ namespace habitacao {
         return false;
     }
 
-    zona::Zona* Habitacao::getZone(int i) const {
+    zona::Zona Habitacao::getZone(int index) const {
+        if (index >= 0 && index < zonas.size())
+            return *zonas.at(index);
+        else
+            return {};
 
-        try{
-            zona::Zona* z = this->zonas.at(i);
-            return z;
+    }
 
-        } catch(const std::out_of_range& e) {
-            return nullptr;
-        }
+    zona::Zona Habitacao::getZone(int x, int y) const {
+        auto it = std::find_if(zonas.begin(), zonas.end(), [x, y](const zona::Zona* zona) { return zona->getPosX() == x && zona->getPosY() == y; });
+
+        if (it != zonas.end()) {
+            return *(*it);
+        } else
+            return {};
+    }
+
+    zona::Zona Habitacao::getZoneByID(int id) const {
+        auto it = std::find_if(zonas.begin(), zonas.end(), [id](const zona::Zona* zona) { return zona->getID() == id; });
+
+        if (it != zonas.end())
+            return *(*it);
+        else
+            return {};
     }
 
     bool Habitacao::checkID(int id) const{
