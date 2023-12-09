@@ -51,14 +51,19 @@ namespace habitacao {
         zona::Zona getZoneByID(int id) const;
         // devolve uma zona
 
-        bool checkID(int id) const;
-        // verifica se o ID existe
+        bool checkZoneID(int id) const;
+        // verifica se o ID de Zona existe
 
         void addZone(int x, int y);
         // adiciona uma zona
 
         void removeZone(int id);
         // remove uma zona
+
+        bool changeZoneProp(int id, std::string prop_name, int new_value);
+        // define o valor de uma propriedade de uma dada zona
+        // retorna:     true caso corra tudo bem
+        //              false em caso de algum erro
 
         bool tick();
         // avanca 1 tick na habitacao

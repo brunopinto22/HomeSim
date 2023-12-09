@@ -12,13 +12,16 @@ namespace zona {
         int id;
         int pos_x, pos_y; // coordenadas
 
-        propriedades::Temperature temperature;
-        propriedades::Light light;
-        propriedades::Radiation radiation;
-        propriedades::Vibration vibration;
-        propriedades::Humidity humidity;
-        propriedades::Smoke smoke;
-        propriedades::Sound sound;
+        std::string error;
+
+        propriedades::Propriedade temperature;
+        propriedades::Propriedade light;
+        propriedades::Propriedade radiation;
+        propriedades::Propriedade vibration;
+        propriedades::Propriedade humidity;
+        propriedades::Propriedade smoke;
+        propriedades::Propriedade sound;
+
 
     public:
         Zona();
@@ -31,6 +34,15 @@ namespace zona {
         // devolve a posicao em x
         int getPosY() const;
         // devolve a posicao em y
+
+        std::string getError();
+        // devolve o ultimo erro ocorrido
+
+
+        bool setProp(std::string type, int new_value);
+        // define o valor de uma propriedade
+        // retorna:     true caso corra tudo bem
+        //              false em caso de algum erro
 
         int getTemperature() const;
         std::string getTemperatureStr() const;

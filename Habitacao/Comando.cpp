@@ -68,7 +68,7 @@ bool Zrem::Execute(habitacao::Habitacao &h, std::string args) {
     int id;
     if (iss >> id) {
 
-        if(!h.checkID(id)){
+        if(!h.checkZoneID(id)){
             oss << "A Zona com o id=" << id << " nao existe";
             defineError(oss.str());
             return false;
@@ -83,4 +83,29 @@ bool Zrem::Execute(habitacao::Habitacao &h, std::string args) {
     defineError("Erro de formatacao : zrem <ID zona>");
     return false;
 
+}
+
+Pmod::Pmod() {}
+bool Pmod::Execute(habitacao::Habitacao &h, std::string args) {
+
+    std::ostringstream oss;
+    std::istringstream iss(args);
+
+    int id, value;
+    std::string name;
+    if (iss >> id >> name >> value) {
+
+        if(!h.changeZoneProp(id, name, value)){
+            defineError(h.getError());
+            return false;
+        }
+
+        oss << "A Propriedade " << name << " da Zona_" << id << " foi atualizada para " << h.getError();
+        defineError(oss.str());
+        return true;
+
+    }
+
+    defineError("Erro de formatacao : pmod <ID zona> <nome> <valor>");
+    return false;
 }

@@ -54,7 +54,7 @@ namespace habitacao {
             return {};
     }
 
-    bool Habitacao::checkID(int id) const{
+    bool Habitacao::checkZoneID(int id) const{
 
         auto it = std::find_if(zonas.begin(), zonas.end(), [id](const zona::Zona* zona) {return zona->getID() == id;});
         if(it != zonas.end())
@@ -68,16 +68,40 @@ namespace habitacao {
         number_of_zones++;
     }
 
-
     void Habitacao::removeZone(int id) {
         zonas.erase(std::remove_if(zonas.begin(),zonas.end(), [id](const zona::Zona* zona) { return zona->getID() == id; }), zonas.end());
         number_of_zones--;
     }
 
+    bool Habitacao::changeZoneProp(int id, std::string prop_name, int new_value) {
+        std::ostringstream oss;
+
+        if(!checkZoneID(id)){
+            oss << "A Zona com o id=" << id << " nao existe";
+            error = oss.str();
+            return false;
+        }
+
+        // procura e guarda a zona
+        auto it = std::find_if(zonas.begin(), zonas.end(), [id](const zona::Zona* z) { return z->getID() == id; });
+        zona::Zona* target = *it;
+
+        if (!target->setProp(prop_name, new_value)) {
+            error = target->getError();
+            return false;
+        }
+
+        error = target->getError();
+        return true;
+    }
+
+
     bool Habitacao::tick() {
         ticks++;
         return true;
     }
+
+
 
 
 } // habitacao
