@@ -199,14 +199,7 @@ namespace simulador {
 
         } else if(cmd == "pmod"){
 
-            int id, value;
-            std::string name;
-            if (iss >> id >> name >> value) {
-                output << term::set_color(COLOR_SUCCESS) << "A modificar a propriedade " << name << " da zona " << id << "para" << value;
-
-            }  else
-                output << term::set_color(COLOR_ERROR) << "Erro de formatacao : pmod <ID zona> <nome> <valor>";
-
+            exe = new Pmod;
 
         } else if(cmd == "cnovo"){
 
