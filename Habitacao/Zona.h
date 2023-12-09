@@ -2,6 +2,7 @@
 #define HOMESIM_ZONA_H
 
 #include <string>
+#include <vector>
 #include "Propriedade.h"
 
 namespace zona {
@@ -14,14 +15,8 @@ namespace zona {
 
         std::string error;
 
-        propriedades::Propriedade temperature;
-        propriedades::Propriedade light;
-        propriedades::Propriedade radiation;
-        propriedades::Propriedade vibration;
-        propriedades::Propriedade humidity;
-        propriedades::Propriedade smoke;
-        propriedades::Propriedade sound;
-
+        // propriedades
+        std::vector<propriedades::Propriedade*> props;
 
     public:
         Zona();
@@ -39,38 +34,14 @@ namespace zona {
         // devolve o ultimo erro ocorrido
 
 
-        bool setProp(std::string type, int new_value);
+        bool setProp(const std::string& type, int new_value);
         // define o valor de uma propriedade
         // retorna:     true caso corra tudo bem
         //              false em caso de algum erro
 
-        int getTemperature() const;
-        std::string getTemperatureStr() const;
+        int getPropValue(std::string type) const;
+        std::string getPropValueStr(std::string type) const;
         // devolve a temperatura
-
-        int getLight() const;
-        std::string getLightStr() const;
-        // devolve a luz
-
-        int getRadiation() const;
-        std::string getRadiationStr() const;
-        // devolve a radiacao
-
-        int getVibration() const;
-        std::string getVibrationStr() const;
-        // devolve a vibracao
-
-        int getHumidity() const;
-        std::string getHumidityStr() const;
-        // devolve a humidade
-
-        int getSmoke() const;
-        std::string getSmokeStr() const;
-        // devolve o fumo
-
-        int getSound() const;
-        std::string getSoundStr() const;
-        // devolve o som
 
     };
 

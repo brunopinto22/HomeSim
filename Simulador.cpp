@@ -399,14 +399,11 @@ namespace simulador {
         int count = 0;
         for(int x=0; x < h->getHeight(); x++){
             for(int y=0; y < h->getWidth(); y++){
-
                 // vai buscar a zona correspodente
                 zona::Zona current_zone = h->getZone(y + 1, x + 1);
                 if (current_zone.getID() != -1)
                     *zonas.at(count) << term::set_color(COLOR_ID) << "Zona_" << current_zone.getID() << term::set_color(0);
-
                 count++;
-
             }
         }
 
@@ -420,28 +417,22 @@ namespace simulador {
 
         output << term::set_color(COLOR_ID) << "Propriedades da Zona_" << z.getID() << "\n\n";
 
-        if (z.getTemperature() != propriedades::UNSET)
-            output << term::set_color(COLOR_MESSAGE) << "Temperatura: " << term::set_color(COLOR_DEFAULT) << z.getTemperatureStr() << "\n";
+        auto printProp = [&](const std::string& type) {
+            if (z.getPropValue(type) != propriedades::UNSET) {
+                output << term::set_color(COLOR_MESSAGE) << type << ": " << term::set_color(COLOR_DEFAULT) << z.getPropValueStr(type) << "\n";
+            }
+        };
 
-        if (z.getLight() != propriedades::UNSET)
-            output << term::set_color(COLOR_MESSAGE) << "Luz: " << term::set_color(COLOR_DEFAULT) << z.getLightStr() << "\n";
-
-        if (z.getRadiation() != propriedades::UNSET)
-            output << term::set_color(COLOR_MESSAGE) << "Radiacao: " << term::set_color(COLOR_DEFAULT) << z.getRadiationStr() << "\n";
-
-        if (z.getVibration() != propriedades::UNSET)
-            output << term::set_color(COLOR_MESSAGE) << "Vibracao: " << term::set_color(COLOR_DEFAULT) << z.getVibrationStr() << "\n";
-
-        if (z.getHumidity() != propriedades::UNSET)
-            output << term::set_color(COLOR_MESSAGE) << "Humidade: " << term::set_color(COLOR_DEFAULT) << z.getHumidityStr() << "\n";
-
-        if (z.getSmoke() != propriedades::UNSET)
-            output << term::set_color(COLOR_MESSAGE) << "Fumo: " << term::set_color(COLOR_DEFAULT) << z.getSmokeStr() << "\n";
-
-        if (z.getSound() != propriedades::UNSET)
-            output << term::set_color(COLOR_MESSAGE) << "Som: " << term::set_color(COLOR_DEFAULT) << z.getSoundStr() << "\n";
+        printProp("temperatura");
+        printProp("luz");
+        printProp("radiacao");
+        printProp("vibracao");
+        printProp("humidade");
+        printProp("fumo");
+        printProp("som");
 
         output << term::set_color(COLOR_DEFAULT);
+
     }
 
     void Simulador::printHelp(term::Window &output) {

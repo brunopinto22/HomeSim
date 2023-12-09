@@ -6,7 +6,7 @@
 namespace propriedades {
     Propriedade::Propriedade() {}
 
-    Propriedade::Propriedade(std::string unit, int min, int max) : value(UNSET), unit(std::move(unit)), min(min), max(max) { }
+    Propriedade::Propriedade(std::string type, std::string unit, int min, int max) : value(UNSET), type(std::move(type)), unit(std::move(unit)), min(min), max(max) { }
 
     int Propriedade::getValue() const { return value; }
     std::string Propriedade::getValueStr() const {
@@ -28,6 +28,8 @@ namespace propriedades {
     }
 
     std::string Propriedade::getUnit() const { return unit; }
+
+    std::string Propriedade::getType() const { return type; }
 
     bool Propriedade::checkNewValue(int &new_value) const {
         if(max == UNSET)

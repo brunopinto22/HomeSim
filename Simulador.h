@@ -40,7 +40,7 @@ namespace simulador {
         void printZones();
         // imprime as zonas
 
-        static void printZoneProps(const zona::Zona& z, term::Window& output);
+        static void printZoneProps(const zona::Zona& type, term::Window& output);
         // imprime as propriedades de uma zona
 
         static void printHelp(term::Window& output);

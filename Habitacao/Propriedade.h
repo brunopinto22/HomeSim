@@ -17,12 +17,15 @@ namespace propriedades {
         // unidade de medida
         std::string unit;
 
+        // nome da propriedade
+        std::string type;
+
         // valor max e min que a propriedade pode assumir
         int min, max;
 
     public:
         Propriedade();
-        Propriedade(std::string unit, int max, int min);
+        Propriedade(std::string type, std::string unit, int max, int min);
         ~Propriedade() = default;
 
         int getValue() const;
@@ -37,6 +40,9 @@ namespace propriedades {
 
         std::string getUnit() const;
         // devolve o valor da propriedade
+
+        std::string getType() const;
+        // devolve o valor minimo da propriedade
 
         bool checkNewValue(int& new_value) const;
         // verifica se o valor novo e aceitavel para a propriedade
