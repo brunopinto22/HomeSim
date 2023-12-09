@@ -6,6 +6,8 @@
 namespace propriedades {
 
     constexpr int UNSET = -1000;
+    constexpr int NULL_VALUE = -2000;
+
 
     class Propriedade {
     private:
@@ -19,11 +21,19 @@ namespace propriedades {
         int min, max;
 
     public:
+        Propriedade();
         Propriedade(std::string unit, int max, int min);
-        virtual ~Propriedade(){}
+        ~Propriedade() = default;
 
         int getValue() const;
+        std::string getValueStr() const;
         // devolve o valor da propriedade
+
+        std::string getMin() const;
+        // devolve o valor minimo da propriedade
+
+        std::string getMax() const;
+        // devolve o valor maximo da propriedade
 
         std::string getUnit() const;
         // devolve o valor da propriedade
@@ -31,50 +41,14 @@ namespace propriedades {
         bool checkNewValue(int& new_value) const;
         // verifica se o valor novo e aceitavel para a propriedade
 
-        // funcoes aritmeticas
-        Propriedade operator+(int new_value);
-        Propriedade operator-(int new_value);
-        Propriedade operator*(int new_value);
+        Propriedade& operator+(int new_value);
+        Propriedade& operator-(int new_value);
+        Propriedade& operator*(int new_value);
+        Propriedade& operator/(int new_value);
         Propriedade& operator=(int new_value);
 
     };
 
-
-    //
-    class Temperature : public Propriedade{
-    public:
-        Temperature();
-    };
-
-    class Light : public Propriedade{
-    public:
-        Light();
-    };
-
-    class Radiation : public Propriedade{
-    public:
-        Radiation();
-    };
-
-    class Vibration : public Propriedade{
-    public:
-        Vibration();
-    };
-
-    class Humidity : public Propriedade{
-    public:
-        Humidity();
-    };
-
-    class Smoke : public Propriedade{
-    public:
-        Smoke();
-    };
-
-    class Sound : public Propriedade{
-    public:
-        Sound();
-    };
 
 } // propriedades
 

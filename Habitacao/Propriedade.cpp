@@ -1,11 +1,31 @@
 #include "Propriedade.h"
 
 #include <utility>
+#include <sstream>
 
 namespace propriedades {
+    Propriedade::Propriedade() {}
+
     Propriedade::Propriedade(std::string unit, int min, int max) : value(UNSET), unit(std::move(unit)), min(min), max(max) { }
 
     int Propriedade::getValue() const { return value; }
+    std::string Propriedade::getValueStr() const {
+        std::ostringstream oss;
+        oss << getValue() << " " << getUnit();
+        return oss.str();
+    }
+
+    std::string Propriedade::getMin() const {
+        std::ostringstream oss;
+        oss << min;
+        return min == UNSET ? "-" : oss.str();
+    }
+
+    std::string Propriedade::getMax() const {
+        std::ostringstream oss;
+        oss << max;
+        return max == UNSET ? "-" : oss.str();
+    }
 
     std::string Propriedade::getUnit() const { return unit; }
 
@@ -19,21 +39,31 @@ namespace propriedades {
         return new_value >= min && new_value <=max;
     }
 
-    Propriedade Propriedade::operator+(int new_value) {
-        if (checkNewValue(new_value))
-            this->value += new_value;
+    Propriedade &Propriedade::operator+(int new_value) {
+        int final = this->value + new_value;
+        if (checkNewValue(final))
+            this->value = final;
         return *this;
     }
 
-    Propriedade Propriedade::operator-(int new_value) {
-        if (checkNewValue(new_value))
-            this->value -= new_value;
+    Propriedade &Propriedade::operator-(int new_value) {
+        int final = this->value - new_value;
+        if (checkNewValue(final))
+            this->value = final;
         return *this;
     }
 
-    Propriedade Propriedade::operator*(int new_value) {
-        if (checkNewValue(new_value))
-            this->value *= new_value;
+    Propriedade &Propriedade::operator*(int new_value) {
+        int final = this->value * new_value;
+        if (checkNewValue(final))
+            this->value = final;
+        return *this;
+    }
+
+    Propriedade &Propriedade::operator/(int new_value) {
+        int final = this->value / new_value;
+        if (checkNewValue(final))
+            this->value = final;
         return *this;
     }
 
@@ -42,21 +72,6 @@ namespace propriedades {
             this->value = new_value;
         return *this;
     }
-
-
-    Temperature::Temperature() : Propriedade("ºC", -273, UNSET) {}
-
-    Light::Light() : Propriedade("Lumens", 0, UNSET) {}
-
-    Radiation::Radiation() : Propriedade("Becquerel", 0, UNSET) {}
-
-    Vibration::Vibration() : Propriedade("Hz", 0, UNSET) {}
-
-    Humidity::Humidity() : Propriedade("%", 0, 100) {}
-
-    Smoke::Smoke() : Propriedade("Obscuração (%)", 0, 100)  {}
-
-    Sound::Sound() : Propriedade("dB", 0, UNSET)  {}
 
 
 } // propriedades
