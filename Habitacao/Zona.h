@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include "Propriedade.h"
+#include "Componentes/Componente.h"
 
 namespace zona {
 
@@ -11,12 +12,17 @@ namespace zona {
     class Zona {
     private:
         int id;
-        int pos_x, pos_y; // coordenadas
 
-        std::string error;
+        // coordenadas
+        int pos_x, pos_y;
 
         // propriedades
         std::vector<propriedades::Propriedade*> props;
+
+        // componentes
+        std::vector<componente::Componente> comps;
+
+        std::string error;
 
     public:
         Zona();
@@ -33,7 +39,6 @@ namespace zona {
         std::string getError();
         // devolve o ultimo erro ocorrido
 
-
         bool setProp(const std::string& type, int new_value);
         // define o valor de uma propriedade
         // retorna:     true caso corra tudo bem
@@ -42,6 +47,32 @@ namespace zona {
         int getPropValue(std::string type) const;
         std::string getPropValueStr(std::string type) const;
         // devolve a temperatura
+
+        bool addComponent(int number_id, char type, std::string& typeOrCmd);
+        // adiciona um componente a Zona
+        // retorna:     true caso corra tudo bem
+        //              false em caso de algum erro
+
+        bool addGadget(int number_id, std::string& type);
+        // adiciona um Aparelho a Zona
+        // retorna:     true caso corra tudo bem
+        //              false em caso de algum erro
+
+        bool addProcessor(int number_id, std::string& cmd);
+        // adiciona um Processador a Zona
+        // retorna:     true caso corra tudo bem
+        //              false em caso de algum erro
+
+        bool addSensor(int number_id, std::string& type);
+        // adiciona um Sensor a Zona
+        // retorna:     true caso corra tudo bem
+        //              false em caso de algum erro
+
+        std::string getComponents();
+        // devolve os componentes da Zona
+
+        std::string getComponentsStr();
+        // devolve os componentes da Zona com toda a sua informacao
 
     };
 

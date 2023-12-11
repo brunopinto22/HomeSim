@@ -109,3 +109,28 @@ bool Pmod::Execute(habitacao::Habitacao &h, std::string args) {
     defineError("Erro de formatacao : pmod <ID zona> <nome> <valor>");
     return false;
 }
+
+Cnovo::Cnovo() {}
+bool Cnovo::Execute(habitacao::Habitacao &h, std::string args) {
+
+    std::ostringstream oss;
+    std::istringstream iss(args);
+
+    int id;
+    char type;
+    std::string typeOrCmd;
+    if (iss >> id >> type >> typeOrCmd) {
+
+        if(!h.addComponent(id, type, typeOrCmd)){
+            defineError(h.getError());
+            return false;
+        }
+
+        oss << h.getError() << " na Zona_" << id;
+        defineError(oss.str());
+        return true;
+    }
+
+    defineError("Erro de formatacao : cnovo <ID zona> <s | p | a> <tipo | comando>");
+    return false;
+}
