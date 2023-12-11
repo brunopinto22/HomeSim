@@ -9,7 +9,9 @@ namespace habitacao {
     class Habitacao {
     private:
         int number_id;
-        int width, height; // tamanho da habitacao
+        int zone_number_id;
+        // tamanho da habitacao
+        int width, height;
         int ticks;
 
         int number_of_zones; // contador de zonas
@@ -21,8 +23,11 @@ namespace habitacao {
         Habitacao();
         Habitacao(int width, int height);
 
+        int getZoneNumberID();
+        // devolve o número do ID para a Zona
+
         int getNumberID();
-        // devolve o número do ID para a Zona/Sensor/Aparelho/Regra
+        // devolve o número do ID para o Sensor/Aparelho/Regra
 
         int getWidth() const;
         // devolve a 'largura' da habitacao
@@ -62,6 +67,11 @@ namespace habitacao {
 
         bool changeZoneProp(int id, std::string prop_name, int new_value);
         // define o valor de uma propriedade de uma dada zona
+        // retorna:     true caso corra tudo bem
+        //              false em caso de algum erro
+
+        bool addComponent(int id, char type, std::string& typeOrCmd);
+        // adiciona um componente a uma dada Zona
         // retorna:     true caso corra tudo bem
         //              false em caso de algum erro
 

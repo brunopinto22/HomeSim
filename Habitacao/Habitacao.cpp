@@ -1,10 +1,16 @@
 #include <stdexcept>
 #include <algorithm>
 #include <sstream>
+#include <utility>
 #include "Habitacao.h"
 
 namespace habitacao {
-    Habitacao::Habitacao(int width, int height):width(width), height(height),number_id(0), ticks(0), number_of_zones(0) {}
+    Habitacao::Habitacao(int width, int height):width(width), height(height), number_id(0), zone_number_id(0), ticks(0), number_of_zones(0) {}
+
+    int Habitacao::getZoneNumberID(){
+        zone_number_id++;
+        return zone_number_id;
+    }
 
     int Habitacao::getNumberID() {
         number_id++;
@@ -64,7 +70,7 @@ namespace habitacao {
     }
 
     void Habitacao::addZone(int x, int y) {
-        this->zonas.push_back(new zona::Zona(getNumberID(), x, y));
+        this->zonas.push_back(new zona::Zona(getZoneNumberID(), x, y));
         number_of_zones++;
     }
 
@@ -95,12 +101,34 @@ namespace habitacao {
         return true;
     }
 
+    bool Habitacao::addComponent(int id, char type, std::string& typeOrCmd) {
+        std::ostringstream oss;
+
+        if(!checkZoneID(id)){
+            oss << "A Zona com o id=" << id << " nao existe";
+            error = oss.str();
+            return false;
+        }
+
+        // procura e guarda a zona
+        auto it = std::find_if(zonas.begin(), zonas.end(), [id](const zona::Zona* z) { return z->getID() == id; });
+        zona::Zona* target = *it;
+
+        if (!target->addComponent(getNumberID(), type, typeOrCmd)) {
+            error = target->getError();
+            return false;
+        }
+
+        error = target->getError();
+        return true;
+    }
+
+
 
     bool Habitacao::tick() {
         ticks++;
         return true;
     }
-
 
 
 
