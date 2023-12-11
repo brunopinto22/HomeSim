@@ -21,10 +21,10 @@ namespace simulador {
         term::Window info = term::Window(72,1,120,5, true);
 
         title << term::set_color(COLOR_MESSAGE)
-              << "   _____ _____ _____ _____    _____ _____ _____\n"
-              << "  |  |  |     |     |   __|  |   __|     |     |\n"
-              << "  |     |  |  | | | |   __|  |__   |-   -| | | |\n"
-              << "  |__|__|_____|_|_|_|_____|  |_____|_____|_|_|_|";
+              << "   _____  _____  _____  _____    _____  _____  _____\n"
+              << "  |  |  ||     ||     ||   __|  |   __||     ||     |\n"
+              << "  |     ||  |  || | | ||   __|  |__   ||-   -|| | | |\n"
+              << "  |__|__||_____||_|_|_||_____|  |_____||_____||_|_|_|";
 
         isOn = true;
         do{
@@ -91,7 +91,7 @@ namespace simulador {
         if(cmd.empty()){
             output << term::set_color(COLOR_ERROR) << "Comando vazio";
 
-        } else if(h == nullptr && cmd != "hnova" && cmd != "sair" && cmd != "help"){
+        } else if(h == nullptr && cmd != "hnova" && cmd != "exec" && cmd != "sair" && cmd != "help"){
             output << term::set_color(COLOR_ERROR) << "Tem primeiro de criar uma habitacao: hnova <numLinhas> <numColunas>\n";
 
         } else if(cmd == "prox"){
@@ -174,14 +174,26 @@ namespace simulador {
 
             for(int i=0; i < h->getNumberOfZones(); i++){
                 zona::Zona z = h->getZone(i);
-                output << term::set_color(COLOR_MESSAGE) << "Zona_" << z.getID() << term::set_color(COLOR_DEFAULT) << " : (" << z.getPosX() << "," << z.getPosY() << ")\n";
+                output
+                << term::set_color(COLOR_MESSAGE) << "Zona_" << z.getID()<< term::set_color(COLOR_DEFAULT) <<
+                " (" << z.getPosX() << "," << z.getPosY() << ") : "
+                << "sensores=" << z.getNumberOfSensors() << " processadores=" << z.getNumberOfProcessors() << " aparelhos=" << z.getNumberOfGadgets() <<"\n";
             }
 
         } else if(cmd == "zcomp"){
 
             int id;
             if (iss >> id) {
-                output << term::set_color(COLOR_SUCCESS) << "A listar os componentes da zona " << id;
+
+                if(h->getNumberOfZones() == 0){
+                    output << term::set_color(COLOR_ERROR) << "Nao existem Zonas criadas";
+                    return;
+                }
+
+                zona::Zona z = h->getZoneByID(id);
+                output
+                << term::set_color(COLOR_MESSAGE) << "Zona_" << z.getID() << "\n"
+                << term::set_color(COLOR_DEFAULT) << z.getComponentsStr();
 
             } else
                 output << term::set_color(COLOR_ERROR) << "Erro de formatacao : zcomp <ID zona>";
@@ -203,15 +215,7 @@ namespace simulador {
 
         } else if(cmd == "cnovo"){
 
-            int id;
-            char type;
-            std::string typeOrCmd;
-            if (iss >> id >> type >> typeOrCmd) {
-                output << term::set_color(COLOR_SUCCESS) << "A adicionar " << type << " com as definicoes" << typeOrCmd << " na zona" << id;
-
-            } else
-                output << term::set_color(COLOR_ERROR) << "Erro de formatacao : cnovo <ID zona> <s | p | a> <tipo | comando>";
-
+            exe = new Cnovo;
 
         } else if(cmd == "crem"){
 
@@ -369,7 +373,7 @@ namespace simulador {
             return;
 
         if(exe->Execute(*h, args))
-            output << term::set_color(COLOR_SUCCESS) << exe->getError();
+            output << term::set_color(COLOR_SUCCESS) << "Erro: "  << exe->getError();
         else
             output << term::set_color(COLOR_ERROR) << exe->getError();
 
@@ -402,7 +406,8 @@ namespace simulador {
                 // vai buscar a zona correspodente
                 zona::Zona current_zone = h->getZone(y + 1, x + 1);
                 if (current_zone.getID() != -1)
-                    *zonas.at(count) << term::set_color(COLOR_ID) << "Zona_" << current_zone.getID() << term::set_color(0);
+                    *zonas.at(count) << term::set_color(COLOR_ID) << "Zona_" << current_zone.getID()
+                    << term::set_color(COLOR_DEFAULT) << "\n" << current_zone.getComponents();
                 count++;
             }
         }
