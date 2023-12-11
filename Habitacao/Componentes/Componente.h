@@ -5,21 +5,29 @@
 
 namespace componente {
 
+    enum class ComponenteType : char {
+        APARELHO = 'a',
+        SENSOR = 's',
+        PROCESSADOR = 'p'
+    };
+
     class Componente {
     private:
         std::string id;
-        char name;
+        char type;
 
     public:
+        Componente(int id, char type);
+
     // -- FUNCS VIRTUAIS
         virtual ~Componente(){}
 
-    // -- FUNCS GLOBAIIS
+        virtual char getType() const;
+        // devolve o caracter que o descreve
+
+    // -- FUNCS GLOBAIS
         std::string getID() const;
         // devolve o ID do componente
-
-        char getName() const;
-        // devolve o caracter que o descreve
 
     };
 
