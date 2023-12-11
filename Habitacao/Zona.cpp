@@ -3,11 +3,10 @@
 
 #include "Componentes/Aparelho.h"
 #include "Componentes/Processador.h"
-#include "Componentes/Regra.h"
 
 
 namespace zona {
-    Zona::Zona(int number_id, int x, int y):id(number_id), pos_x(x), pos_y(y) {
+    Zona::Zona(int number_id, int x, int y):id(number_id), pos_x(x), pos_y(y), count_Sensors(0), count_Processors(0), count_Gadgets(0) {
         props.push_back(new propriedades::Propriedade("temperatura", "C", -273, propriedades::UNSET));
         props.push_back(new propriedades::Propriedade("luz","Lumens", 0, propriedades::UNSET));
         props.push_back(new propriedades::Propriedade("radiacao","Becquerel", 0, propriedades::UNSET));
@@ -74,6 +73,12 @@ namespace zona {
                 return p->getValueStr();
         return "-";
     }
+
+
+    int Zona::getNumberOfSensors() const { return count_Sensors; }
+    int Zona::getNumberOfProcessors() const { return count_Processors; }
+    int Zona::getNumberOfGadgets() const { return count_Gadgets; }
+
 
     bool Zona::addComponent(int number_id, char type, std::string& typeOrCmd) {
 
@@ -167,7 +172,7 @@ namespace zona {
         std::ostringstream oss;
 
         for(const auto & c : comps)
-            oss << c.getType() << c.getID() << "\n";
+            oss << c.getID() << "\n";
 
         return oss.str();
     }

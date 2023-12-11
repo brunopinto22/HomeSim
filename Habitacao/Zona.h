@@ -21,6 +21,9 @@ namespace zona {
 
         // componentes
         std::vector<componente::Componente> comps;
+        int count_Sensors;
+        int count_Processors;
+        int count_Gadgets;
 
         std::string error;
 
@@ -47,6 +50,13 @@ namespace zona {
         int getPropValue(std::string type) const;
         std::string getPropValueStr(std::string type) const;
         // devolve a temperatura
+
+        int getNumberOfSensors() const;
+        // devolve o numero de Sensores na Zona
+        int getNumberOfProcessors() const;
+        // devolve o numero de Processadores na Zona
+        int getNumberOfGadgets() const;
+        // devolve o numero de Aparelhos na Zona
 
         bool addComponent(int number_id, char type, std::string& typeOrCmd);
         // adiciona um componente a Zona
