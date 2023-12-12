@@ -6,8 +6,16 @@
 namespace propriedades {
 
     constexpr int UNSET = -1000;
-    constexpr int NULL_VALUE = -2000;
 
+    enum PropriedadeType : char {
+        TEMPERATURA = 't',
+        VIBRACAO = 'v',
+        LUZ = 'm',
+        RADIACAO = 'r',
+        HUMIDADE = 'h',
+        SOM = 'o',
+        FUMO = 'f'
+    };
 
     class Propriedade {
     private:
@@ -18,7 +26,10 @@ namespace propriedades {
         std::string unit;
 
         // nome da propriedade
-        std::string type;
+        std::string name;
+
+        // tipo da
+        PropriedadeType type;
 
         // valor max e min que a propriedade pode assumir
         int min, max;
@@ -41,8 +52,11 @@ namespace propriedades {
         std::string getUnit() const;
         // devolve o valor da propriedade
 
-        std::string getType() const;
-        // devolve o valor minimo da propriedade
+        std::string getName() const;
+        // devolve o nome da propriedade
+
+        PropriedadeType getType() const;
+        // devolve o tipo da propriedade
 
         bool checkNewValue(int& new_value) const;
         // verifica se o valor novo e aceitavel para a propriedade
@@ -53,6 +67,42 @@ namespace propriedades {
         Propriedade& operator/(int new_value);
         Propriedade& operator=(int new_value);
 
+    };
+
+
+    class Temperatura : public Propriedade{
+    public:
+        Temperatura();
+    };
+
+    class Luz : public Propriedade{
+    public:
+        Luz();
+    };
+
+    class Radiacao : public Propriedade{
+    public:
+        Radiacao();
+    };
+
+    class Vibracao : public Propriedade{
+    public:
+        Vibracao();
+    };
+
+    class Humidade : public Propriedade{
+    public:
+        Humidade();
+    };
+
+    class Fumo : public Propriedade{
+    public:
+        Fumo();
+    };
+
+    class Som : public Propriedade{
+    public:
+        Som();
     };
 
 
