@@ -3,17 +3,18 @@
 
 #include "Componentes/Aparelho.h"
 #include "Componentes/Processador.h"
+#include "Componentes/Sensor.h"
 
 
 namespace zona {
     Zona::Zona(int number_id, int x, int y):id(number_id), pos_x(x), pos_y(y), count_Sensors(0), count_Processors(0), count_Gadgets(0) {
-        props.push_back(new propriedades::Propriedade("temperatura", "C", -273, propriedades::UNSET));
-        props.push_back(new propriedades::Propriedade("luz","Lumens", 0, propriedades::UNSET));
-        props.push_back(new propriedades::Propriedade("radiacao","Becquerel", 0, propriedades::UNSET));
-        props.push_back(new propriedades::Propriedade("vibracao","Hz", 0, propriedades::UNSET));
-        props.push_back(new propriedades::Propriedade("humidade","%", 0, 100));
-        props.push_back(new propriedades::Propriedade("fumo","%", 0, 100));
-        props.push_back(new propriedades::Propriedade("som","dB", 0, propriedades::UNSET));
+        props.push_back(new propriedades::Temperatura());
+        props.push_back(new propriedades::Luz());
+        props.push_back(new propriedades::Radiacao());
+        props.push_back(new propriedades::Vibracao());
+        props.push_back(new propriedades::Humidade());
+        props.push_back(new propriedades::Fumo());
+        props.push_back(new propriedades::Som());
     }
 
     Zona::Zona() : Zona(-1, 0, 0) {}
@@ -37,7 +38,7 @@ namespace zona {
             min = prop->getMin();
             max = prop->getMax();
             unit = prop->getUnit();
-            return prop->getType() == type;
+            return prop->getName() == type;
         });
 
         if (it == props.end()) {
@@ -62,16 +63,23 @@ namespace zona {
 
     int Zona::getPropValue(std::string type) const{
         for(const auto & p : props)
-            if(p->getType() == type)
+            if(p->getName() == type)
                 return p->getValue();
 
         return propriedades::UNSET;
     }
     std::string Zona::getPropValueStr(std::string type) const{
         for(const auto & p : props)
-            if(p->getType() == type)
+            if(p->getName() == type)
                 return p->getValueStr();
         return "-";
+    }
+
+    propriedades::Propriedade &Zona::getProp(propriedades::PropriedadeType type) {
+        for (propriedades::Propriedade* prop : props)
+            if (prop->getType() == type)
+                return *prop;
+        return *props[0];
     }
 
 
@@ -105,6 +113,7 @@ namespace zona {
         std::istringstream iss(type);
         char t;
         if(iss >> t){
+            count_Gadgets++;
             switch (t) {
                 case static_cast<char>(aparelho::AparelhoType::AQUECEDOR):
                     comps.push_back(*new aparelho::Aquecedor(number_id));
@@ -112,15 +121,22 @@ namespace zona {
                     return true;
 
                 case static_cast<char>(aparelho::AparelhoType::ASPERSOR):
+                    comps.push_back(*new aparelho::Aspersor(number_id));
+                    error = "Foi adicionado um Aspersor";
                     return true;
 
                 case static_cast<char>(aparelho::AparelhoType::REFRIGERADOR):
+                    comps.push_back(*new aparelho::Refrigerador(number_id));
+                    error = "Foi adicionado um Refrigerador";
                     return true;
 
                 case static_cast<char>(aparelho::AparelhoType::LAMPADA):
+                    comps.push_back(*new aparelho::Lampada(number_id));
+                    error = "Foi adicionado um Lampada";
                     return true;
 
                 default:
+                    count_Gadgets--;
                     error = "O tipo de Aparelho nao foi reconhecido";
                     return false;
             }
@@ -152,7 +168,48 @@ namespace zona {
         std::istringstream iss(type);
         char t;
         if(iss >> t){
+            count_Sensors++;
+            switch (t) {
+                case static_cast<char>(propriedades::PropriedadeType::TEMPERATURA):
+                    comps.push_back(*new sensor::Sensor(number_id, getProp(propriedades::PropriedadeType::TEMPERATURA)));
+                    error = "Foi adicionado um Sensor de Temperatura";
+                    return true;
 
+                case static_cast<char>(propriedades::PropriedadeType::VIBRACAO):
+                    comps.push_back(*new sensor::Sensor(number_id, getProp(propriedades::PropriedadeType::VIBRACAO)));
+                    error = "Foi adicionado um Sensor de Movimento";
+                    return true;
+
+                case static_cast<char>(propriedades::PropriedadeType::LUZ):
+                    comps.push_back(*new sensor::Sensor(number_id, getProp(propriedades::PropriedadeType::LUZ)));
+                    error = "Foi adicionado um Sensor de Luminosidade";
+                    return true;
+
+                case static_cast<char>(propriedades::PropriedadeType::RADIACAO):
+                    comps.push_back(*new sensor::Sensor(number_id, getProp(propriedades::PropriedadeType::RADIACAO)));
+                    error = "Foi adicionado um Sensor de Radiacao";
+                    return true;
+
+                case static_cast<char>(propriedades::PropriedadeType::HUMIDADE):
+                    comps.push_back(*new sensor::Sensor(number_id, getProp(propriedades::PropriedadeType::HUMIDADE)));
+                    error = "Foi adicionado um Sensor de Humidade";
+                    return true;
+
+                case static_cast<char>(propriedades::PropriedadeType::SOM):
+                    comps.push_back(*new sensor::Sensor(number_id, getProp(propriedades::PropriedadeType::SOM)));
+                    error = "Foi adicionado um Sensor de Som";
+                    return true;
+
+                case static_cast<char>(propriedades::PropriedadeType::FUMO):
+                    comps.push_back(*new sensor::Sensor(number_id, getProp(propriedades::PropriedadeType::FUMO)));
+                    error = "Foi adicionado um Sensor de Fumo";
+                    return true;
+
+                default:
+                    error = "O tipo de Sensor nao foi reconhecido";
+                    count_Sensors--;
+                    return false;
+            }
         }
 
         error = "O tipo de Sensor deveria de ser um caracter";
@@ -176,6 +233,5 @@ namespace zona {
 
         return oss.str();
     }
-
 
 } // zona

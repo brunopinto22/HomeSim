@@ -49,7 +49,10 @@ namespace zona {
 
         int getPropValue(std::string type) const;
         std::string getPropValueStr(std::string type) const;
-        // devolve a temperatura
+        // devolve uma dada popriedade
+
+        propriedades::Propriedade& getProp(propriedades::PropriedadeType type);
+        // devolve uma dada popriedade
 
         int getNumberOfSensors() const;
         // devolve o numero de Sensores na Zona
