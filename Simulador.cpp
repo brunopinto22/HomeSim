@@ -373,9 +373,9 @@ namespace simulador {
             return;
 
         if(exe->Execute(*h, args))
-            output << term::set_color(COLOR_SUCCESS) << "Erro: "  << exe->getError();
+            output << term::set_color(COLOR_SUCCESS) << exe->getError();
         else
-            output << term::set_color(COLOR_ERROR) << exe->getError();
+            output << term::set_color(COLOR_ERROR) << "Erro: " << exe->getError();
 
     }
 
