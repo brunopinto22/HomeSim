@@ -36,7 +36,7 @@ namespace propriedades {
 
     public:
         Propriedade();
-        Propriedade(std::string type, std::string unit, int max, int min);
+        Propriedade(PropriedadeType type, std::string name, std::string unit, int max, int min);
         ~Propriedade() = default;
 
         int getValue() const;
