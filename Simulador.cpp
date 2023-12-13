@@ -373,9 +373,9 @@ namespace simulador {
             return;
 
         if(exe->Execute(*h, args))
-            output << term::set_color(COLOR_SUCCESS) << exe->getError();
+            output << term::set_color(COLOR_SUCCESS) << " " << exe->getError();
         else
-            output << term::set_color(COLOR_ERROR) << "Erro: " << exe->getError();
+            output << term::set_color(COLOR_ERROR) << " Erro: " << exe->getError();
 
     }
 
@@ -452,7 +452,7 @@ namespace simulador {
         << term::set_color(COLOR_ID) << " zlista\n" << term::set_color(COLOR_DEFAULT)
         << term::set_color(COLOR_ID) << " zcomp " << term::set_color(COLOR_DEFAULT) << "<ID zona>\n"
         << term::set_color(COLOR_ID) << " zprops " << term::set_color(COLOR_DEFAULT) << "<ID zona>\n"
-        << term::set_color(COLOR_ID) << term::set_color(COLOR_ID) << " pmod " << term::set_color(COLOR_DEFAULT) << "<ID zona> <nome> <valor> \n"
+        << term::set_color(COLOR_ID) << " pmod " << term::set_color(COLOR_DEFAULT) << "<ID zona> <nome> <valor> \n"
         << term::set_color(COLOR_ID) << " cnovo " << term::set_color(COLOR_DEFAULT) << "<ID zona> <s | p | a> <tipo | comando>\n"
         << term::set_color(COLOR_ID) << " crem " << term::set_color(COLOR_DEFAULT) << "<ID zona> <s | p | a> <ID>\n"
         << term::set_color(COLOR_ID) << " rnova " << term::set_color(COLOR_DEFAULT) << "<ID zona> <ID regras> <regra> <ID sensor> [par1] [par2] [..]\n"
