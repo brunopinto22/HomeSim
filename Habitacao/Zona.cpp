@@ -56,7 +56,7 @@ namespace zona {
         }
 
         std::ostringstream oss;
-        oss << current << " " << unit;
+        oss << current << "" << unit;
         error = oss.str();
         return true;
     }
