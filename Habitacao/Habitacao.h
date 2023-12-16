@@ -70,8 +70,16 @@ namespace habitacao {
         // retorna:     true caso corra tudo bem
         //              false em caso de algum erro
 
-        bool addComponent(int id, char type, std::string& typeOrCmd);
-        // adiciona um componente a uma dada Zona
+        static bool checCompType(char type);
+        // verifica se o tipo de Componente e valido
+
+        bool addComponent(int zone_id, char type, std::string& typeOrCmd);
+        // adiciona um Componente a uma dada Zona
+        // retorna:     true caso corra tudo bem
+        //              false em caso de algum erro
+
+        bool removeComponent(int zone_id, char type, int comp_id);
+        // remove um Componente de uma dada Zona
         // retorna:     true caso corra tudo bem
         //              false em caso de algum erro
 
@@ -79,6 +87,7 @@ namespace habitacao {
         // avanca 1 tick na habitacao
         // retorna:     true caso corra tudo bem
         //              false em caso de algum erro
+
 
     };
 

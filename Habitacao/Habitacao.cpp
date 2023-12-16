@@ -100,20 +100,59 @@ namespace habitacao {
         return true;
     }
 
-    bool Habitacao::addComponent(int id, char type, std::string& typeOrCmd) {
+    bool Habitacao::checCompType(char type) {
+        switch (type) {
+            case static_cast<char>(componente::ComponenteType::APARELHO):
+            case static_cast<char>(componente::ComponenteType::SENSOR):
+            case static_cast<char>(componente::ComponenteType::PROCESSADOR):
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    bool Habitacao::addComponent(int zone_id, char type, std::string& typeOrCmd) {
         std::ostringstream oss;
 
-        if(!checkZoneID(id)){
-            oss << "A Zona com o id=" << id << " nao existe";
+        if(!checkZoneID(zone_id)){
+            oss << "A Zona com o id=" << zone_id << " nao existe";
             error = oss.str();
             return false;
         }
 
         // procura e guarda a zona
-        auto it = std::find_if(zonas.begin(), zonas.end(), [id](const zona::Zona* z) { return z->getID() == id; });
+        auto it = std::find_if(zonas.begin(), zonas.end(), [zone_id](const zona::Zona* z) { return z->getID() == zone_id; });
         zona::Zona* target = *it;
 
         if (!target->addComponent(getNumberID(), type, typeOrCmd)) {
+            error = target->getError();
+            return false;
+        }
+
+        error = target->getError();
+        return true;
+    }
+
+    bool Habitacao::removeComponent(int zone_id, char type, int comp_id) {
+        std::ostringstream oss;
+
+        if(!checkZoneID(zone_id)){
+            oss << "A Zona com o id=" << zone_id << " nao existe";
+            error = oss.str();
+            return false;
+        }
+
+        if(!checCompType(type)){
+            oss << "O tipo de Componente \'" << type << "\' nao existe";
+            error = oss.str();
+            return false;
+        }
+
+        // procura e guarda a zona
+        auto it = std::find_if(zonas.begin(), zonas.end(), [zone_id](const zona::Zona* z) { return z->getID() == zone_id; });
+        zona::Zona* target = *it;
+
+        if (!target->removeComponent(type, comp_id)) {
             error = target->getError();
             return false;
         }
