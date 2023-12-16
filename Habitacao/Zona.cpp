@@ -61,14 +61,14 @@ namespace zona {
         return true;
     }
 
-    int Zona::getPropValue(std::string type) const{
+    int Zona::getPropValue(const std::string& type) const{
         for(const auto & p : props)
             if(p->getName() == type)
                 return p->getValue();
 
         return propriedades::UNSET;
     }
-    std::string Zona::getPropValueStr(std::string type) const{
+    std::string Zona::getPropValueStr(const std::string& type) const{
         for(const auto & p : props)
             if(p->getName() == type)
                 return p->getValueStr();
@@ -116,27 +116,26 @@ namespace zona {
             count_Gadgets++;
             switch (t) {
                 case static_cast<char>(aparelho::AparelhoType::AQUECEDOR):
-                    comps.push_back(*new aparelho::Aquecedor(number_id));
+                    comps.push_back(new aparelho::Aquecedor(number_id));
                     error = "Foi adicionado um Aquecedor";
                     return true;
 
                 case static_cast<char>(aparelho::AparelhoType::ASPERSOR):
-                    comps.push_back(*new aparelho::Aspersor(number_id));
+                    comps.push_back(new aparelho::Aspersor(number_id));
                     error = "Foi adicionado um Aspersor";
                     return true;
 
                 case static_cast<char>(aparelho::AparelhoType::REFRIGERADOR):
-                    comps.push_back(*new aparelho::Refrigerador(number_id));
+                    comps.push_back(new aparelho::Refrigerador(number_id));
                     error = "Foi adicionado um Refrigerador";
                     return true;
 
                 case static_cast<char>(aparelho::AparelhoType::LAMPADA):
-                    comps.push_back(*new aparelho::Lampada(number_id));
+                    comps.push_back(new aparelho::Lampada(number_id));
                     error = "Foi adicionado um Lampada";
                     return true;
 
                 default:
-                    count_Gadgets--;
                     error = "O tipo de Aparelho nao foi reconhecido";
                     return false;
             }
@@ -149,17 +148,19 @@ namespace zona {
 
     bool Zona::addProcessor(int number_id, std::string &cmd) {
 
-        if(cmd == "igual_a")
+        count_Processors++;
+        if(cmd == "ligar"){
+            comps.push_back(new processador::Processador(number_id, processador::ProcessorType::LIGAR));
+            error = "Foi adicionado um Processador do tipo \'ligar\'";
             return true;
-        else if(cmd == "maior_que")
+        }
+        else if(cmd == "desligar"){
+            comps.push_back(new processador::Processador(number_id, processador::ProcessorType::DESLIGAR));
+            error = "Foi adicionado um Processador do tipo \'desligar\'";
             return true;
-        else if(cmd == "menor_que")
-            return true;
-        else if(cmd == "entre")
-            return true;
-        else if(cmd == "fora")
-            return true;
+        }
 
+        count_Processors--;
         error = "O comando do Processador nao foi reconhecido";
         return false;
     }
@@ -171,37 +172,37 @@ namespace zona {
             count_Sensors++;
             switch (t) {
                 case static_cast<char>(propriedades::PropriedadeType::TEMPERATURA):
-                    comps.push_back(*new sensor::Sensor(number_id, getProp(propriedades::PropriedadeType::TEMPERATURA)));
+                    comps.push_back(new sensor::Sensor(number_id, getProp(propriedades::PropriedadeType::TEMPERATURA)));
                     error = "Foi adicionado um Sensor de Temperatura";
                     return true;
 
                 case static_cast<char>(propriedades::PropriedadeType::VIBRACAO):
-                    comps.push_back(*new sensor::Sensor(number_id, getProp(propriedades::PropriedadeType::VIBRACAO)));
+                    comps.push_back(new sensor::Sensor(number_id, getProp(propriedades::PropriedadeType::VIBRACAO)));
                     error = "Foi adicionado um Sensor de Movimento";
                     return true;
 
                 case static_cast<char>(propriedades::PropriedadeType::LUZ):
-                    comps.push_back(*new sensor::Sensor(number_id, getProp(propriedades::PropriedadeType::LUZ)));
+                    comps.push_back(new sensor::Sensor(number_id, getProp(propriedades::PropriedadeType::LUZ)));
                     error = "Foi adicionado um Sensor de Luminosidade";
                     return true;
 
                 case static_cast<char>(propriedades::PropriedadeType::RADIACAO):
-                    comps.push_back(*new sensor::Sensor(number_id, getProp(propriedades::PropriedadeType::RADIACAO)));
+                    comps.push_back(new sensor::Sensor(number_id, getProp(propriedades::PropriedadeType::RADIACAO)));
                     error = "Foi adicionado um Sensor de Radiacao";
                     return true;
 
                 case static_cast<char>(propriedades::PropriedadeType::HUMIDADE):
-                    comps.push_back(*new sensor::Sensor(number_id, getProp(propriedades::PropriedadeType::HUMIDADE)));
+                    comps.push_back(new sensor::Sensor(number_id, getProp(propriedades::PropriedadeType::HUMIDADE)));
                     error = "Foi adicionado um Sensor de Humidade";
                     return true;
 
                 case static_cast<char>(propriedades::PropriedadeType::SOM):
-                    comps.push_back(*new sensor::Sensor(number_id, getProp(propriedades::PropriedadeType::SOM)));
+                    comps.push_back(new sensor::Sensor(number_id, getProp(propriedades::PropriedadeType::SOM)));
                     error = "Foi adicionado um Sensor de Som";
                     return true;
 
                 case static_cast<char>(propriedades::PropriedadeType::FUMO):
-                    comps.push_back(*new sensor::Sensor(number_id, getProp(propriedades::PropriedadeType::FUMO)));
+                    comps.push_back(new sensor::Sensor(number_id, getProp(propriedades::PropriedadeType::FUMO)));
                     error = "Foi adicionado um Sensor de Fumo";
                     return true;
 
@@ -220,7 +221,7 @@ namespace zona {
         std::ostringstream oss;
 
         for(const auto & c : comps)
-            oss << c.getType() << " ";
+            oss << c->getType() << " ";
 
         return oss.str();
     }
@@ -229,7 +230,7 @@ namespace zona {
         std::ostringstream oss;
 
         for(const auto & c : comps)
-            oss << c.getID() << "\n";
+            oss << c->getInfo() << "\n";
 
         return oss.str();
     }
