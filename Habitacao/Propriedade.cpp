@@ -11,6 +11,10 @@ namespace propriedades {
 
     int Propriedade::getValue() const { return value; }
     std::string Propriedade::getValueStr() const {
+
+        if(value == UNSET)
+            return "-" + getUnit();
+
         std::ostringstream oss;
         oss << getValue() << "" << getUnit();
         return oss.str();
