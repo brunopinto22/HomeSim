@@ -217,6 +217,24 @@ namespace zona {
         return false;
     }
 
+    bool Zona::removeComponent(char type, int number_id) {
+        std::string id_Str = type + std::to_string(number_id);
+
+        auto it = std::find_if(comps.begin(), comps.end(), [id_Str](const componente::Componente* comp) {
+            return comp->getID() == id_Str;
+        });
+
+        if (it != comps.end()) {
+            error = "O " + (*it)->getInfo() + " foi removido";
+            delete *it;
+            comps.erase(it);
+            return true;
+        }
+
+        error = "Nao foi encontrado o Componente \'" + id_Str + "\'";
+        return false;
+    }
+
     std::string Zona::getComponents() {
         std::ostringstream oss;
 
@@ -234,5 +252,7 @@ namespace zona {
 
         return oss.str();
     }
+
+
 
 } // zona

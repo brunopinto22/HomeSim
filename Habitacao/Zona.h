@@ -82,6 +82,11 @@ namespace zona {
         // retorna:     true caso corra tudo bem
         //              false em caso de algum erro
 
+        bool removeComponent(char type, int number_id);
+        // remove um dado Componente pelo seu id
+        // retorna:     true caso o encontre e remova
+        //              false em caso de erro
+
         std::string getComponents();
         // devolve os componentes da Zona
 
