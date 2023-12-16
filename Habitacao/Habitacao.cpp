@@ -1,7 +1,6 @@
 #include <stdexcept>
 #include <algorithm>
 #include <sstream>
-#include <utility>
 #include "Habitacao.h"
 
 namespace habitacao {
