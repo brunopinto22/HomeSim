@@ -219,15 +219,8 @@ namespace simulador {
 
         } else if(cmd == "crem"){
 
-            int id, idZone;
-            char type;
-            if (iss >> idZone >> type >> id) {
-                output << term::set_color(COLOR_SUCCESS) << "A remover " << type << " " << id << " da zona" << idZone;
-
-            } else
-                output << term::set_color(COLOR_ERROR) << "Erro de formatacao : crem <ID zona> <s | p | a> <ID>";
-
-
+            exe = new Crem;
+            
         } else if(cmd == "rnova"){
 
             int idZone, idPross, idSens, par1, par2;

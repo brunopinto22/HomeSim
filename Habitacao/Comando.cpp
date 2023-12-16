@@ -116,21 +116,46 @@ bool Cnovo::Execute(habitacao::Habitacao &h, std::string args) {
     std::ostringstream oss;
     std::istringstream iss(args);
 
-    int id;
+    int zone_id;
     char type;
     std::string typeOrCmd;
-    if (iss >> id >> type >> typeOrCmd) {
+    if (iss >> zone_id >> type >> typeOrCmd) {
 
-        if(!h.addComponent(id, type, typeOrCmd)){
+        if(!h.addComponent(zone_id, type, typeOrCmd)){
             defineError(h.getError());
             return false;
         }
 
-        oss << h.getError() << " na Zona_" << id;
+        oss << h.getError() << " na Zona_" << zone_id;
         defineError(oss.str());
         return true;
     }
 
     defineError("Erro de formatacao : cnovo <ID zona> <s | p | a> <tipo | comando>");
+    return false;
+}
+
+Crem::Crem() {}
+bool Crem::Execute(habitacao::Habitacao &h, std::string args) {
+
+    std::ostringstream oss;
+    std::istringstream iss(args);
+
+    int zone_id, comp_id;
+    char type;
+    std::string typeOrCmd;
+    if (iss >> zone_id >> type >> comp_id) {
+
+        if(!h.removeComponent(zone_id, type, comp_id)){
+            defineError(h.getError());
+            return false;
+        }
+
+        oss << h.getError() << " na Zona_" << zone_id;
+        defineError(oss.str());
+        return true;
+    }
+
+    defineError("Erro de formatacao : crem <ID zona> <s | p | a> <ID>");
     return false;
 }

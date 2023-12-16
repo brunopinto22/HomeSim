@@ -66,5 +66,11 @@ public:
     bool Execute(habitacao::Habitacao &h, std::string args) override;
 };
 
+class Crem : public Comando {
+public:
+    Crem();
+
+    bool Execute(habitacao::Habitacao &h, std::string args) override;
+};
 
 #endif //HOMESIM_COMANDO_H
