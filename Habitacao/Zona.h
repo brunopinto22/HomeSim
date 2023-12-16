@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <memory>
 #include "Propriedade.h"
 #include "Componentes/Componente.h"
 
@@ -20,7 +21,7 @@ namespace zona {
         std::vector<propriedades::Propriedade*> props;
 
         // componentes
-        std::vector<componente::Componente> comps;
+        std::vector<componente::Componente*> comps;
         int count_Sensors;
         int count_Processors;
         int count_Gadgets;
@@ -47,8 +48,8 @@ namespace zona {
         // retorna:     true caso corra tudo bem
         //              false em caso de algum erro
 
-        int getPropValue(std::string type) const;
-        std::string getPropValueStr(std::string type) const;
+        int getPropValue(const std::string& type) const;
+        std::string getPropValueStr(const std::string& type) const;
         // devolve uma dada popriedade
 
         propriedades::Propriedade& getProp(propriedades::PropriedadeType type);
