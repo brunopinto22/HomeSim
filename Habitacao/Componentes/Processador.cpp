@@ -3,7 +3,8 @@
 
 
 namespace processador {
-    Processador::Processador(int id, ProcessorType type) : componente::Componente(id, 'p', "processador"), type(type) { }
+    Processador::Processador(int id, ProcessorType type)
+    : componente::Componente(id, static_cast<char>(componente::ComponenteType::PROCESSADOR), "processador"), type(type) { }
 
     char Processador::getType() const {
         return Componente::getType();

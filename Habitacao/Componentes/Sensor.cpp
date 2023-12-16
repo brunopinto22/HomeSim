@@ -3,7 +3,7 @@
 
 namespace sensor {
     Sensor::Sensor(int id, propriedades::Propriedade &prop)
-    : componente::Componente(id, prop.getType(), "sensor"), prop(prop) {}
+    : componente::Componente(id, static_cast<char>(componente::ComponenteType::SENSOR), "sensor"), prop(prop) {}
 
     char Sensor::getType() const {
         return Componente::getType();

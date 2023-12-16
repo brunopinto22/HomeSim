@@ -4,7 +4,7 @@
 
 namespace aparelho {
     Aparelho::Aparelho(int id, AparelhoType type, std::string name)
-    : componente::Componente(id, static_cast<char>(type), std::move(name)), isOn(false), type(type), ticks_passed(0) {}
+    : componente::Componente(id, static_cast<char>(componente::ComponenteType::APARELHO), std::move(name)), isOn(false), type(type), ticks_passed(0) {}
 
     bool Aparelho::getIsOn() const { return isOn; }
 
