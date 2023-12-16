@@ -27,7 +27,7 @@ namespace aparelho {
         // tipo do aparelho
 
     public:
-        Aparelho(int id, AparelhoType type);
+        Aparelho(int id, AparelhoType type, std::string name);
 
         bool getIsOn() const;
         // devolve o estado do aparelho
@@ -40,6 +40,9 @@ namespace aparelho {
 
         char getType() const override;
         // devolve o caracter que o descreve
+
+        virtual std::string getInfo() const override;
+        // devolve a informacao do componente
 
         bool turnOnOff();
         // liga/desliga o aparelho

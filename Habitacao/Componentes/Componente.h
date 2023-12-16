@@ -14,10 +14,11 @@ namespace componente {
     class Componente {
     private:
         std::string id;
+        std::string name;
         char type;
 
     public:
-        Componente(int id, char type);
+        Componente(int id, char type, std::string name);
 
     // -- FUNCS VIRTUAIS
         virtual ~Componente(){}
@@ -25,9 +26,15 @@ namespace componente {
         virtual char getType() const;
         // devolve o caracter que o descreve
 
+        virtual std::string getInfo() const;
+        // devolve a informacao do componente
+
     // -- FUNCS GLOBAIS
         std::string getID() const;
         // devolve o ID do componente
+
+        std::string getName() const;
+        // devolve o nome do componente
 
     };
 

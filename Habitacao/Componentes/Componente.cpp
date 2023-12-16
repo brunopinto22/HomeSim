@@ -2,7 +2,7 @@
 #include "Componente.h"
 
 namespace componente {
-    Componente::Componente(int id, char type) : type(type) {
+    Componente::Componente(int id, char type, std::string name) : type(type), name(name) {
         std::ostringstream oss;
         oss << type << id;
         this->id = oss.str();
@@ -11,6 +11,15 @@ namespace componente {
     std::string Componente::getID() const { return id; }
 
     char Componente::getType() const { return type; }
+
+    std::string Componente::getInfo() const {
+        std::ostringstream oss;
+        oss << getID() << "-" << getName();
+        return oss.str();
+    }
+
+    std::string Componente::getName() const { return name; }
+
 
 
 } // componente

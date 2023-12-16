@@ -1,7 +1,10 @@
 #include "Aparelho.h"
+#include <sstream>
+#include <utility>
 
 namespace aparelho {
-    Aparelho::Aparelho(int id, AparelhoType type) : componente::Componente(id, static_cast<char>(type)), isOn(false), type(type), ticks_passed(0) {}
+    Aparelho::Aparelho(int id, AparelhoType type, std::string name)
+    : componente::Componente(id, static_cast<char>(type), std::move(name)), isOn(false), type(type), ticks_passed(0) {}
 
     bool Aparelho::getIsOn() const { return isOn; }
 
@@ -19,9 +22,20 @@ namespace aparelho {
 
     void Aparelho::run(std::vector<propriedades::Propriedade *> &props) { ticks_passed++; }
 
+    std::string Aparelho::getInfo() const {
+        std::ostringstream oss;
+
+        oss << Componente::getInfo() << " : ";
+        if(getIsOn())
+            oss << "Ligado";
+        else
+            oss << "desligado";
+
+        return oss.str();
+    }
 
 
-    Aquecedor::Aquecedor(int id) : Aparelho(id, AparelhoType::AQUECEDOR) { }
+    Aquecedor::Aquecedor(int id) : Aparelho(id, AparelhoType::AQUECEDOR, "aquecedor") { }
 
     void Aquecedor::run(std::vector<propriedades::Propriedade*> &props) {
         Aparelho::run(props);
@@ -64,19 +78,19 @@ namespace aparelho {
     }
 
 
-    Aspersor::Aspersor(int id) : Aparelho(id, AparelhoType::ASPERSOR) { }
+    Aspersor::Aspersor(int id) : Aparelho(id, AparelhoType::ASPERSOR, "aspersor") { }
 
     void Aspersor::run(std::vector<propriedades::Propriedade *> &props) {
         Aparelho::run(props);
     }
 
-    Refrigerador::Refrigerador(int id) : Aparelho(id, AparelhoType::REFRIGERADOR) { }
+    Refrigerador::Refrigerador(int id) : Aparelho(id, AparelhoType::REFRIGERADOR, "refrigerador") { }
 
     void Refrigerador::run(std::vector<propriedades::Propriedade *> &props) {
         Aparelho::run(props);
     }
 
-    Lampada::Lampada(int id) : Aparelho(id, AparelhoType::LAMPADA) { }
+    Lampada::Lampada(int id) : Aparelho(id, AparelhoType::LAMPADA, "lampada") { }
 
     void Lampada::run(std::vector<propriedades::Propriedade *> &props) {
         Aparelho::run(props);

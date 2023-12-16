@@ -16,8 +16,12 @@ namespace sensor {
         char getType() const override;
         // devolve o caracter que o descreve
 
-        int check() const;
-        // verifica e devolve o valor da Proppriedade que esta a ver
+        virtual std::string getInfo() const override;
+        // devolve a informacao do componente
+
+        int getValue() const;
+        std::string getValueStr() const;
+        // devolve o valor da Propriedade que esta a ver
 
     };
 
