@@ -110,29 +110,35 @@ namespace zona {
     }
 
     bool Zona::addGadget(int number_id, std::string &type) {
+        std::ostringstream oss;
         std::istringstream iss(type);
+
         char t;
         if(iss >> t){
             count_Gadgets++;
             switch (t) {
                 case static_cast<char>(aparelho::AparelhoType::AQUECEDOR):
                     comps.push_back(new aparelho::Aquecedor(number_id));
-                    error = "Foi adicionado um Aquecedor";
+                    oss << "Foi adicionado um Aquecedor \'a" << number_id << "\'";
+                    error = oss.str();
                     return true;
 
                 case static_cast<char>(aparelho::AparelhoType::ASPERSOR):
                     comps.push_back(new aparelho::Aspersor(number_id));
-                    error = "Foi adicionado um Aspersor";
+                    oss << "Foi adicionado um Aspersor \'a" << number_id << "\'";
+                    error = oss.str();
                     return true;
 
                 case static_cast<char>(aparelho::AparelhoType::REFRIGERADOR):
                     comps.push_back(new aparelho::Refrigerador(number_id));
-                    error = "Foi adicionado um Refrigerador";
+                    oss << "Foi adicionado um Refrigerador \'a" << number_id << "\'";
+                    error = oss.str();
                     return true;
 
                 case static_cast<char>(aparelho::AparelhoType::LAMPADA):
                     comps.push_back(new aparelho::Lampada(number_id));
-                    error = "Foi adicionado um Lampada";
+                    oss << "Foi adicionada uma Lampada \'a" << number_id << "\'";
+                    error = oss.str();
                     return true;
 
                 default:
@@ -147,16 +153,19 @@ namespace zona {
     }
 
     bool Zona::addProcessor(int number_id, std::string &cmd) {
+        std::ostringstream oss;
 
         count_Processors++;
         if(cmd == "ligar"){
             comps.push_back(new processador::Processador(number_id, processador::ProcessorType::LIGAR));
-            error = "Foi adicionado um Processador do tipo \'ligar\'";
+            oss << "Foi adicionado um Processador \'p" << number_id << "\' do tipo \'ligar\'";
+            error = oss.str();
             return true;
         }
         else if(cmd == "desligar"){
             comps.push_back(new processador::Processador(number_id, processador::ProcessorType::DESLIGAR));
-            error = "Foi adicionado um Processador do tipo \'desligar\'";
+            oss << "Foi adicionado um Processador \'p" << number_id << "\' do tipo \'desligar\'";
+            error = oss.str();
             return true;
         }
 
@@ -166,6 +175,7 @@ namespace zona {
     }
 
     bool Zona::addSensor(int number_id, std::string &type) {
+        std::ostringstream oss;
         std::istringstream iss(type);
         char t;
         if(iss >> t){
@@ -173,37 +183,44 @@ namespace zona {
             switch (t) {
                 case static_cast<char>(propriedades::PropriedadeType::TEMPERATURA):
                     comps.push_back(new sensor::Sensor(number_id, getProp(propriedades::PropriedadeType::TEMPERATURA)));
-                    error = "Foi adicionado um Sensor de Temperatura";
+                    oss << "Foi adicionado um Sensor de Temperatura \'s" << number_id << "\'";
+                    error = oss.str();
                     return true;
 
                 case static_cast<char>(propriedades::PropriedadeType::VIBRACAO):
                     comps.push_back(new sensor::Sensor(number_id, getProp(propriedades::PropriedadeType::VIBRACAO)));
-                    error = "Foi adicionado um Sensor de Movimento";
+                    oss << "Foi adicionado um Sensor de Movimento \'s" << number_id << "\'";
+                    error = oss.str();
                     return true;
 
                 case static_cast<char>(propriedades::PropriedadeType::LUZ):
                     comps.push_back(new sensor::Sensor(number_id, getProp(propriedades::PropriedadeType::LUZ)));
-                    error = "Foi adicionado um Sensor de Luminosidade";
+                    oss << "Foi adicionado um Sensor de Luminosidade \'s" << number_id << "\'";
+                    error = oss.str();
                     return true;
 
                 case static_cast<char>(propriedades::PropriedadeType::RADIACAO):
                     comps.push_back(new sensor::Sensor(number_id, getProp(propriedades::PropriedadeType::RADIACAO)));
-                    error = "Foi adicionado um Sensor de Radiacao";
+                    oss << "Foi adicionado um Sensor de Radiacao \'s" << number_id << "\'";
+                    error = oss.str();
                     return true;
 
                 case static_cast<char>(propriedades::PropriedadeType::HUMIDADE):
                     comps.push_back(new sensor::Sensor(number_id, getProp(propriedades::PropriedadeType::HUMIDADE)));
-                    error = "Foi adicionado um Sensor de Humidade";
+                    oss << "Foi adicionado um Sensor de Humidade \'s" << number_id << "\'";
+                    error = oss.str();
                     return true;
 
                 case static_cast<char>(propriedades::PropriedadeType::SOM):
                     comps.push_back(new sensor::Sensor(number_id, getProp(propriedades::PropriedadeType::SOM)));
-                    error = "Foi adicionado um Sensor de Som";
+                    oss << "Foi adicionado um Sensor de Som \'s" << number_id << "\'";
+                    error = oss.str();
                     return true;
 
                 case static_cast<char>(propriedades::PropriedadeType::FUMO):
                     comps.push_back(new sensor::Sensor(number_id, getProp(propriedades::PropriedadeType::FUMO)));
-                    error = "Foi adicionado um Sensor de Fumo";
+                    oss << "Foi adicionado um Sensor de Fumo \'s" << number_id << "\'";
+                    error = oss.str();
                     return true;
 
                 default:
@@ -253,6 +270,95 @@ namespace zona {
         return oss.str();
     }
 
+    bool Zona::addRule(int rule_id, int sens_id, const std::string &rule_type, const std::string &values, int proc_id) {
+        std::ostringstream oss;
+        std::istringstream iss(values);
+
+        // procurar o Processador
+        auto processorIt = std::find_if(comps.begin(), comps.end(), [proc_id](const componente::Componente* comp) {
+            return comp->getID() == "p" + std::to_string(proc_id);
+        });
+        if (processorIt == comps.end()) {
+            oss << "O Processador com o ID " << proc_id << " nao foi encontrado";
+            error = oss.str();
+            return false;
+        }
+
+        // procurar o Sensor
+        auto sensorIt = std::find_if(comps.begin(), comps.end(), [sens_id](const componente::Componente* comp) {
+            return comp->getID() == "s" + std::to_string(sens_id);
+        });
+        if (sensorIt == comps.end()) {
+            oss << "O Sensor com o ID " << sens_id << " nao foi encontrado";
+            error = oss.str();
+            return false;
+        }
+
+        processador::Processador* proc = dynamic_cast<processador::Processador*>(*processorIt);
+        sensor::Sensor* sen = dynamic_cast<sensor::Sensor*>(*sensorIt);
+        regra::Regra* rule = nullptr;
+
+        int val1, val2;
+        switch (regra::checkRuleType(rule_type)) {
+
+            case regra::IGUAL:
+                if(iss >> val1)
+                    rule = new regra::RegraIgual(rule_id, *sen, val1);
+                else {
+                    error = "rnova <ID zona> <ID proc. regras> <regra> <ID sensor> [param1]";
+                    return false;
+                }
+            break;
+
+            case regra::MAIOR:
+                if(iss >> val1)
+                    rule = new regra::RegraMaior(rule_id, *sen, val1);
+                else {
+                    error = "rnova <ID zona> <ID proc. regras> <regra> <ID sensor> [param1]";
+                    return false;
+                }
+            break;
+
+            case regra::MENOR:
+                if(iss >> val1)
+                    rule = new regra::RegraMenor(rule_id, *sen, val1);
+                else {
+                    error = "rnova <ID zona> <ID proc. regras> <regra> <ID sensor> [param1]";
+                    return false;
+                }
+            break;
+
+            case regra::ENTRE:
+                if(iss >> val1 >> val2)
+                    rule = new regra::RegraEntre(rule_id, *sen, val1, val2);
+                else {
+                    error = "rnova <ID zona> <ID proc. regras> <regra> <ID sensor> [param1] [param2]";
+                    return false;
+                }
+            break;
+
+            case regra::FORA:
+                if(iss >> val1 >> val2)
+                    rule = new regra::RegraFora(rule_id, *sen, val1, val2);
+                else {
+                    error = "rnova <ID zona> <ID proc. regras> <regra> <ID sensor> [param1] [param2]";
+                    return false;
+                }
+            break;
+
+            default:
+                oss << "O tipo de Regra \'" << rule_type << "\' nao existe";
+                error = oss.str();
+                return false;
+        }
+
+        // adicionar a Regra ao Processador
+        proc->addRule(rule);
+
+        oss << "Foi criada uma Regra \'r" << rule->getID() << "\' acossiada ao Processador " << proc_id ;
+        error = oss.str();
+        return true;
+    }
 
 
 } // zona

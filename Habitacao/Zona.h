@@ -77,6 +77,11 @@ namespace zona {
         // retorna:     true caso corra tudo bem
         //              false em caso de algum erro
 
+        bool changeProcCmd(int proc_id, const std::string& new_cmd);
+        // muda o comando de um dado Processador numa dada Zona
+        // retorna:     true caso corra tudo bem
+        //              false em caso de algum erro
+
         bool addSensor(int number_id, std::string& type);
         // adiciona um Sensor a Zona
         // retorna:     true caso corra tudo bem
@@ -92,6 +97,9 @@ namespace zona {
 
         std::string getComponentsStr();
         // devolve os componentes da Zona com toda a sua informacao
+
+        bool addRule(int rule_id, int sens_id, const std::string &rule_type, const std::string &values, int proc_id);
+        // adicona uma Regra acossiada a um Processador e a um Sensor
 
     };
 
