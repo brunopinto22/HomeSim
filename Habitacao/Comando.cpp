@@ -1,3 +1,4 @@
+#include <iostream>
 #include <sstream>
 #include "Comando.h"
 
@@ -12,7 +13,7 @@ std::string Comando::getError() const {
 Step::Step() {}
 bool Step::Execute(habitacao::Habitacao &h, std::string args){
     if(!args.empty()){
-        defineError("Erro de formatacao : prox");
+        defineError("prox");
         return false;
     }
 
@@ -55,7 +56,7 @@ bool Znova::Execute(habitacao::Habitacao &h, std::string args) {
         return true;
 
     }
-    defineError("Erro de formatacao : znova <x> <y>");
+    defineError("znova <x> <y>");
     return false;
 
 }
@@ -80,7 +81,7 @@ bool Zrem::Execute(habitacao::Habitacao &h, std::string args) {
         return true;
 
     }
-    defineError("Erro de formatacao : zrem <ID zona>");
+    defineError("zrem <ID zona>");
     return false;
 
 }
@@ -106,7 +107,7 @@ bool Pmod::Execute(habitacao::Habitacao &h, std::string args) {
 
     }
 
-    defineError("Erro de formatacao : pmod <ID zona> <nome> <valor>");
+    defineError("pmod <ID zona> <nome> <valor>");
     return false;
 }
 
@@ -131,7 +132,7 @@ bool Cnovo::Execute(habitacao::Habitacao &h, std::string args) {
         return true;
     }
 
-    defineError("Erro de formatacao : cnovo <ID zona> <s | p | a> <tipo | comando>");
+    defineError("cnovo <ID zona> <s | p | a> <tipo | comando>");
     return false;
 }
 
@@ -156,6 +157,34 @@ bool Crem::Execute(habitacao::Habitacao &h, std::string args) {
         return true;
     }
 
-    defineError("Erro de formatacao : crem <ID zona> <s | p | a> <ID>");
+    defineError("crem <ID zona> <s | p | a> <ID>");
     return false;
 }
+
+Rnova::Rnova() {}
+bool Rnova::Execute(habitacao::Habitacao &h, std::string args) {
+
+    std::ostringstream oss;
+    std::istringstream iss(args);
+
+    int zone_id, proc_id, sens_id;
+    std::string rule_type, params;
+    if (iss >> zone_id >> proc_id >> rule_type >> sens_id ) {
+        std::getline(iss >> std::ws, params);
+
+        if(!h.addRule(zone_id, proc_id, sens_id, rule_type, params)){
+            defineError(h.getError());
+            return false;
+        }
+
+        oss << h.getError() << " na Zona_" << zone_id;
+        defineError(oss.str());
+        return true;
+
+    }
+
+    defineError("rnova <ID zona> <ID proc. regras> <regra> <ID sensor> [param1] [param2] [...]");
+    return false;
+}
+
+

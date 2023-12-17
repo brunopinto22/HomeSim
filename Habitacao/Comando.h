@@ -73,4 +73,13 @@ public:
     bool Execute(habitacao::Habitacao &h, std::string args) override;
 };
 
+class Rnova : public Comando {
+public:
+    Rnova();
+
+    bool Execute(habitacao::Habitacao &h, std::string args) override;
+};
+
+
+
 #endif //HOMESIM_COMANDO_H

@@ -220,19 +220,10 @@ namespace simulador {
         } else if(cmd == "crem"){
 
             exe = new Crem;
-            
+
         } else if(cmd == "rnova"){
 
-            int idZone, idPross, idSens, par1, par2;
-            std::string rule;
-            if (iss >> idZone >> idPross >> rule >> idSens >> par1 >> par2) {
-                output << term::set_color(COLOR_SUCCESS) << "A adicionar uma regra \'" << rule << "\' " << idZone << " " << idPross << idSens << " " << par1 << " " << par2;
-            } else if (iss >> idZone >> idPross >> rule >> idSens >> par1) {
-                output << term::set_color(COLOR_SUCCESS) << "A adicionar uma regra \'" << rule << "\' " << idZone << " " << idPross << idSens << " " << par1;
-            } else
-                output << term::set_color(COLOR_ERROR) << "Erro de formatacao : rnova <ID zona> <ID proc. regras> <regra> <ID sensor> [param1] [param2] [...]";
-
-
+            exe = new Rnova;
 
         } else if(cmd == "pmuda"){
 
@@ -241,9 +232,7 @@ namespace simulador {
             if (iss >> idZone >> idPross >> command) {
                 output << term::set_color(COLOR_SUCCESS) << "A mudar o comando do processador " << idPross << " da zona " << idZone << " com o comando " << command;
 
-            } else
-                output << term::set_color(COLOR_ERROR) << "Erro de formatacao : pmuda <ID zona> <ID proc. regras> <novo comando>";
-
+            }
 
         } else if(cmd == "rlista"){
 
