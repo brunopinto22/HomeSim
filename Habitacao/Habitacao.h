@@ -10,6 +10,8 @@ namespace habitacao {
     private:
         int number_id;
         int zone_number_id;
+        int rule_number_id;
+
         // tamanho da habitacao
         int width, height;
         int ticks;
@@ -24,10 +26,13 @@ namespace habitacao {
         Habitacao(int width, int height);
 
         int getZoneNumberID();
-        // devolve o número do ID para a Zona
+        // devolve o numero do ID para a Zona
+
+        int getRuleNumberID();
+        // devolve o numero do ID para a Regra
 
         int getNumberID();
-        // devolve o número do ID para o Sensor/Aparelho/Regra
+        // devolve o numero do ID para o Sensor/Aparelho/Regra
 
         int getWidth() const;
         // devolve a 'largura' da habitacao
@@ -83,10 +88,21 @@ namespace habitacao {
         // retorna:     true caso corra tudo bem
         //              false em caso de algum erro
 
+        bool addRule(int zone_id, int proc_id, int sens_id, const std::string& rule_type, const std::string& values);
+        // adiciona uma Regra a um Processador numa dada Zona
+        // retorna:     true caso corra tudo bem
+        //              false em caso de algum erro
+
+        bool changeProcCmd(int zone_id, int proc_id, const std::string& new_cmd);
+        // muda o comando de um dado Processador numa dada Zona
+        // retorna:     true caso corra tudo bem
+        //              false em caso de algum erro
+
         bool tick();
         // avanca 1 tick na habitacao
         // retorna:     true caso corra tudo bem
         //              false em caso de algum erro
+
 
 
     };

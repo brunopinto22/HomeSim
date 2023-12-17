@@ -2,13 +2,19 @@
 #include <algorithm>
 #include <sstream>
 #include "Habitacao.h"
+#include "Componentes/Regra.h"
 
 namespace habitacao {
-    Habitacao::Habitacao(int width, int height):width(width), height(height), number_id(0), zone_number_id(0), ticks(0), number_of_zones(0) {}
+    Habitacao::Habitacao(int width, int height):width(width), height(height), number_id(0), zone_number_id(0), rule_number_id(0), ticks(0), number_of_zones(0) {}
 
     int Habitacao::getZoneNumberID(){
         zone_number_id++;
         return zone_number_id;
+    }
+
+    int Habitacao::getRuleNumberID(){
+        rule_number_id++;
+        return rule_number_id;
     }
 
     int Habitacao::getNumberID() {
@@ -153,6 +159,50 @@ namespace habitacao {
         zona::Zona* target = *it;
 
         if (!target->removeComponent(type, comp_id)) {
+            error = target->getError();
+            return false;
+        }
+
+        error = target->getError();
+        return true;
+    }
+
+    bool Habitacao::addRule(int zone_id, int proc_id, int sens_id, const std::string& rule_type, const std::string& values) {
+        std::ostringstream oss;
+
+        if(!checkZoneID(zone_id)){
+            oss << "A Zona com o id=" << zone_id << " nao existe";
+            error = oss.str();
+            return false;
+        }
+
+        // procura e guarda a zona
+        auto it = std::find_if(zonas.begin(), zonas.end(), [zone_id](const zona::Zona* z) { return z->getID() == zone_id; });
+        zona::Zona* target = *it;
+
+        if (!target->addRule(getRuleNumberID(), sens_id, rule_type, values, proc_id)) {
+            error = target->getError();
+            return false;
+        }
+
+        error = target->getError();
+        return true;
+    }
+
+    bool Habitacao::changeProcCmd(int zone_id, int proc_id, const std::string &new_cmd) {
+        std::ostringstream oss;
+
+        if(!checkZoneID(zone_id)){
+            oss << "A Zona com o id=" << zone_id << " nao existe";
+            error = oss.str();
+            return false;
+        }
+
+        // procura e guarda a zona
+        auto it = std::find_if(zonas.begin(), zonas.end(), [zone_id](const zona::Zona* z) { return z->getID() == zone_id; });
+        zona::Zona* target = *it;
+
+        if(!target->changeProcCmd(proc_id, new_cmd)) {
             error = target->getError();
             return false;
         }
