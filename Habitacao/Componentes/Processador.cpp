@@ -28,10 +28,13 @@ namespace processador {
         return true;
     }
 
+    void Processador::addRule(regra::Regra *rule) {
+        rules.push_back(rule);
+    }
+
     bool Processador::getAction() const {
         return static_cast<bool>(type);
     }
-
 
 
 } // processador

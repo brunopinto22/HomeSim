@@ -31,6 +31,9 @@ namespace processador {
         // retorna:     true - caso sejam todas verdade
         //              false - caso contrario
 
+        void addRule(regra::Regra* rule);
+        // adiciona uma Regra ao Processador
+
         bool getAction() const;
         // devolve a acao realizada ao ser verdade
         // retorna:     true - ligar
