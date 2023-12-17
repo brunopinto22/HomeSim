@@ -8,22 +8,15 @@
 
 namespace processador {
 
-    enum class ProcessorType : bool {
-        LIGAR = true,
-        DESLIGAR = false
-    };
-
     class Processador : public componente::Componente{
     private:
-        ProcessorType type;
+        std::string command;
         std::vector<regra::Regra*> rules;
 
     public:
-        Processador(int id, ProcessorType type);
+        Processador(int id, std::string command);
 
-        char getType() const override;
-
-        void changeType();
+        void changeType(std::string cmd);
         // muda o tipo de Processador
         // se for LIGAR torna se num DESLIGAR
         // e vice versa
@@ -39,7 +32,7 @@ namespace processador {
         void addRule(regra::Regra* rule);
         // adiciona uma Regra ao Processador
 
-        bool getAction() const;
+        std::string getAction() const;
         // devolve a acao realizada ao ser verdade
         // retorna:     true - ligar
         //              false - desligar

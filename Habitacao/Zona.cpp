@@ -156,22 +156,11 @@ namespace zona {
         std::ostringstream oss;
 
         count_Processors++;
-        if(cmd == "ligar"){
-            comps.push_back(new processador::Processador(number_id, processador::ProcessorType::LIGAR));
-            oss << "Foi adicionado um Processador \'p" << number_id << "\' do tipo \'ligar\'";
-            error = oss.str();
-            return true;
-        }
-        else if(cmd == "desligar"){
-            comps.push_back(new processador::Processador(number_id, processador::ProcessorType::DESLIGAR));
-            oss << "Foi adicionado um Processador \'p" << number_id << "\' do tipo \'desligar\'";
-            error = oss.str();
-            return true;
-        }
+        comps.push_back(new processador::Processador(number_id, cmd));
+        oss << "Foi adicionado um Processador \'p" << number_id << "\' do tipo \'" << cmd << "\'";
+        error = oss.str();
+        return true;
 
-        count_Processors--;
-        error = "O comando do Processador nao foi reconhecido";
-        return false;
     }
 
     bool Zona::changeProcCmd(int proc_id, const std::string &new_cmd) {
@@ -189,13 +178,13 @@ namespace zona {
 
         processador::Processador* proc = dynamic_cast<processador::Processador*>(*processorIt);
 
-        if((proc->getAction() && new_cmd == "ligar") || (!proc->getAction() && new_cmd == "desligar")){
+        if(proc->getAction() == new_cmd){
             oss << "O comando Processador \'p" << proc_id << "\' ja e \'" << new_cmd << "\'";
             error = oss.str();
             return false;
         }
 
-        proc->changeType();
+        proc->changeType(new_cmd);
         oss << "O comando do Processador \'p" << proc_id << "\' foi mudado para \'" << new_cmd << "\'";
         error = oss.str();
         return true;

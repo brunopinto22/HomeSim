@@ -1,20 +1,14 @@
 #include <sstream>
+#include <utility>
 #include "Processador.h"
 
 
 namespace processador {
-    Processador::Processador(int id, ProcessorType type)
-    : componente::Componente(id, static_cast<char>(componente::ComponenteType::PROCESSADOR), "processador"), type(type) { }
+    Processador::Processador(int id, std::string command)
+    : componente::Componente(id, static_cast<char>(componente::ComponenteType::PROCESSADOR), "processador"), command(std::move(command)) { }
 
-    char Processador::getType() const {
-        return Componente::getType();
-    }
-
-    void Processador::changeType() {
-        if(type == ProcessorType::LIGAR)
-            type = ProcessorType::DESLIGAR;
-        else
-            type = ProcessorType::LIGAR;
+    void Processador::changeType(std::string cmd) {
+        this->command = std::move(cmd);
     }
 
     std::string Processador::getInfo() const {
@@ -39,8 +33,8 @@ namespace processador {
         rules.push_back(rule);
     }
 
-    bool Processador::getAction() const {
-        return static_cast<bool>(type);
+    std::string Processador::getAction() const {
+        return command;
     }
 
 
