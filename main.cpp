@@ -9,6 +9,8 @@ int main() {
     // criar simulador
     simulador::Simulador sim(t);
 
+    //_sleep(500);
+
     // comecar a simulacao
     sim.run();
 
