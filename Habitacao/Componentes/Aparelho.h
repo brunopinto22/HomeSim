@@ -38,7 +38,7 @@ namespace aparelho {
         void resetTicks();
         // redefine os ticks passados desde a ultima mudança no ambiente
 
-        char getType() const override;
+        virtual char getType() const override;
         // devolve o caracter que o descreve
 
         virtual std::string getInfo() const override;

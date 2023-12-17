@@ -18,7 +18,12 @@ namespace aparelho {
 
     void Aparelho::resetTicks() { ticks_passed = 0; }
 
-    char Aparelho::getType() const { return static_cast<char>(type); }
+    char Aparelho::getType() const {
+        if(!isOn) // esta desligado
+            return static_cast<char>(type);
+
+        return std::toupper(static_cast<char>(type));
+    }
 
     void Aparelho::run(std::vector<propriedades::Propriedade *> &props) { ticks_passed++; }
 
