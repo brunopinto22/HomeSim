@@ -1,34 +1,56 @@
 #include "Regra.h"
+#include <map>
 
 namespace regra {
-    Regra::Regra(RegraType type, sensor::Sensor& sensor) : type(type), sensor(sensor) {}
+
+    RegraType checkRuleType(const std::string& str) {
+
+            static const std::map<std::string, RegraType> stringToEnum = {
+                {"igual_a", IGUAL},
+                {"maior_que", MAIOR},
+                {"menor_que", MENOR},
+                {"entre", ENTRE},
+                {"fora", FORA}
+            };
+
+        auto it = stringToEnum.find(str);
+        if (it != stringToEnum.end()) {
+            return it->second;
+        } else {
+            return NOTATYPE;
+        }
+    }
+
+    Regra::Regra(int id, sensor::Sensor &sensor, RegraType type) : id(id), type(type), sensor(sensor) {}
+
+    int Regra::getID() const{ return id; }
 
     RegraType Regra::getType() const { return type; }
 
     bool Regra::check() const { return false; }
 
 
-    RegraIgual::RegraIgual(sensor::Sensor& sensor, int value) : Regra(IGUAL, sensor), value(value) { }
+    RegraIgual::RegraIgual(int id, sensor::Sensor& sensor, int value) : Regra(id, sensor, IGUAL), value(value) { }
     bool RegraIgual::check() const {
         return sensor.getValue() == value;
     }
 
-    RegraMaior::RegraMaior(sensor::Sensor& sensor, int value) : Regra(MAIOR, sensor), value(value) { }
+    RegraMaior::RegraMaior(int id, sensor::Sensor& sensor, int value) : Regra(id, sensor, MAIOR), value(value) { }
     bool RegraMaior::check() const {
         return sensor.getValue() > value;
     }
 
-    RegraMenor::RegraMenor(sensor::Sensor& sensor, int value) : Regra(MENOR, sensor), value(value) { }
+    RegraMenor::RegraMenor(int id, sensor::Sensor& sensor, int value) : Regra(id, sensor, MENOR), value(value) { }
     bool RegraMenor::check() const {
         return sensor.getValue() < value;
     }
 
-    RegraEntre::RegraEntre(sensor::Sensor& sensor, int value, int value2) : Regra(ENTRE, sensor), value(value), value2(value2) { }
+    RegraEntre::RegraEntre(int id, sensor::Sensor& sensor, int value, int value2) : Regra(id, sensor, ENTRE), value(value), value2(value2) { }
     bool RegraEntre::check() const {
         return sensor.getValue() >= value && sensor.getValue() <= value2;
     }
 
-    RegraFora::RegraFora(sensor::Sensor& sensor, int value, int value2) : Regra(FORA, sensor), value(value), value2(value2) { }
+    RegraFora::RegraFora(int id, sensor::Sensor& sensor, int value, int value2) : Regra(id, sensor, FORA), value(value), value2(value2) { }
     bool RegraFora::check() const {
         return sensor.getValue() <= value && sensor.getValue() >= value2;
     }

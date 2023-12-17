@@ -10,16 +10,23 @@ namespace regra {
         MAIOR,
         MENOR,
         ENTRE,
-        FORA
+        FORA,
+        NOTATYPE
     };
+    RegraType checkRuleType(const std::string& str);
 
     class Regra {
+    private:
+        int id;
         RegraType type;
 
     protected:
         sensor::Sensor& sensor;
     public:
-        Regra(RegraType type, sensor::Sensor& sensor);
+        Regra(int id, sensor::Sensor &sensor, RegraType type);
+
+        int getID() const;
+        // devolve o Id da Regra
 
         RegraType getType() const;
         // devolve o tipo de Regra
@@ -35,21 +42,21 @@ namespace regra {
     private:
         int value;
     public:
-        RegraIgual(sensor::Sensor& sensor, int value);
+        RegraIgual(int id, sensor::Sensor& sensor, int value);
         bool check() const override;
     };
     class RegraMaior : public Regra{
     private:
         int value;
     public:
-        RegraMaior(sensor::Sensor& sensor, int value);
+        RegraMaior(int id, sensor::Sensor& sensor, int value);
         bool check() const override;
     };
     class RegraMenor : public Regra{
     private:
         int value;
     public:
-        RegraMenor(sensor::Sensor& sensor, int value);
+        RegraMenor(int id, sensor::Sensor& sensor, int value);
         bool check() const override;
     };
 
@@ -58,14 +65,14 @@ namespace regra {
     private:
         int value, value2;
     public:
-        RegraEntre(sensor::Sensor& sensor, int value, int value2);
+        RegraEntre(int id, sensor::Sensor& sensor, int value, int value2);
         bool check() const override;
     };
     class RegraFora : public Regra{
     private:
         int value, value2;
     public:
-        RegraFora(sensor::Sensor& sensor, int value, int value2);
+        RegraFora(int id, sensor::Sensor& sensor, int value, int value2);
         bool check() const override;
     };
 
