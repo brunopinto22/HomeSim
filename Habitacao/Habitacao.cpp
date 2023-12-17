@@ -197,6 +197,11 @@ namespace habitacao {
             error = oss.str();
             return false;
         }
+        
+        if(new_cmd != "ligar" || new_cmd != "desligar"){
+           error = "O comando " + new_cmd + " nao existe";
+           return false;
+        }
 
         // procura e guarda a zona
         auto it = std::find_if(zonas.begin(), zonas.end(), [zone_id](const zona::Zona* z) { return z->getID() == zone_id; });

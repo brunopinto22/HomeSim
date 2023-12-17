@@ -174,6 +174,33 @@ namespace zona {
         return false;
     }
 
+    bool Zona::changeProcCmd(int proc_id, const std::string &new_cmd) {
+        std::ostringstream oss;
+
+        // procurar o Processador
+        auto processorIt = std::find_if(comps.begin(), comps.end(), [proc_id](const componente::Componente* comp) {
+            return comp->getID() == "p" + std::to_string(proc_id);
+        });
+        if (processorIt == comps.end()) {
+            oss << "O Processador com o ID " << proc_id << " nao foi encontrado";
+            error = oss.str();
+            return false;
+        }
+
+        processador::Processador* proc = dynamic_cast<processador::Processador*>(*processorIt);
+
+        if((proc->getAction() && new_cmd == "ligar") || (!proc->getAction() && new_cmd == "desligar")){
+            oss << "O comando Processador \'p" << proc_id << "\' ja e \'" << new_cmd << "\'";
+            error = oss.str();
+            return false;
+        }
+
+        proc->changeType();
+        oss << "O comando do Processador \'p" << proc_id << "\' foi mudado para \'" << new_cmd << "\'";
+        error = oss.str();
+        return true;
+    }
+
     bool Zona::addSensor(int number_id, std::string &type) {
         std::ostringstream oss;
         std::istringstream iss(type);
@@ -359,6 +386,8 @@ namespace zona {
         error = oss.str();
         return true;
     }
+
+
 
 
 } // zona

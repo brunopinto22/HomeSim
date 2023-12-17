@@ -80,6 +80,11 @@ public:
     bool Execute(habitacao::Habitacao &h, std::string args) override;
 };
 
+class Pmuda : public Comando {
+public:
+    Pmuda();
 
+    bool Execute(habitacao::Habitacao &h, std::string args) override;
+};
 
 #endif //HOMESIM_COMANDO_H

@@ -227,12 +227,7 @@ namespace simulador {
 
         } else if(cmd == "pmuda"){
 
-            int idZone, idPross;
-            std::string command;
-            if (iss >> idZone >> idPross >> command) {
-                output << term::set_color(COLOR_SUCCESS) << "A mudar o comando do processador " << idPross << " da zona " << idZone << " com o comando " << command;
-
-            }
+            exe = new Pmuda;
 
         } else if(cmd == "rlista"){
 
@@ -347,7 +342,7 @@ namespace simulador {
             printHelp(output);
 
         } else {
-            output << term::set_color(COLOR_ERROR) << "Erro de formatacao : comando nao existe";
+            output << term::set_color(COLOR_ERROR) << " Erro: comando nao existe";
             return;
         }
 

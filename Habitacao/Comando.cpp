@@ -187,4 +187,27 @@ bool Rnova::Execute(habitacao::Habitacao &h, std::string args) {
     return false;
 }
 
+Pmuda::Pmuda() {}
+bool Pmuda::Execute(habitacao::Habitacao &h, std::string args) {
 
+    std::ostringstream oss;
+    std::istringstream iss(args);
+
+    int zone_id, proc_id;
+    std::string new_cmd;
+    if (iss >> zone_id >> proc_id >> new_cmd) {
+
+        if(!h.changeProcCmd(zone_id, proc_id, new_cmd)){
+            defineError(h.getError());
+            return false;
+        }
+
+        oss << h.getError() << " na Zona_" << zone_id;
+        defineError(oss.str());
+        return true;
+
+    }
+
+    defineError("pmuda <ID zona> <ID proc. regras> <novo comando>");
+    return false;
+}

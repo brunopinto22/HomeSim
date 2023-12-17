@@ -23,6 +23,11 @@ namespace processador {
 
         char getType() const override;
 
+        void changeType();
+        // muda o tipo de Processador
+        // se for LIGAR torna se num DESLIGAR
+        // e vice versa
+
         virtual std::string getInfo() const override;
         // devolve a informacao do componente
 

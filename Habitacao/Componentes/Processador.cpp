@@ -10,6 +10,13 @@ namespace processador {
         return Componente::getType();
     }
 
+    void Processador::changeType() {
+        if(type == ProcessorType::LIGAR)
+            type = ProcessorType::DESLIGAR;
+        else
+            type = ProcessorType::LIGAR;
+    }
+
     std::string Processador::getInfo() const {
         std::ostringstream oss;
         oss << Componente::getInfo() << " : " << rules.size();
@@ -35,6 +42,8 @@ namespace processador {
     bool Processador::getAction() const {
         return static_cast<bool>(type);
     }
+
+
 
 
 } // processador
