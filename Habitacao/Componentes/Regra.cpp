@@ -1,5 +1,6 @@
 #include "Regra.h"
 #include <map>
+#include <sstream>
 
 namespace regra {
 
@@ -21,13 +22,40 @@ namespace regra {
         }
     }
 
+    std::string checkRuleType(RegraType type) {
+        static const std::map<RegraType, std::string> enumToString = {
+                {IGUAL, "igual_a"},
+                {MAIOR, "maior_que"},
+                {MENOR, "menor_que"},
+                {ENTRE, "entre"},
+                {FORA, "fora"}
+        };
+
+        auto it = enumToString.find(type);
+        if (it != enumToString.end()) {
+            return it->second;
+        } else {
+            return "NOTATYPE";
+        }
+    }
+
     Regra::Regra(int id, sensor::Sensor &sensor, RegraType type) : id(id), type(type), sensor(sensor) {}
 
     int Regra::getID() const{ return id; }
 
     RegraType Regra::getType() const { return type; }
 
+    std::string Regra::getInfo() const {
+        std::ostringstream oss;
+
+        oss << checkRuleType(type) << " > " << getID() << " : " << sensor.getInfo();
+
+        return oss.str();
+    }
+
+
     bool Regra::check() const { return false; }
+
 
 
     RegraIgual::RegraIgual(int id, sensor::Sensor& sensor, int value) : Regra(id, sensor, IGUAL), value(value) { }

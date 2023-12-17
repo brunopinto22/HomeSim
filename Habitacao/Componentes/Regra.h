@@ -14,6 +14,7 @@ namespace regra {
         NOTATYPE
     };
     RegraType checkRuleType(const std::string& str);
+    std::string checkRuleType(RegraType type);
 
     class Regra {
     private:
@@ -30,6 +31,9 @@ namespace regra {
 
         RegraType getType() const;
         // devolve o tipo de Regra
+
+        std::string getInfo() const;
+        // devolve a informacao da Regra
 
         virtual bool check() const;
         // verifica se a regra e verdade

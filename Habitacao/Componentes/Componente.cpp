@@ -14,7 +14,7 @@ namespace componente {
 
     std::string Componente::getInfo() const {
         std::ostringstream oss;
-        oss << getID() << "-" << getName();
+        oss << getName() << " > " << getID();
         return oss.str();
     }
 
