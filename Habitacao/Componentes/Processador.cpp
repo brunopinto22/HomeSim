@@ -13,7 +13,7 @@ namespace processador {
 
     std::string Processador::getInfo() const {
         std::ostringstream oss;
-        oss << Componente::getInfo() << " : " << rules.size();
+        oss << Componente::getInfo() << " : " << getNumberOfRules();
 
         return oss.str();
     }
@@ -27,6 +27,19 @@ namespace processador {
                 return false;
 
         return true;
+    }
+
+    int Processador::getNumberOfRules() const {
+        return rules.size();
+    }
+
+    std::string Processador::getRules() const {
+        std::ostringstream oss;
+
+        for (const auto& rule : rules)
+            oss << " " << rule->getInfo() << "\n";
+
+        return oss.str();
     }
 
     void Processador::addRule(regra::Regra *rule) {

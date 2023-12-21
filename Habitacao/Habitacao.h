@@ -93,6 +93,12 @@ namespace habitacao {
         // retorna:     true caso corra tudo bem
         //              false em caso de algum erro
 
+        bool getProcessorRules(int zone_id, int proc_id);
+        // lista as Regras de um Processador numa dada Zona
+        // retorna:     true caso corra tudo bem
+        //              false em caso de algum erro
+        // ( o output e guardado no error )
+
         bool changeProcCmd(int zone_id, int proc_id, const std::string& new_cmd);
         // muda o comando de um dado Processador numa dada Zona
         // retorna:     true caso corra tudo bem
@@ -102,8 +108,6 @@ namespace habitacao {
         // avanca 1 tick na habitacao
         // retorna:     true caso corra tudo bem
         //              false em caso de algum erro
-
-
 
     };
 

@@ -29,6 +29,12 @@ namespace processador {
         // retorna:     true - caso sejam todas verdade
         //              false - caso contrario
 
+        int getNumberOfRules() const;
+        // devolve o numero de Regras
+
+        std::string getRules() const;
+        // devolve a lista de Regras
+
         void addRule(regra::Regra* rule);
         // adiciona uma Regra ao Processador
 

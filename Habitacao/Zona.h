@@ -92,6 +92,11 @@ namespace zona {
         // retorna:     true caso o encontre e remova
         //              false em caso de erro
 
+        bool checkComponent(std::string component_id) const;
+        // verifica se um Componente existe na zona
+        // retorna:     true caso exista
+        //              false caso nao exista
+
         std::string getComponents();
         // devolve os componentes da Zona
 
@@ -100,6 +105,13 @@ namespace zona {
 
         bool addRule(int rule_id, int sens_id, const std::string &rule_type, const std::string &values, int proc_id);
         // adicona uma Regra acossiada a um Processador e a um Sensor
+
+        std::string getRules(int proc_id) const;
+        // lista as Regras de um Processador
+
+        int getNumberOfRulesOfProcessor(int proc_id);
+        // devolve o numero de Regras de um dado Processador
+        // retorna:     -1 em caso de erro
 
     };
 

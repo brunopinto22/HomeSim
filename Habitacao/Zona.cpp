@@ -268,6 +268,13 @@ namespace zona {
         return false;
     }
 
+    bool Zona::checkComponent(std::string component_id) const {
+        auto checkComp = std::find_if(comps.begin(), comps.end(), [component_id](const componente::Componente* comp) {
+            return comp->getID() == component_id;
+        });
+        return checkComp != comps.end();
+    }
+
     std::string Zona::getComponents() {
         std::ostringstream oss;
 
@@ -292,7 +299,7 @@ namespace zona {
 
         // procurar o Processador
         auto processorIt = std::find_if(comps.begin(), comps.end(), [proc_id](const componente::Componente* comp) {
-            return comp->getID() == "p" + std::to_string(proc_id);
+            return comp->getID() == static_cast<char>(componente::ComponenteType::PROCESSADOR) + std::to_string(proc_id);
         });
         if (processorIt == comps.end()) {
             oss << "O Processador com o ID " << proc_id << " nao foi encontrado";
@@ -302,7 +309,7 @@ namespace zona {
 
         // procurar o Sensor
         auto sensorIt = std::find_if(comps.begin(), comps.end(), [sens_id](const componente::Componente* comp) {
-            return comp->getID() == "s" + std::to_string(sens_id);
+            return comp->getID() == static_cast<char>(componente::ComponenteType::SENSOR) + std::to_string(sens_id);
         });
         if (sensorIt == comps.end()) {
             oss << "O Sensor com o ID " << sens_id << " nao foi encontrado";
@@ -376,6 +383,50 @@ namespace zona {
         return true;
     }
 
+    std::string Zona::getRules(int proc_id) const {
+        std::ostringstream oss;
+
+        // procurar o Processador
+        auto processorIt = std::find_if(comps.begin(), comps.end(), [proc_id](const componente::Componente* comp) {
+            return comp->getID() == static_cast<char>(componente::ComponenteType::PROCESSADOR) + std::to_string(proc_id);
+        });
+        if (processorIt == comps.end()) {
+            oss << "O Processador com o id=" << proc_id << " nao existe";
+            return oss.str();
+        }
+
+        processador::Processador* proc = dynamic_cast<processador::Processador*>(*processorIt);
+        oss << "Regras de " << proc->getID() << "\n"
+            << proc->getRules();
+
+        return oss.str();
+    }
+
+    int Zona::getNumberOfRulesOfProcessor(int proc_id) {
+        std::ostringstream oss;
+
+        // procurar o Processador
+        auto processorIt = std::find_if(comps.begin(), comps.end(), [proc_id](const componente::Componente* comp) {
+            return comp->getID() == static_cast<char>(componente::ComponenteType::PROCESSADOR) + std::to_string(proc_id);
+        });
+
+        if (processorIt == comps.end()) {
+            oss << "O Processador com o id=" << proc_id << " nao existe";
+            error = oss.str();
+            return -1;
+        }
+
+        processador::Processador* proc = dynamic_cast<processador::Processador*>(*processorIt);
+
+        int num = proc->getNumberOfRules();
+
+        if(num == 0) {
+            oss << "O " << proc->getID() << " nao tem nenhuma Regra associada";
+            error = oss.str();
+        }
+
+        return num;
+    }
 
 
 
