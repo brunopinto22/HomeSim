@@ -87,4 +87,11 @@ public:
     bool Execute(habitacao::Habitacao &h, std::string args) override;
 };
 
+class Rlista : public Comando {
+public:
+    Rlista();
+
+    bool Execute(habitacao::Habitacao &h, std::string args) override;
+};
+
 #endif //HOMESIM_COMANDO_H

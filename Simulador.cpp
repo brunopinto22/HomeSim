@@ -95,12 +95,8 @@ namespace simulador {
             output << term::set_color(COLOR_ERROR) << "Tem primeiro de criar uma habitacao: hnova <numLinhas> <numColunas>\n";
 
         } else if(cmd == "prox"){
+
             exe = new Step;
-            if(exe->Execute(*h, args))
-                output << term::set_color(COLOR_SUCCESS) << exe->getError();
-            else
-                output << term::set_color(COLOR_ERROR) << exe->getError();
-            return;
 
         } else if(cmd == "avanca"){
 
@@ -114,7 +110,7 @@ namespace simulador {
                         output << term::set_color(COLOR_ERROR) << exe->getError();
                 }
             } else
-                output << term::set_color(COLOR_ERROR) << "Erro de formatacao : avanca <n>";
+                output << term::set_color(COLOR_ERROR) << " Erro: avanca <n>";
 
             return;
 
@@ -163,7 +159,7 @@ namespace simulador {
         } else if(cmd == "zlista"){
 
             if(!args.empty()){
-                output << term::set_color(COLOR_ERROR) << "Erro de formatacao : zlista";
+                output << term::set_color(COLOR_ERROR) << "Erro: zlista";
                 return;
             }
 
@@ -204,10 +200,8 @@ namespace simulador {
             int id;
             if (iss >> id)
                 printZoneProps(h->getZoneByID(id), output);
-
             else
                 output << term::set_color(COLOR_ERROR) << "Erro de formatacao : zprops <ID zona>";
-
 
         } else if(cmd == "pmod"){
 
@@ -231,13 +225,24 @@ namespace simulador {
 
         } else if(cmd == "rlista"){
 
-            int idZone, idPross;
-            if (iss >> idZone >> idPross) {
-                output << term::set_color(COLOR_SUCCESS) << "A listar as regras do processador " << idPross << " da zona " << idZone;
+            exe = new Rlista;
+            if(exe->Execute(*h, args)) {
+                std::string text = exe->getError();
+                std::istringstream issOut(text);
+                std::string line;
 
-            } else
-                output << term::set_color(COLOR_ERROR) << "Erro de formatacao : rlista <ID zona> <ID proc. regras>";
+                // seperar o titulo do resto do conteudo
+                std::getline(issOut, line);
+                output << term::set_color(COLOR_MESSAGE) << line << "\n" << term::set_color(COLOR_DEFAULT);
+                while (std::getline(issOut, line))
+                    output << line << "\n";
 
+
+            }
+            else
+                output << term::set_color(COLOR_ERROR) << " Erro: " << exe->getError();
+
+            return;
 
         } else if(cmd == "rrem"){
 

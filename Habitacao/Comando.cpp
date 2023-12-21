@@ -211,3 +211,23 @@ bool Pmuda::Execute(habitacao::Habitacao &h, std::string args) {
     defineError("pmuda <ID zona> <ID proc. regras> <novo comando>");
     return false;
 }
+
+Rlista::Rlista() {}
+bool Rlista::Execute(habitacao::Habitacao &h, std::string args) {
+
+    std::ostringstream oss;
+    std::istringstream iss(args);
+
+    int zone_id, proc_id;
+    bool result;
+    if (iss >> zone_id >> proc_id) {
+
+        result = h.getProcessorRules(zone_id, proc_id);
+
+        defineError(h.getError());
+        return result;
+    }
+
+    defineError("rlista <ID zona> <ID proc. regras>");
+    return false;
+}
