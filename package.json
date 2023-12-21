@@ -1,0 +1,19 @@
+{
+  "name": "homesim",
+  "version": "0.6.2",
+  "description": "Smart Home Simulator in C++ and PDcurses",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/brunopinto22/HomeSim.git"
+  },
+  "author": "brunopinto22",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/brunopinto22/HomeSim/issues"
+  },
+  "homepage": "https://github.com/brunopinto22/HomeSim#readme"
+}
