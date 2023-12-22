@@ -78,6 +78,8 @@ You'll need **PDcurses** installed on your system and to configure **CLion**
 * `plista` : Lists all the saved copies of **Processors** stored in memory
   
 * `exec <file name.txt>` : Executes all the commands in a given **text file**
+
+* `help` : Lists all the commands
   
 * `sair` : Closes the program
 
