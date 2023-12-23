@@ -383,6 +383,34 @@ namespace zona {
         return true;
     }
 
+    bool Zona::removeRule(int proc_id, int rule_id) {
+        std::ostringstream oss;
+
+        // procurar o Processador
+        auto processorIt = std::find_if(comps.begin(), comps.end(), [proc_id](const componente::Componente* comp) {
+            return comp->getID() == static_cast<char>(componente::ComponenteType::PROCESSADOR) + std::to_string(proc_id);
+        });
+        if (processorIt == comps.end()) {
+            oss << "O Processador com o ID " << proc_id << " nao foi encontrado";
+            error = oss.str();
+            return false;
+        }
+        processador::Processador* proc = dynamic_cast<processador::Processador*>(*processorIt);
+
+
+        if(!proc->ruleExists(rule_id)){
+            oss << "A regra \'r" << proc_id << "\' nao existe no Processador \'" << proc->getID() << "\'";
+            error = oss.str();
+            return false;
+        }
+
+        // remove a Regra do Processador
+        proc->removeRule(rule_id);
+        oss << "Foi removida uma Regra \'r" << std::to_string(proc_id) << "\' acossiada ao Processador " << proc_id ;
+        error = oss.str();
+        return true;
+    }
+
     std::string Zona::getRules(int proc_id) const {
         std::ostringstream oss;
 
@@ -427,7 +455,6 @@ namespace zona {
 
         return num;
     }
-
 
 
 } // zona

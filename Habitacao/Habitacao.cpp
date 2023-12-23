@@ -189,6 +189,28 @@ namespace habitacao {
         return true;
     }
 
+    bool Habitacao::removeRule(int zone_id, int proc_id, int rule_id){
+        std::ostringstream oss;
+
+        if(!checkZoneID(zone_id)){
+            oss << "A Zona com o id=" << zone_id << " nao existe";
+            error = oss.str();
+            return false;
+        }
+
+        // procura e guarda a zona
+        auto it = std::find_if(zonas.begin(), zonas.end(), [zone_id](const zona::Zona* z) { return z->getID() == zone_id; });
+        zona::Zona* target = *it;
+
+        if (!target->removeRule(proc_id, rule_id)) {
+            error = target->getError();
+            return false;
+        }
+
+        error = target->getError();
+        return true;
+    }
+
     bool Habitacao::getProcessorRules(int zone_id, int proc_id) {
         std::ostringstream oss;
 

@@ -93,6 +93,11 @@ namespace habitacao {
         // retorna:     true caso corra tudo bem
         //              false em caso de algum erro
 
+        bool removeRule(int zone_id, int proc_id, int rule_id);
+        // remove uma Regra de um Processador numa dada Zona
+        // retorna:     true caso corra tudo bem
+        //              false em caso de algum erro
+
         bool getProcessorRules(int zone_id, int proc_id);
         // lista as Regras de um Processador numa dada Zona
         // retorna:     true caso corra tudo bem

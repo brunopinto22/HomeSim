@@ -106,6 +106,11 @@ namespace zona {
         bool addRule(int rule_id, int sens_id, const std::string &rule_type, const std::string &values, int proc_id);
         // adicona uma Regra acossiada a um Processador e a um Sensor
 
+        bool removeRule(int proc_id, int rule_id);
+        // remove uma dada Regra de um Processador
+        // retorna:     true caso o encontre e remova
+        //              false em caso de erro
+
         std::string getRules(int proc_id) const;
         // lista as Regras de um Processador
 
