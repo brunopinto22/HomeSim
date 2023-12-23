@@ -33,6 +33,15 @@ namespace processador {
         return rules.size();
     }
 
+    bool Processador::ruleExists(int rule_id) const {
+        // procura a Regra pelo ID
+        auto it = std::find_if(rules.begin(), rules.end(), [rule_id](regra::Regra *rule) {
+            return rule->getID() == rule_id;
+        });
+
+        return it != rules.end();
+    }
+
     std::string Processador::getRules() const {
         std::ostringstream oss;
 
@@ -44,6 +53,16 @@ namespace processador {
 
     void Processador::addRule(regra::Regra *rule) {
         rules.push_back(rule);
+    }
+
+    void Processador::removeRule(int rule_id) {
+        // procurar a regra
+        auto it = std::remove_if(rules.begin(), rules.end(), [rule_id](regra::Regra *rule) {
+            return rule->getID() == rule_id;
+        });
+
+        // remover a regra
+        rules.erase(it, rules.end());
     }
 
     std::string Processador::getAction() const {

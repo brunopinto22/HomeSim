@@ -32,11 +32,17 @@ namespace processador {
         int getNumberOfRules() const;
         // devolve o numero de Regras
 
+        bool ruleExists(int rule_id) const;
+        // verifica se existe a regra no Processador
+
         std::string getRules() const;
         // devolve a lista de Regras
 
         void addRule(regra::Regra* rule);
         // adiciona uma Regra ao Processador
+
+        void removeRule(int rule_id);
+        // remove uma Regra do Processador
 
         std::string getAction() const;
         // devolve a acao realizada ao ser verdade
