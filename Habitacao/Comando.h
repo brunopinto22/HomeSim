@@ -94,4 +94,12 @@ public:
     bool Execute(habitacao::Habitacao &h, std::string args) override;
 };
 
+class Rrem : public Comando {
+public:
+    Rrem();
+
+    bool Execute(habitacao::Habitacao &h, std::string args) override;
+};
+
+
 #endif //HOMESIM_COMANDO_H

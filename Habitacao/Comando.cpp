@@ -231,3 +231,25 @@ bool Rlista::Execute(habitacao::Habitacao &h, std::string args) {
     defineError("rlista <ID zona> <ID proc. regras>");
     return false;
 }
+
+Rrem::Rrem() {}
+bool Rrem::Execute(habitacao::Habitacao &h, std::string args) {
+
+    std::istringstream iss(args);
+
+    int zone_id, proc_id, rule_id;
+    bool result;
+    if (iss >> zone_id >> proc_id >> rule_id) {
+
+        if(!h.removeRule(zone_id, proc_id, rule_id)){
+            defineError(h.getError());
+            return false;
+        }
+
+        defineError(h.getError());
+        return true;
+    }
+
+    defineError("rrem <ID zona> <ID proc. regras> <ID regra>");
+    return false;
+}

@@ -236,8 +236,6 @@ namespace simulador {
                 output << term::set_color(COLOR_MESSAGE) << line << "\n" << term::set_color(COLOR_DEFAULT);
                 while (std::getline(issOut, line))
                     output << line << "\n";
-
-
             }
             else
                 output << term::set_color(COLOR_ERROR) << " Erro: " << exe->getError();
@@ -246,12 +244,7 @@ namespace simulador {
 
         } else if(cmd == "rrem"){
 
-            int idZone, idPross, idRule;
-            if (iss >> idZone >> idPross >> idRule) {
-                output << term::set_color(COLOR_SUCCESS) << "A remover a regra " << idRule << " do processador " << idPross << " da zona " << idZone;
-
-            } else
-                output << term::set_color(COLOR_ERROR) << "Erro de formatacao : rrem <ID zona> <ID proc. regras> <ID regra>";
+            exe = new Rrem;
 
         } else if(cmd == "asoc"){
 
@@ -437,11 +430,12 @@ namespace simulador {
         << term::set_color(COLOR_ID) << " pmod " << term::set_color(COLOR_DEFAULT) << "<ID zona> <nome> <valor> \n"
         << term::set_color(COLOR_ID) << " cnovo " << term::set_color(COLOR_DEFAULT) << "<ID zona> <s | p | a> <tipo | comando>\n"
         << term::set_color(COLOR_ID) << " crem " << term::set_color(COLOR_DEFAULT) << "<ID zona> <s | p | a> <ID>\n"
-        << term::set_color(COLOR_ID) << " rnova " << term::set_color(COLOR_DEFAULT) << "<ID zona> <ID regras> <regra> <ID sensor> [par1] [par2] [..]\n"
-        << term::set_color(COLOR_ID) << " pmuda " << term::set_color(COLOR_DEFAULT) << "<ID zona> <ID regras> <novo comando>\n"
-        << term::set_color(COLOR_ID) << " rlista " << term::set_color(COLOR_DEFAULT) << "<ID zona> <ID regras>\n"
-        << term::set_color(COLOR_ID) << " asoc " << term::set_color(COLOR_DEFAULT) << "<ID zona> <ID regras> <ID aparelho>\n"
-        << term::set_color(COLOR_ID) << " ades " << term::set_color(COLOR_DEFAULT) << "<ID zona> <ID regras> <ID aparelho>\n"
+        << term::set_color(COLOR_ID) << " rnova " << term::set_color(COLOR_DEFAULT) << "<ID zona> <ID proc. regras> <regra> <ID sensor> [par1] [par2] [..]\n"
+        << term::set_color(COLOR_ID) << " pmuda " << term::set_color(COLOR_DEFAULT) << "<ID zona> <ID proc. regras> <novo comando>\n"
+        << term::set_color(COLOR_ID) << " rlista " << term::set_color(COLOR_DEFAULT) << "<ID zona> <ID proc. regras>\n"
+        << term::set_color(COLOR_ID) << " rrem " << term::set_color(COLOR_DEFAULT) << "<ID zona> <ID proc. regras> <ID regras>\n"
+        << term::set_color(COLOR_ID) << " asoc " << term::set_color(COLOR_DEFAULT) << "<ID zona> <ID proc. regras> <ID aparelho>\n"
+        << term::set_color(COLOR_ID) << " ades " << term::set_color(COLOR_DEFAULT) << "<ID zona> <ID proc. regras> <ID aparelho>\n"
         << term::set_color(COLOR_ID) << " acom " << term::set_color(COLOR_DEFAULT) << "<ID zona> <ID aparelho> <comando>\n"
         << term::set_color(COLOR_ID) << " psalva " << term::set_color(COLOR_DEFAULT) << "<ID zona> <ID proc. regras> <nome>\n"
         << term::set_color(COLOR_ID) << " prepoe " << term::set_color(COLOR_DEFAULT) << "<nome> \n"
