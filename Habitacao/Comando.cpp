@@ -10,8 +10,8 @@ std::string Comando::getError() const {
 
 
 
-Step::Step() {}
-bool Step::Execute(habitacao::Habitacao &h, std::string args){
+Prox::Prox() {}
+bool Prox::Execute(habitacao::Habitacao &h, std::string args){
     if(!args.empty()){
         defineError("prox");
         return false;
@@ -21,6 +21,8 @@ bool Step::Execute(habitacao::Habitacao &h, std::string args){
         defineError(h.getError());
         return false;
     }
+
+    defineError(h.getError());
     return true;
 
 }

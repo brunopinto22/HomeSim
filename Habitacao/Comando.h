@@ -27,9 +27,9 @@ public:
 
 
 
-class Step : public Comando {
+class Prox : public Comando {
 public:
-    Step();
+    Prox();
 
     bool Execute(habitacao::Habitacao &h, std::string args) override;
 };

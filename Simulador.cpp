@@ -94,13 +94,13 @@ namespace simulador {
 
         } else if(cmd == "prox"){
 
-            exe = new Step;
+            exe = new Prox;
 
         } else if(cmd == "avanca"){
 
             int n;
             if (iss >> n) {
-                exe = new Step;
+                exe = new Prox;
                 for (int i = 0; i < n; i++) {
                     if (exe->Execute(*h, ""))
                         output << term::set_color(COLOR_SUCCESS) << exe->getError();
