@@ -256,6 +256,26 @@ namespace habitacao {
         return true;
     }
 
+    bool Habitacao::linkProcAndGadget(int zone_id, int proc_id, int gadget_id) {
+        std::ostringstream oss;
+        bool result;
+
+        if(!checkZoneID(zone_id)){
+            oss << "A Zona com o id=" << zone_id << " nao existe";
+            error = oss.str();
+            return false;
+        }
+
+        // procura e guarda a zona
+        auto it = std::find_if(zonas.begin(), zonas.end(), [zone_id](const zona::Zona* z) { return z->getID() == zone_id; });
+        zona::Zona* target = *it;
+
+        result = target->linkProcAndGadget(proc_id, gadget_id);
+        error = target->getError();
+
+        return result;
+    }
+
     bool Habitacao::sendCommandToGadget(int zone_id, int gadget_id, std::string command) {
         std::ostringstream oss;
         bool result;
