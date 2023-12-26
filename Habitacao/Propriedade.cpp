@@ -49,6 +49,11 @@ namespace propriedades {
     }
 
     Propriedade &Propriedade::operator+(int new_value) {
+        if(this->value == UNSET && checkNewValue(new_value)){
+            this->value = this->min + new_value;
+            return *this;
+        }
+
         int final = this->value + new_value;
         if (checkNewValue(final))
             this->value = final;
@@ -56,6 +61,11 @@ namespace propriedades {
     }
 
     Propriedade &Propriedade::operator-(int new_value) {
+        if(this->value == UNSET){
+            this->value = this->min;
+            return *this;
+        }
+
         int final = this->value - new_value;
         if (checkNewValue(final))
             this->value = final;
@@ -63,6 +73,11 @@ namespace propriedades {
     }
 
     Propriedade &Propriedade::operator*(int new_value) {
+        if(this->value == UNSET){
+            this->value = this->min;
+            return *this;
+        }
+
         int final = this->value * new_value;
         if (checkNewValue(final))
             this->value = final;
@@ -70,6 +85,11 @@ namespace propriedades {
     }
 
     Propriedade &Propriedade::operator/(int new_value) {
+        if(this->value == UNSET){
+            this->value = this->min;
+            return *this;
+        }
+
         int final = this->value / new_value;
         if (checkNewValue(final))
             this->value = final;
