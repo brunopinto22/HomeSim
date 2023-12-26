@@ -44,8 +44,12 @@ namespace aparelho {
         virtual std::string getInfo() const override;
         // devolve a informacao do componente
 
-        bool turnOnOff();
+        void turnOn();
+        void turnOff();
         // liga/desliga o aparelho
+
+        virtual void runCommand(std::string command);
+        // corre um comando recebido
 
         virtual void run(std::vector<propriedades::Propriedade*>& props);
 

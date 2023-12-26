@@ -8,10 +8,13 @@ namespace aparelho {
 
     bool Aparelho::getIsOn() const { return isOn; }
 
-    bool Aparelho::turnOnOff() {
+    void Aparelho::turnOn() {
         resetTicks();
-        isOn = !isOn;
-        return isOn;
+        isOn = true;
+    }
+    void Aparelho::turnOff() {
+        resetTicks();
+        isOn = false;
     }
 
     int Aparelho::getTicks() const { return ticks_passed; }
@@ -23,6 +26,16 @@ namespace aparelho {
             return static_cast<char>(type);
 
         return std::toupper(static_cast<char>(type));
+    }
+
+    void Aparelho::runCommand(std::string command) {
+
+      if(command == "ligar")
+        turnOn();
+
+      else if(command == "desligar")
+          turnOff();
+
     }
 
     void Aparelho::run(std::vector<propriedades::Propriedade *> &props) { ticks_passed++; }
@@ -38,6 +51,8 @@ namespace aparelho {
 
         return oss.str();
     }
+
+
 
 
     Aquecedor::Aquecedor(int id) : Aparelho(id, AparelhoType::AQUECEDOR, "aquecedor") { }
