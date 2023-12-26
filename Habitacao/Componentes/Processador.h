@@ -55,6 +55,9 @@ namespace processador {
         void link(aparelho::Aparelho *aparelho);
         // adiciona um aparelho a saida do Processador
 
+        void unlink(int gadget_id);
+        // remove um aparelho a saida do Processador
+
         std::string getAction() const;
         // devolve a acao realizada ao ser verdade
         // retorna:     true - ligar

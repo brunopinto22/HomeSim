@@ -56,12 +56,12 @@ namespace processador {
     }
 
     void Processador::removeRule(int rule_id) {
-        // procurar a regra
+        // procurar a Regra
         auto it = std::remove_if(rules.begin(), rules.end(), [rule_id](regra::Regra *rule) {
             return rule->getID() == rule_id;
         });
 
-        // remover a regra
+        // remover a Regra
         rules.erase(it, rules.end());
     }
 
@@ -75,6 +75,16 @@ namespace processador {
 
     void Processador::link(aparelho::Aparelho *aparelho) {
         gadgets.push_back(aparelho);
+    }
+
+    void Processador::unlink(int gadget_id) {
+        // procurar o Aparelho
+        auto it = std::remove_if(gadgets.begin(), gadgets.end(), [gadget_id](aparelho::Aparelho *ap) {
+            return ap->getID() == static_cast<char>(componente::ComponenteType::APARELHO) + std::to_string(gadget_id);
+        });
+
+        // remover o Aparelho
+        gadgets.erase(it, gadgets.end());
     }
 
     std::string Processador::getAction() const {
