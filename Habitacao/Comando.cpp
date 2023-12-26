@@ -269,6 +269,25 @@ bool Asoc::Execute(habitacao::Habitacao &h, std::string args) {
     return false;
 }
 
+Ades::Ades() {}
+bool Ades::Execute(habitacao::Habitacao &h, std::string args) {
+
+    std::istringstream iss(args);
+    bool result;
+
+    int zone_id, proc_id, gadget_id;
+    if (iss >> zone_id >> proc_id >> gadget_id) {
+
+        result = h.unlinkProcAndGadget(zone_id, proc_id, gadget_id);
+        defineError(h.getError());
+
+        return result;
+    }
+
+    defineError("ades <ID zona> <ID proc. regras> <ID aparelho>");
+    return false;
+}
+
 Acom::Acom() {}
 bool Acom::Execute(habitacao::Habitacao &h, std::string args) {
 

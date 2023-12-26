@@ -250,12 +250,7 @@ namespace simulador {
 
         } else if(cmd == "ades"){
 
-            int idZone, idPross, idApr;
-            if (iss >> idZone >> idPross >> idApr) {
-                output << term::set_color(COLOR_SUCCESS) << "A desassociar o processador " << idPross << " da zona " << idZone << " ao aparelho " << idApr;
-
-            } else
-                output << term::set_color(COLOR_ERROR) << "Erro de formatacao : ades <ID zona> <ID proc. regras> <ID aparelho>";
+            exe = new Ades;
 
         } else if(cmd == "acom"){
 
