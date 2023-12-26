@@ -101,5 +101,12 @@ public:
     bool Execute(habitacao::Habitacao &h, std::string args) override;
 };
 
+class Acom : public Comando {
+public:
+    Acom();
+
+    bool Execute(habitacao::Habitacao &h, std::string args) override;
+};
+
 
 #endif //HOMESIM_COMANDO_H

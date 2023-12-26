@@ -215,11 +215,10 @@ bool Pmuda::Execute(habitacao::Habitacao &h, std::string args) {
 Rlista::Rlista() {}
 bool Rlista::Execute(habitacao::Habitacao &h, std::string args) {
 
-    std::ostringstream oss;
     std::istringstream iss(args);
+    bool result;
 
     int zone_id, proc_id;
-    bool result;
     if (iss >> zone_id >> proc_id) {
 
         result = h.getProcessorRules(zone_id, proc_id);
@@ -236,20 +235,37 @@ Rrem::Rrem() {}
 bool Rrem::Execute(habitacao::Habitacao &h, std::string args) {
 
     std::istringstream iss(args);
+    bool result;
 
     int zone_id, proc_id, rule_id;
-    bool result;
     if (iss >> zone_id >> proc_id >> rule_id) {
 
-        if(!h.removeRule(zone_id, proc_id, rule_id)){
-            defineError(h.getError());
-            return false;
-        }
-
+        result = h.removeRule(zone_id, proc_id, rule_id);
         defineError(h.getError());
-        return true;
+
+        return result;
     }
 
     defineError("rrem <ID zona> <ID proc. regras> <ID regra>");
+    return false;
+}
+
+Acom::Acom() {}
+bool Acom::Execute(habitacao::Habitacao &h, std::string args) {
+
+    std::istringstream iss(args);
+    bool result;
+
+    int zone_id, gadget_id;
+    std::string cmd;
+    if (iss >> zone_id >> gadget_id >> cmd) {
+
+        result = h.sendCommandToGadget(zone_id, gadget_id, cmd);
+        defineError(h.getError());
+
+        return result;
+    }
+
+    defineError("acom <ID zona> <ID aparelho> <comando>");
     return false;
 }

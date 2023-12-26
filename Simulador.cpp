@@ -81,9 +81,7 @@ namespace simulador {
         Comando* exe = nullptr;
 
         // parte visual
-        if(isFromExec)
-            output << "\n";
-        else
+        if(!isFromExec)
             output.clear();
         output << term::set_color(COLOR_DEFAULT);
 
@@ -120,21 +118,21 @@ namespace simulador {
             if (iss >> width >> height){
 
                 if(h != nullptr){
-                    output << term::set_color(COLOR_ERROR) << "Ja tem uma Habitacao criada";
+                    output << term::set_color(COLOR_ERROR) << "Erro: Ja tem uma Habitacao criada";
                     return;
 
                 } else if(width < 0 || height < 0 || width > 4 || height > 4){
-                    output << term::set_color(COLOR_ERROR) << "Erro de formatacao : <num linhas> e <num colunas> tem de estar compreendido entre [1, 4]";
+                    output << term::set_color(COLOR_ERROR) << " Erro: <num linhas> e <num colunas> tem de estar compreendido entre [1, 4]";
                     return;
 
                 }
 
                 h = new habitacao::Habitacao(width, height);
 
-                output << term::set_color(COLOR_SUCCESS) << "Habitacao " << width << "x" << height << " criada";
+                output << term::set_color(COLOR_SUCCESS) << " Habitacao " << width << "x" << height << " criada";
 
             } else
-                output << term::set_color(COLOR_ERROR) << "Erro de formatacao : hnova <num linhas> <num colunas>";
+                output << term::set_color(COLOR_ERROR) << " Erro: hnova <num linhas> <num colunas>";
 
         } else if(cmd == "hrem"){
 
@@ -266,13 +264,7 @@ namespace simulador {
 
         } else if(cmd == "acom"){
 
-            int idZone, idApr;
-            std::string command;
-            if (iss >> idZone >> idApr >> command) {
-                output << term::set_color(COLOR_SUCCESS) << "A enviar \'" << command << "\'ao aparelho " << idApr;
-
-            } else
-                output << term::set_color(COLOR_ERROR) << "Erro de formatacao : acom <ID zona> <ID aparelho> <comando>";
+            exe = new Acom;
 
         } else if(cmd == "psalva"){
 
@@ -326,11 +318,11 @@ namespace simulador {
                 }
 
             } else
-                output << term::set_color(COLOR_ERROR) << "Erro de formatacao : exec <nome de ficheiro>";
+                output << term::set_color(COLOR_ERROR) << "Erro: exec <nome de ficheiro>";
 
         } else if(cmd == "sair"){
             if(!args.empty())
-                output << term::set_color(COLOR_ERROR) << "Erro de formatacao : sair";
+                output << term::set_color(COLOR_ERROR) << "Erro: sair";
             else
                 isOn = false;
 
@@ -348,9 +340,9 @@ namespace simulador {
             return;
 
         if(exe->Execute(*h, args))
-            output << term::set_color(COLOR_SUCCESS) << " " << exe->getError();
+            output << term::set_color(COLOR_SUCCESS) << " " << exe->getError() << "\n";
         else
-            output << term::set_color(COLOR_ERROR) << " Erro: " << exe->getError();
+            output << term::set_color(COLOR_ERROR) << " Erro: " << exe->getError() << "\n";
 
     }
 
@@ -430,14 +422,14 @@ namespace simulador {
         << term::set_color(COLOR_ID) << " pmod " << term::set_color(COLOR_DEFAULT) << "<ID zona> <nome> <valor> \n"
         << term::set_color(COLOR_ID) << " cnovo " << term::set_color(COLOR_DEFAULT) << "<ID zona> <s | p | a> <tipo | comando>\n"
         << term::set_color(COLOR_ID) << " crem " << term::set_color(COLOR_DEFAULT) << "<ID zona> <s | p | a> <ID>\n"
-        << term::set_color(COLOR_ID) << " rnova " << term::set_color(COLOR_DEFAULT) << "<ID zona> <ID proc. regras> <regra> <ID sensor> [par1] [par2] [..]\n"
-        << term::set_color(COLOR_ID) << " pmuda " << term::set_color(COLOR_DEFAULT) << "<ID zona> <ID proc. regras> <novo comando>\n"
-        << term::set_color(COLOR_ID) << " rlista " << term::set_color(COLOR_DEFAULT) << "<ID zona> <ID proc. regras>\n"
-        << term::set_color(COLOR_ID) << " rrem " << term::set_color(COLOR_DEFAULT) << "<ID zona> <ID proc. regras> <ID regras>\n"
-        << term::set_color(COLOR_ID) << " asoc " << term::set_color(COLOR_DEFAULT) << "<ID zona> <ID proc. regras> <ID aparelho>\n"
-        << term::set_color(COLOR_ID) << " ades " << term::set_color(COLOR_DEFAULT) << "<ID zona> <ID proc. regras> <ID aparelho>\n"
+        << term::set_color(COLOR_ID) << " pmuda " << term::set_color(COLOR_DEFAULT) << "<ID zona> <ID proc.> <novo comando>\n"
+        << term::set_color(COLOR_ID) << " rnova " << term::set_color(COLOR_DEFAULT) << "<ID zona> <ID proc.> <regra> <ID sensor> [par1] [par2] [..]\n"
+        << term::set_color(COLOR_ID) << " rrem " << term::set_color(COLOR_DEFAULT) << "<ID zona> <ID proc.> <ID regras>\n"
+        << term::set_color(COLOR_ID) << " rlista " << term::set_color(COLOR_DEFAULT) << "<ID zona> <ID proc.>\n"
+        << term::set_color(COLOR_ID) << " asoc " << term::set_color(COLOR_DEFAULT) << "<ID zona> <ID proc.> <ID aparelho>\n"
+        << term::set_color(COLOR_ID) << " ades " << term::set_color(COLOR_DEFAULT) << "<ID zona> <ID proc.> <ID aparelho>\n"
         << term::set_color(COLOR_ID) << " acom " << term::set_color(COLOR_DEFAULT) << "<ID zona> <ID aparelho> <comando>\n"
-        << term::set_color(COLOR_ID) << " psalva " << term::set_color(COLOR_DEFAULT) << "<ID zona> <ID proc. regras> <nome>\n"
+        << term::set_color(COLOR_ID) << " psalva " << term::set_color(COLOR_DEFAULT) << "<ID zona> <ID proc.> <nome>\n"
         << term::set_color(COLOR_ID) << " prepoe " << term::set_color(COLOR_DEFAULT) << "<nome> \n"
         << term::set_color(COLOR_ID) << " prem " << term::set_color(COLOR_DEFAULT) << "<nome> \n"
         << term::set_color(COLOR_ID) << " plista\n" << term::set_color(COLOR_DEFAULT)
