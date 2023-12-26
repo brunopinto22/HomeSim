@@ -118,6 +118,11 @@ namespace zona {
         // devolve o numero de Regras de um dado Processador
         // retorna:     -1 em caso de erro
 
+        bool sendCmdTo(int gadget_id, std::string command);
+        // envia um comando a um Aparelho na Zona
+        // retorna:     true caso corra tudo bem
+        //              false em caso de algum erro
+
     };
 
 } // zona

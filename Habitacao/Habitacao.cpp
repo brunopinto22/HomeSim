@@ -242,11 +242,6 @@ namespace habitacao {
             error = oss.str();
             return false;
         }
-        
-        if(new_cmd != "ligar" || new_cmd != "desligar"){
-           error = "O comando " + new_cmd + " nao existe";
-           return false;
-        }
 
         // procura e guarda a zona
         auto it = std::find_if(zonas.begin(), zonas.end(), [zone_id](const zona::Zona* z) { return z->getID() == zone_id; });
@@ -259,6 +254,26 @@ namespace habitacao {
 
         error = target->getError();
         return true;
+    }
+
+    bool Habitacao::sendCommandToGadget(int zone_id, int gadget_id, std::string command) {
+        std::ostringstream oss;
+        bool result;
+
+        if(!checkZoneID(zone_id)){
+            oss << "A Zona com o id=" << zone_id << " nao existe";
+            error = oss.str();
+            return false;
+        }
+
+        // procura e guarda a zona
+        auto it = std::find_if(zonas.begin(), zonas.end(), [zone_id](const zona::Zona* z) { return z->getID() == zone_id; });
+        zona::Zona* target = *it;
+
+        result = target->sendCmdTo(gadget_id, command);
+        error = target->getError();
+
+        return result;
     }
 
 

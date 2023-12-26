@@ -456,5 +456,28 @@ namespace zona {
         return num;
     }
 
+    bool Zona::sendCmdTo(int gadget_id, std::string command) {
+        std::ostringstream oss;
+
+        // procurar o Processador
+        auto componentIt = std::find_if(comps.begin(), comps.end(), [gadget_id](const componente::Componente* comp) {
+            return comp->getID() == static_cast<char>(componente::ComponenteType::APARELHO) + std::to_string(gadget_id);
+        });
+        if (componentIt == comps.end()) {
+            oss << "O Aparelho com o id=" << gadget_id << " nao existe";
+            error = oss.str();
+            return false;
+        }
+
+        aparelho::Aparelho* gadget = dynamic_cast<aparelho::Aparelho*>(*componentIt);
+
+        // enviar comando
+        gadget->runCommand(command);
+
+        oss << "Foi enviado o comando \'" << command << "\' ao Aparelho \'" << static_cast<char>(componente::ComponenteType::APARELHO) << gadget_id << "\'";
+        error = oss.str();
+        return true;
+    }
+
 
 } // zona

@@ -109,6 +109,11 @@ namespace habitacao {
         // retorna:     true caso corra tudo bem
         //              false em caso de algum erro
 
+        bool sendCommandToGadget(int zone_id, int gadget_id, std::string command);
+        // envia um comando a um Aparelho numa dada Zona
+        // retorna:     true caso corra tudo bem
+        //              false em caso de algum erro
+
         bool tick();
         // avanca 1 tick na habitacao
         // retorna:     true caso corra tudo bem
