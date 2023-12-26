@@ -319,7 +319,15 @@ namespace habitacao {
 
 
     bool Habitacao::tick() {
+        std::ostringstream oss;
         ticks++;
+
+        for(auto& zona : zonas) {
+            zona->tick();
+            oss << zona->getError();
+        }
+
+        error = oss.str();
         return true;
     }
 
