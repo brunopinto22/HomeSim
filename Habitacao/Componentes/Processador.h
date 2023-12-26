@@ -5,12 +5,15 @@
 #include <vector>
 #include "Componente.h"
 #include "Regra.h"
+#include "Aparelho.h"
 
 namespace processador {
 
     class Processador : public componente::Componente{
     private:
         std::string command;
+
+        std::vector<aparelho::Aparelho*> gadgets;
         std::vector<regra::Regra*> rules;
 
     public:
@@ -44,11 +47,18 @@ namespace processador {
         void removeRule(int rule_id);
         // remove uma Regra do Processador
 
+        bool gadgetExists(int gadget_id) const;
+        // verifica se o Aparelho ja esta na saida do Processador
+        // retorna:     true - caso esteja na saida
+        //              false - caso contrario
+
+        void link(aparelho::Aparelho *aparelho);
+        // adiciona um aparelho a saida do Processador
+
         std::string getAction() const;
         // devolve a acao realizada ao ser verdade
         // retorna:     true - ligar
         //              false - desligar
-
     };
 
 } // processador

@@ -65,6 +65,18 @@ namespace processador {
         rules.erase(it, rules.end());
     }
 
+    bool Processador::gadgetExists(int gadget_id) const {
+        auto it = std::find_if(gadgets.begin(), gadgets.end(), [gadget_id](const aparelho::Aparelho *ap) {
+            return ap->getID() == static_cast<char>(componente::ComponenteType::APARELHO) + std::to_string(gadget_id);
+        });
+
+        return it != gadgets.end();
+    }
+
+    void Processador::link(aparelho::Aparelho *aparelho) {
+        gadgets.push_back(aparelho);
+    }
+
     std::string Processador::getAction() const {
         return command;
     }
