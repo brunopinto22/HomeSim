@@ -4,7 +4,7 @@
 
 namespace aparelho {
     Aparelho::Aparelho(int id, AparelhoType type, std::string name)
-    : componente::Componente(id, static_cast<char>(componente::ComponenteType::APARELHO), std::move(name)), isOn(false), type(type), ticks_passed(0) {}
+    : componente::Componente(id, static_cast<char>(componente::ComponenteType::APARELHO), std::move(name)), isOn(false), ticks_passed(0), type(type) {}
 
     bool Aparelho::getIsOn() const { return isOn; }
 
@@ -51,8 +51,6 @@ namespace aparelho {
 
         return oss.str();
     }
-
-
 
 
     Aquecedor::Aquecedor(int id) : Aparelho(id, AparelhoType::AQUECEDOR, "aquecedor") { }
