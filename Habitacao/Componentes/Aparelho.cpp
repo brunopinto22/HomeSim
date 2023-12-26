@@ -38,7 +38,7 @@ namespace aparelho {
 
     }
 
-    void Aparelho::run(std::vector<propriedades::Propriedade *> &props) { ticks_passed++; }
+    std::string Aparelho::run() { ticks_passed++; return "";}
 
     std::string Aparelho::getInfo() const {
         std::ostringstream oss;
@@ -54,64 +54,99 @@ namespace aparelho {
 
 
     Aquecedor::Aquecedor(int id) : Aparelho(id, AparelhoType::AQUECEDOR, "aquecedor") { }
-
-    void Aquecedor::run(std::vector<propriedades::Propriedade*> &props) {
-        Aparelho::run(props);
+    std::string Aquecedor::run() {
+        Aparelho::run();
+        std::ostringstream oss;
 
         // primeiro instante ligado
         if(getIsOn() && getTicks() == 1){
-
-            auto it = std::find_if(props.begin(), props.end(), [](propriedades::Propriedade* prop) {
-                return prop->getName() == "som";
-            });
-
-            if (it != props.end())
-                (*it) += 5;
-
-            return;
+            oss << "+ " << "5 " << static_cast<char>(propriedades::PropriedadeType::SOM);
+            return oss.str();
         }
 
         // primeiro instante desligado
         if(!getIsOn() && getTicks() == 1){
-            auto it = std::find_if(props.begin(), props.end(), [](propriedades::Propriedade* prop) {
-                return prop->getName() == "som";
-            });
-
-            if (it != props.end())
-                (*it) -= 5;
-            return;
+            oss << "- " << "5 " << static_cast<char>(propriedades::PropriedadeType::SOM);
+            return oss.str();
         }
 
 
         if(getIsOn() && getTicks() % 3 == 0 && getTicks() <= 50){
-            auto it = std::find_if(props.begin(), props.end(), [](propriedades::Propriedade* prop) {
-                return prop->getName() == "temperatura";
-            });
-
-            if (it != props.end())
-                (*it) += 1;
-            return;
+            oss << "+ " << "1 " << static_cast<char>(propriedades::PropriedadeType::TEMPERATURA);
+            return oss.str();
         }
+
+        return "";
 
     }
 
 
     Aspersor::Aspersor(int id) : Aparelho(id, AparelhoType::ASPERSOR, "aspersor") { }
+    std::string Aspersor::run() {
+        Aparelho::run();
+        std::ostringstream oss;
 
-    void Aspersor::run(std::vector<propriedades::Propriedade *> &props) {
-        Aparelho::run(props);
+        // primeiro instante ligado
+        if(getIsOn() && getTicks() == 1){
+            oss << "+ " << "50 " << static_cast<char>(propriedades::PropriedadeType::HUMIDADE) << " < 75\n"
+                << "+ " << "100 " << static_cast<char>(propriedades::PropriedadeType::VIBRACAO);
+            return oss.str();
+        }
+
+        if(getIsOn() && getTicks() == 2){
+            oss << "= " << "0 " << static_cast<char>(propriedades::PropriedadeType::FUMO);
+            return oss.str();
+        }
+
+        if(getIsOn() && getTicks() == 5)
+            turnOff();
+
+        // primeiro instante desligado
+        if(!getIsOn() && getTicks() == 1){
+            oss << "- " << "100 " << static_cast<char>(propriedades::PropriedadeType::VIBRACAO);
+            return oss.str();
+        }
+
+        if(!getIsOn() && getTicks() <= 5){
+            oss << "+ " << "50 " << static_cast<char>(propriedades::PropriedadeType::HUMIDADE) << " < 75%\n"
+                << "+ " << "100 " << static_cast<char>(propriedades::PropriedadeType::VIBRACAO);
+            return oss.str();
+        }
+
+        return "";
     }
+
 
     Refrigerador::Refrigerador(int id) : Aparelho(id, AparelhoType::REFRIGERADOR, "refrigerador") { }
+    std::string Refrigerador::run() {
+        Aparelho::run();
+        std::ostringstream oss;
 
-    void Refrigerador::run(std::vector<propriedades::Propriedade *> &props) {
-        Aparelho::run(props);
+        // primeiro instante ligado
+        if(getIsOn() && getTicks() == 1){
+            oss << "+ " << "50 " << static_cast<char>(propriedades::PropriedadeType::HUMIDADE) << "< 75%\n"
+                << "+ " << "100 " << static_cast<char>(propriedades::PropriedadeType::VIBRACAO);
+            return oss.str();
+        }
+
+        if(getIsOn() && getTicks() == 5){
+            turnOff();
+        }
+
+        // primeiro instante desligado
+        if(!getIsOn() && getTicks() <= 1){
+            oss << "- " << "20 " << static_cast<char>(propriedades::PropriedadeType::SOM);
+            return oss.str();
+        }
+
+        return "";
     }
 
-    Lampada::Lampada(int id) : Aparelho(id, AparelhoType::LAMPADA, "lampada") { }
 
-    void Lampada::run(std::vector<propriedades::Propriedade *> &props) {
-        Aparelho::run(props);
+    Lampada::Lampada(int id) : Aparelho(id, AparelhoType::LAMPADA, "lampada") { }
+    std::string Lampada::run() {
+        Aparelho::run();
+        return "";
     }
 
 } // aparelho
