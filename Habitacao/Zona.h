@@ -123,6 +123,11 @@ namespace zona {
         // retorna:     true caso corra tudo bem
         //              false em caso de algum erro
 
+        bool unlinkProcAndGadget(int proc_id, int gadget_id);
+        // desacossia um Aparelho a saida do um Processador numa dada Zona
+        // retorna:     true caso corra tudo bem
+        //              false em caso de algum erro
+
         bool sendCmdTo(int gadget_id, std::string command);
         // envia um comando a um Aparelho na Zona
         // retorna:     true caso corra tudo bem

@@ -494,6 +494,43 @@ namespace zona {
         return true;
     }
 
+    bool Zona::unlinkProcAndGadget(int proc_id, int gadget_id) {
+        std::ostringstream oss;
+
+        // procurar o Processador
+        auto processorIt = std::find_if(comps.begin(), comps.end(), [proc_id](const componente::Componente* comp) {
+            return comp->getID() == static_cast<char>(componente::ComponenteType::PROCESSADOR) + std::to_string(proc_id);
+        });
+        if (processorIt == comps.end()) {
+            oss << "O Processador com o id=" << proc_id << " nao existe";
+            error = oss.str();
+            return false;
+        }
+        // procurar o Aparelho
+        auto componentIt = std::find_if(comps.begin(), comps.end(), [gadget_id](const componente::Componente* comp) {
+            return comp->getID() == static_cast<char>(componente::ComponenteType::APARELHO) + std::to_string(gadget_id);
+        });
+        if (componentIt == comps.end()) {
+            oss << "O Aparelho com o id=" << gadget_id << " nao existe";
+            error = oss.str();
+            return false;
+        }
+        processador::Processador* proc = dynamic_cast<processador::Processador*>(*processorIt);
+
+        if(!proc->gadgetExists(gadget_id)){
+            oss << "O Aparelho \'" << static_cast<char>(componente::ComponenteType::APARELHO) << gadget_id << "\' nao esta na saida do Processador \'" << static_cast<char>(componente::ComponenteType::PROCESSADOR) << proc_id << "\'";
+            error = oss.str();
+            return false;
+        }
+
+        // desassicia o Aparelho do Processador
+        proc->unlink(gadget_id);
+
+        oss << "Foi desassociado da saida do Processador \'" << static_cast<char>(componente::ComponenteType::PROCESSADOR) << proc_id << "\' o Aparelho \'" << static_cast<char>(componente::ComponenteType::APARELHO) << gadget_id << "\'";
+        error = oss.str();
+        return true;
+    }
+
     bool Zona::sendCmdTo(int gadget_id, std::string command) {
         std::ostringstream oss;
 
