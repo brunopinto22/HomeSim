@@ -18,6 +18,8 @@ namespace componente {
         return oss.str();
     }
 
+    std::string Componente::run() { return ""; }
+
     std::string Componente::getName() const { return name; }
 
 

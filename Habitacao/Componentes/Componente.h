@@ -29,6 +29,9 @@ namespace componente {
         virtual std::string getInfo() const;
         // devolve a informacao do componente
 
+        virtual std::string run();
+        // corre o componente
+
     // -- FUNCS GLOBAIS
         std::string getID() const;
         // devolve o ID do componente
