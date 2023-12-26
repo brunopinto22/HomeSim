@@ -101,6 +101,13 @@ public:
     bool Execute(habitacao::Habitacao &h, std::string args) override;
 };
 
+class Asoc : public Comando {
+public:
+    Asoc();
+
+    bool Execute(habitacao::Habitacao &h, std::string args) override;
+};
+
 class Acom : public Comando {
 public:
     Acom();
