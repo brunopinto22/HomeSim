@@ -1,8 +1,8 @@
 {
   "name": "homesim",
-  "version": "0.6.2",
+  "version": "0.6.5",
   "description": "Smart Home Simulator in C++ and PDcurses",
-  "main": "index.js",
+  "main": "main.cpp",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
