@@ -5,7 +5,7 @@
 
 namespace processador {
     Processador::Processador(int id, std::string command)
-    : componente::Componente(id, static_cast<char>(componente::ComponenteType::PROCESSADOR), "processador"), command(std::move(command)) { }
+    : componente::Componente(id, static_cast<char>(componente::ComponenteType::PROCESSADOR), "processador"), command(std::move(command)), sent(false) { }
 
     void Processador::changeType(std::string cmd) {
         this->command = std::move(cmd);
@@ -18,13 +18,16 @@ namespace processador {
         return oss.str();
     }
 
-    bool Processador::areRulesTrue() const {
+    bool Processador::areRulesTrue() {
         if(rules.empty())
             return false;
 
-        for(const auto &r : rules)
-            if(!r->check())
+        for(const auto &r : rules) {
+            if (!r->check()) {
+                sent = false;
                 return false;
+            }
+        }
 
         return true;
     }
@@ -87,11 +90,27 @@ namespace processador {
         gadgets.erase(it, gadgets.end());
     }
 
+    void Processador::notifyGadgets() {
+        if(sent)
+            return;
+
+        for(const auto& ap : gadgets)
+            ap->runCommand(getAction());
+
+        sent = true;
+    }
+
     std::string Processador::getAction() const {
         return command;
     }
 
+    std::string Processador::run() {
 
+        if(areRulesTrue())
+            notifyGadgets();
+
+        return "";
+    }
 
 
 } // processador

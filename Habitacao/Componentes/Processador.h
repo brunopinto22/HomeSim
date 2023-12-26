@@ -12,6 +12,7 @@ namespace processador {
     class Processador : public componente::Componente{
     private:
         std::string command;
+        bool sent;
 
         std::vector<aparelho::Aparelho*> gadgets;
         std::vector<regra::Regra*> rules;
@@ -27,7 +28,7 @@ namespace processador {
         virtual std::string getInfo() const override;
         // devolve a informacao do componente
 
-        bool areRulesTrue() const;
+        bool areRulesTrue();
         // verifica se as regras sao todas verdade
         // retorna:     true - caso sejam todas verdade
         //              false - caso contrario
@@ -58,10 +59,17 @@ namespace processador {
         void unlink(int gadget_id);
         // remove um aparelho a saida do Processador
 
+        void notifyGadgets();
+        // envia o comando para os Aparelhos associados
+
         std::string getAction() const;
         // devolve a acao realizada ao ser verdade
         // retorna:     true - ligar
         //              false - desligar
+
+        std::string run() override;
+        // corre o Processador
+
     };
 
 } // processador
