@@ -124,18 +124,19 @@ namespace aparelho {
 
         // primeiro instante ligado
         if(getIsOn() && getTicks() == 1){
-            oss << "+ " << "50 " << static_cast<char>(propriedades::PropriedadeType::HUMIDADE) << "< 75%\n"
-                << "+ " << "100 " << static_cast<char>(propriedades::PropriedadeType::VIBRACAO);
+            oss << "+ " << "20 " << static_cast<char>(propriedades::PropriedadeType::SOM);
             return oss.str();
         }
 
-        if(getIsOn() && getTicks() == 5){
-            turnOff();
+        // primeiro instante desligado
+        if(!getIsOn() && getTicks() == 1){
+            oss << "- " << "20 " << static_cast<char>(propriedades::PropriedadeType::SOM);
+            return oss.str();
         }
 
-        // primeiro instante desligado
-        if(!getIsOn() && getTicks() <= 1){
-            oss << "- " << "20 " << static_cast<char>(propriedades::PropriedadeType::SOM);
+
+        if(getIsOn() && getTicks() % 3 == 0 && getTicks() <= 50){
+            oss << "- " << "1 " << static_cast<char>(propriedades::PropriedadeType::TEMPERATURA);
             return oss.str();
         }
 
@@ -146,6 +147,20 @@ namespace aparelho {
     Lampada::Lampada(int id) : Aparelho(id, AparelhoType::LAMPADA, "lampada") { }
     std::string Lampada::run() {
         Aparelho::run();
+        std::ostringstream oss;
+
+        // primeiro instante ligado
+        if(getIsOn() && getTicks() == 1){
+            oss << "+ " << "900 " << static_cast<char>(propriedades::PropriedadeType::LUZ);
+            return oss.str();
+        }
+
+        // primeiro instante desligado
+        if(!getIsOn() && getTicks() == 1){
+            oss << "- " << "900 " << static_cast<char>(propriedades::PropriedadeType::LUZ);
+            return oss.str();
+        }
+
         return "";
     }
 
