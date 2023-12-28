@@ -5,7 +5,7 @@
 #include "Componentes/Regra.h"
 
 namespace habitacao {
-    Habitacao::Habitacao(int width, int height):width(width), height(height), number_id(0), zone_number_id(0), rule_number_id(0), ticks(0), number_of_zones(0) {}
+    Habitacao::Habitacao(int width, int height) : width(width), height(height), number_id(0), zone_number_id(0), rule_number_id(0), ticks(0), number_of_zones(0) {}
 
     int Habitacao::getZoneNumberID(){
         zone_number_id++;
