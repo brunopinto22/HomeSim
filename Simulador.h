@@ -1,7 +1,7 @@
 #ifndef HOMESIM_SIMULADOR_H
 #define HOMESIM_SIMULADOR_H
 
-#include <vector>
+#include <map>
 
 #include "Terminal.h"
 #include "Habitacao//Comando.h"
@@ -20,7 +20,7 @@ namespace simulador {
         std::string title;
 
         // janelas
-        std::vector<term::Window*> zonas;
+        std::map<std::pair<int, int>, term::Window*> zonas;
 
         // habitacao
         habitacao::Habitacao* h;

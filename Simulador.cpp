@@ -313,37 +313,34 @@ namespace simulador {
 
 
     void Simulador::printZones() {
-        // limpa o vetor
-        for(auto & zona : zonas)
-            delete zona;
+        // limpa o mapa
+        for (auto& zone : zonas)
+            delete zone.second;
         zonas.clear();
 
         // verifica se existe uma habitacao
-        if(h == nullptr)
+        if (h == nullptr)
             return;
 
         // cria as janelas das zonas
-        for(int x=0; x < h->getHeight(); x++)
-            for(int y=0; y < h->getWidth(); y++)
-                zonas.push_back(new term::Window(72+30*x, 6+10*y, 30, 10, true));
+        for (int x = 0; x < h->getHeight(); x++)
+            for (int y = 0; y < h->getWidth(); y++)
+                zonas[std::make_pair(x, y)] = new term::Window(72 + 30 * x, 6 + 10 * y, 30, 10, true);
 
         // verifica se existem zonas
-        if(h->getNumberOfZones() <= 0)
+        if (h->getNumberOfZones() <= 0)
             return;
 
         // imprime a informacao de cada zona
-        int count = 0;
-        for(int x=0; x < h->getHeight(); x++){
-            for(int y=0; y < h->getWidth(); y++){
-                // vai buscar a zona correspodente
+        for (int x = 0; x < h->getHeight(); x++) {
+            for (int y = 0; y < h->getWidth(); y++) {
+                // vai buscar a zona correspondente
                 zona::Zona current_zone = h->getZone(y + 1, x + 1);
                 if (current_zone.getID() != -1)
-                    *zonas.at(count) << term::set_color(COLOR_ID) << "Zona_" << current_zone.getID()
-                    << term::set_color(COLOR_DEFAULT) << "\n" << current_zone.getComponents();
-                count++;
+                    *zonas.at(std::make_pair(x, y)) << term::set_color(COLOR_ID) << "Zona_" << current_zone.getID()
+                                                    << term::set_color(COLOR_DEFAULT) << "\n" << current_zone.getComponents();
             }
         }
-
     }
 
     void Simulador::printZoneProps(const zona::Zona& z, term::Window& output) {
