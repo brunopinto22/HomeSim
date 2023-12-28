@@ -32,7 +32,7 @@ namespace habitacao {
         // devolve o numero do ID para a Regra
 
         int getNumberID();
-        // devolve o numero do ID para o Sensor/Aparelho/Regra
+        // devolve o numero do ID para o Componente
 
         int getWidth() const;
         // devolve a 'largura' da habitacao
