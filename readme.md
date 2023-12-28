@@ -20,7 +20,7 @@ You'll need **PDcurses** installed on your system and to configure **CLion**
 * **PDcurses** : 
 [https://github.com/wmcbrine/PDCurses/releases](https://github.com/wmcbrine/PDCurses/releases)
 
-* **CLion Configuration** : // link para o ficheiro pdf
+* **CLion Configuration** : [POO - 2324 - Biblioteca POO Consola - INSTRUCOES](/docs/POO%20-%202324%20-%20Biblioteca%20POO%20Consola%20-%20INSTRUCOES.pdf)
 
 <br>
 
@@ -85,4 +85,6 @@ You'll need **PDcurses** installed on your system and to configure **CLion**
 
 <br>
 
-## How it Works ⚙
+## Documents 📁
+
+* [POO - 2324 - Enunciado Trabalho Pratico](/docs/POO%20-%202324%20-%20Enunciado%20Trabalho%20Pratico.pdf)
