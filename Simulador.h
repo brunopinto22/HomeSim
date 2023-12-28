@@ -16,6 +16,9 @@ namespace simulador {
         // terminal
         term::Terminal* t;
 
+        // UI
+        std::string title;
+
         // janelas
         std::vector<term::Window*> zonas;
 
@@ -36,6 +39,9 @@ namespace simulador {
 
         void executeCommand(std::string& prompt, term::Window& output, bool isFromExec);
         // executa os comandos
+
+        void getInfo(term::Window& output);
+        // imprime a informacao do Simulador
 
         void printZones();
         // imprime as zonas

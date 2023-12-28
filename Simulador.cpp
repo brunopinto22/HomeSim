@@ -8,6 +8,9 @@ namespace simulador {
     Simulador::Simulador(term::Terminal &t):t(&t), isOn(false), h(nullptr) {
         // iniciar cores
         for(int i=1; i<20; i++) { t.init_color(i, i, 0); }
+
+        title =   "   _____  _____  _____  _____    _____  _____  _____\n  |  |  ||     ||     ||   __|  |   __||     ||     |\n  |     ||  |  || | | ||   __|  |__   ||-   -|| | | |\n  |__|__||_____||_|_|_||_____|  |_____||_____||_|_|_|";
+
     }
 
 
@@ -15,16 +18,12 @@ namespace simulador {
         std::string prompt;
 
         // criacao das janelas
-        term::Window title = term::Window(1,1,70,5, false);
+        term::Window titleW = term::Window(1,1,70,5, false);
         term::Window reader = term::Window(1,6,70,7, true);
         term::Window output = term::Window(1, 13, 70, 33, true);
         term::Window info = term::Window(72,1,120,5, true);
 
-        title << term::set_color(COLOR_MESSAGE)
-              << "   _____  _____  _____  _____    _____  _____  _____\n"
-              << "  |  |  ||     ||     ||   __|  |   __||     ||     |\n"
-              << "  |     ||  |  || | | ||   __|  |__   ||-   -|| | | |\n"
-              << "  |__|__||_____||_|_|_||_____|  |_____||_____||_|_|_|";
+        titleW << term::set_color(COLOR_MESSAGE) << title;
 
         isOn = true;
         do{
@@ -39,9 +38,7 @@ namespace simulador {
             // imprimir informacao sobre a simulacao
             info.clear();
             if(h != nullptr)
-                info << term::set_color(COLOR_MESSAGE)<< "\n\tHabitacao:" << term::set_color(COLOR_DEFAULT) << h->getWidth() << "x" << h->getHeight()
-                << term::set_color(COLOR_MESSAGE)  <<"\tTicks:" << term::set_color(COLOR_DEFAULT) << h->getTicks()
-                << term::set_color(COLOR_MESSAGE)  <<"\tNum. Zonas:" << term::set_color(COLOR_DEFAULT) << h->getNumberOfZones();
+                getInfo(info);
             else
                 info << term::set_color(COLOR_ERROR) << "\n\tAinda nao existe uma Habitacao";
 
@@ -50,7 +47,6 @@ namespace simulador {
 
             // executa o comando
             executeCommand(prompt, output, false);
-
 
         } while(isOn);
 
@@ -304,6 +300,15 @@ namespace simulador {
         else
             output << term::set_color(COLOR_ERROR) << " Erro: " << exe->getError() << "\n";
 
+    }
+
+
+    void Simulador::getInfo(term::Window &output) {
+        output  << term::set_color(COLOR_ID) << "\n\tHabitacao:" << term::set_color(COLOR_DEFAULT) << h->getWidth() << "x" << h->getHeight()
+                << term::set_color(COLOR_MESSAGE) << "  |  "
+                << term::set_color(COLOR_ID) << "Ticks:" << term::set_color(COLOR_DEFAULT) << h->getTicks()
+                << term::set_color(COLOR_MESSAGE) << "  |  "
+                << term::set_color(COLOR_ID) << "Num. Zonas:" << term::set_color(COLOR_DEFAULT) << h->getNumberOfZones();
     }
 
 
