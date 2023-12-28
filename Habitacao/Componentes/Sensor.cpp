@@ -20,9 +20,7 @@ namespace sensor {
 
     std::string Sensor::getValueStr() const { return prop.getValueStr(); }
 
-    std::string Sensor::run() {
-        return "";
-    }
+    void Sensor::run(std::vector<propriedades::Propriedade *> &props) { }
 
 
 } // sensor

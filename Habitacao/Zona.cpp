@@ -33,7 +33,7 @@ namespace zona {
         std::string min, max, unit;
 
         auto it = std::find_if(props.begin(), props.end(), [&current, &min, &max, &unit, new_value, type](propriedades::Propriedade* prop) {
-            *prop = new_value;
+            prop->setValue(new_value);
             current = prop->getValue();
             min = prop->getMin();
             max = prop->getMax();
@@ -555,113 +555,14 @@ namespace zona {
     }
 
     bool Zona::tick() {
-        std::ostringstream oss;
         std::string output, cmd;
 
-        for (auto& comp : comps) {
-            // correr cada Componente
-            std::istringstream iss(comp->run());
+        // correr cada Componente
+        for (auto& comp : comps)
+            comp->run(props);
 
-            // percorrer e correr o output
-            while (std::getline(iss, cmd))
-                if (!executeMod(cmd))
-                    oss << error << "\n ";
-
-        }
-
-        error = oss.str();
-        return true;
-
-    }
-
-    bool Zona::executeMod(const std::string& command) {
         error = "";
-        if(command.empty())
-            return true;
-
-
-        std::istringstream iss(command);
-        char operation;
-        int number;
-        char type;
-        std::string rest;
-        int condition_value;
-        char condition;
-
-        if (iss >> operation >> number >> type) {
-            auto it = std::find_if(props.begin(), props.end(), [type](const propriedades::Propriedade* prop) {
-                return prop->getType() == type;
-            });
-            if (it != props.end()) {
-                propriedades::Propriedade* prop = *it;
-
-                // verificar se tem condicao
-                if (iss >> rest) {
-                    std::istringstream restIss(rest);
-                    if (restIss >> condition >> condition_value) {
-                        switch (condition) {
-                            case '<':
-                                if (prop->getValue() >= condition_value)
-                                    return false;
-                                break;
-
-                            case '>':
-                                if (prop->getValue() <= condition_value)
-                                    return false;
-                                break;
-
-                            case '=':
-                                if (prop->getValue() != condition_value)
-                                    return false;
-                                break;
-
-                            default:
-                                error = "O tipo de condicao nao e valido";
-                                return false;
-                        }
-                    }
-                }
-
-                switch (operation) {
-                    case '+':
-                        *prop = *prop + number;
-                    break;
-
-                    case '-':
-                        *prop = *prop - number;
-                    break;
-
-                    case '*':
-                        *prop = *prop * number;
-                    break;
-
-                    case '/':
-                        *prop = *prop / number;
-                    break;
-
-                    case '=':
-                        *prop = number;
-                    break;
-
-                    default:
-                        error = "O tipo de operacao nao e valido";
-                    return false;
-
-                }
-
-                return true;
-            } else {
-                error = "A operacao nao tem um tipo de Propriedade valido";
-                return false;
-            }
-
-        } else {
-            error = "A formatacao da operacao nao foi reconhecida : " + command;
-            return false;
-        }
-
         return true;
     }
-
 
 } // zona

@@ -51,7 +51,7 @@ namespace aparelho {
         virtual void runCommand(std::string command);
         // corre um comando recebido
 
-        std::string run() override;
+        void run(std::vector<propriedades::Propriedade *> &props) override;
         // correr o Aparelho
 
     };
@@ -60,25 +60,25 @@ namespace aparelho {
     class Aquecedor : public Aparelho {
     public:
         Aquecedor(int id);
-        std::string run() override;
+        void run(std::vector<propriedades::Propriedade *> &props) override;
     };
 
     class Aspersor : public Aparelho {
     public:
         Aspersor(int id);
-        std::string run() override;
+        void run(std::vector<propriedades::Propriedade *> &props) override;
     };
 
     class Refrigerador : public Aparelho {
     public:
         Refrigerador(int id);
-        std::string run() override;
+        void run(std::vector<propriedades::Propriedade *> &props) override;
     };
 
     class Lampada : public Aparelho {
     public:
         Lampada(int id);
-        std::string run() override;
+        void run(std::vector<propriedades::Propriedade *> &props) override;
     };
 
 } // aparelho

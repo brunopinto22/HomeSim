@@ -67,7 +67,7 @@ namespace processador {
         // retorna:     true - ligar
         //              false - desligar
 
-        std::string run() override;
+        void run(std::vector<propriedades::Propriedade *> &props) override;
         // corre o Processador
 
     };

@@ -104,12 +104,9 @@ namespace processador {
         return command;
     }
 
-    std::string Processador::run() {
-
+    void Processador::run(std::vector<propriedades::Propriedade *> &props) {
         if(areRulesTrue())
             notifyGadgets();
-
-        return "";
     }
 
 

@@ -2,6 +2,8 @@
 #define HOMESIM_COMPONENTE_H
 
 #include <string>
+#include <vector>
+#include "../Propriedade.h"
 
 namespace componente {
 
@@ -29,7 +31,7 @@ namespace componente {
         virtual std::string getInfo() const;
         // devolve a informacao do componente
 
-        virtual std::string run();
+        virtual void run(std::vector<propriedades::Propriedade *> &props);
         // corre o componente
 
     // -- FUNCS GLOBAIS

@@ -138,11 +138,6 @@ namespace zona {
         // retorna:     true caso corra tudo bem
         //              false em caso de algum erro
 
-        bool executeMod(const std::string& command);
-        // executa uma modificacao nas propriedades da Zona
-        // retorna:     true caso corra tudo bem
-        //              false em caso de algum erro
-
     };
 
 } // zona

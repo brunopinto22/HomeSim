@@ -25,13 +25,13 @@ namespace propriedades {
         // unidade de medida
         std::string unit;
 
-        // nome da propriedade
+        // nome da Propriedade
         std::string name;
 
         // tipo da
         PropriedadeType type;
 
-        // valor max e min que a propriedade pode assumir
+        // valor max e min que a Propriedade pode assumir
         int min, max;
 
     public:
@@ -41,13 +41,13 @@ namespace propriedades {
 
         int getValue() const;
         std::string getValueStr() const;
-        // devolve o valor da propriedade
+        // devolve o valor da Propriedade
 
         std::string getMin() const;
-        // devolve o valor minimo da propriedade
+        // devolve o valor minimo da Propriedade
 
         std::string getMax() const;
-        // devolve o valor maximo da propriedade
+        // devolve o valor maximo da Propriedade
 
         std::string getUnit() const;
         // devolve o valor da propriedade
@@ -59,13 +59,10 @@ namespace propriedades {
         // devolve o tipo da propriedade
 
         bool checkNewValue(int& new_value) const;
-        // verifica se o valor novo e aceitavel para a propriedade
+        // verifica se o valor novo e aceitavel para a Propriedade
 
-        Propriedade& operator+(int new_value);
-        Propriedade& operator-(int new_value);
-        Propriedade& operator*(int new_value);
-        Propriedade& operator/(int new_value);
-        Propriedade& operator=(int new_value);
+        void setValue(int new_value);
+        // define um valor novo para a Propriedade
 
     };
 

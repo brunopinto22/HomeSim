@@ -39,6 +39,9 @@ namespace propriedades {
     PropriedadeType Propriedade::getType() const{ return type; }
 
     bool Propriedade::checkNewValue(int &new_value) const {
+        if(max == UNSET && min == UNSET)
+            return true;
+
         if(max == UNSET)
             return new_value >= min;
 
@@ -48,58 +51,11 @@ namespace propriedades {
         return new_value >= min && new_value <=max;
     }
 
-    Propriedade &Propriedade::operator+(int new_value) {
-        if(this->value == UNSET && checkNewValue(new_value)){
-            this->value = this->min + new_value;
-            return *this;
-        }
+    void Propriedade::setValue(int new_value) {
+        if(!checkNewValue(new_value)) return;
 
-        int final = this->value + new_value;
-        if (checkNewValue(final))
-            this->value = final;
-        return *this;
-    }
+        value = new_value;
 
-    Propriedade &Propriedade::operator-(int new_value) {
-        if(this->value == UNSET){
-            this->value = this->min;
-            return *this;
-        }
-
-        int final = this->value - new_value;
-        if (checkNewValue(final))
-            this->value = final;
-        return *this;
-    }
-
-    Propriedade &Propriedade::operator*(int new_value) {
-        if(this->value == UNSET){
-            this->value = this->min;
-            return *this;
-        }
-
-        int final = this->value * new_value;
-        if (checkNewValue(final))
-            this->value = final;
-        return *this;
-    }
-
-    Propriedade &Propriedade::operator/(int new_value) {
-        if(this->value == UNSET){
-            this->value = this->min;
-            return *this;
-        }
-
-        int final = this->value / new_value;
-        if (checkNewValue(final))
-            this->value = final;
-        return *this;
-    }
-
-    Propriedade &Propriedade::operator=(int new_value) {
-        if (checkNewValue(new_value))
-            this->value = new_value;
-        return *this;
     }
 
 
