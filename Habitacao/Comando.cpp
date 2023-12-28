@@ -9,50 +9,111 @@ std::string Comando::getError() const {
 }
 
 
+Hnova::Hnova() {}
+bool Hnova::Execute(habitacao::Habitacao *&h, std::string args){
+    std::ostringstream oss;
+    std::istringstream iss(args);
+
+    int width, height;
+    if (iss >> width >> height){
+
+        if(h != nullptr){
+            defineError("Ja tem uma Habitacao criada");
+            return false;
+
+        } else if(width < 0 || height < 0 || width > 4 || height > 4){
+            defineError("<num linhas> e <num colunas> tem de estar compreendido entre [1, 4]");
+            return false;
+        }
+
+        h = new habitacao::Habitacao(width, height);
+
+        oss << "Habitacao " << width << "x" << height << " criada";
+        defineError(oss.str());
+        return true;
+    }
+
+    defineError("hnova <num linhas> <num colunas>");
+    return false;
+
+}
+
+
+Hrem::Hrem() {}
+bool Hrem::Execute(habitacao::Habitacao *&h, std::string args){
+    if(h == nullptr){
+        defineError("Tem primeiro de criar uma habitacao: hnova <numLinhas> <numColunas>");
+        return false;
+    }
+
+    if(!args.empty()){
+        defineError("hrem");
+        return false;
+    }
+
+    delete h;
+    h = nullptr;
+
+    defineError("A Habitacao foi removida");
+    return true;
+
+}
+
+
 
 Prox::Prox() {}
-bool Prox::Execute(habitacao::Habitacao &h, std::string args){
+bool Prox::Execute(habitacao::Habitacao *&h, std::string args){
     if(!args.empty()){
         defineError("prox");
         return false;
     }
 
-    if(!h.tick()){
-        defineError(h.getError());
+    if(h == nullptr){
+        defineError("Tem primeiro de criar uma habitacao: hnova <numLinhas> <numColunas>");
         return false;
     }
 
-    defineError(h.getError());
+    if(!h->tick()){
+        defineError(h->getError());
+        return false;
+    }
+
+    defineError(h->getError());
     return true;
 
 }
 
 
 Znova::Znova() {}
-bool Znova::Execute(habitacao::Habitacao &h, std::string args) {
+bool Znova::Execute(habitacao::Habitacao *&h, std::string args) {
     std::ostringstream oss;
     std::istringstream iss(args);
     int x,y;
 
     if(iss >> x >> y){
 
-        if(h.getNumberOfZones() >= h.getHeight()*h.getWidth()){
+        if(h == nullptr){
+            defineError("Tem primeiro de criar uma habitacao: hnova <numLinhas> <numColunas>");
+            return false;
+        }
+
+        if(h->getNumberOfZones() >= h->getHeight()*h->getWidth()){
             defineError("A Habitacao esta cheia");
             return false;
 
-        } else if(x < 1 || x > h.getHeight() || y < 1 || y > h.getWidth()){
-            oss << "O valor de x e de y tem de estar compreendidos entre (1," << h.getHeight() << ") e (1," << h.getWidth()<<")";
+        } else if(x < 1 || x > h->getHeight() || y < 1 || y > h->getWidth()){
+            oss << "O valor de x e de y tem de estar compreendidos entre (1," << h->getHeight() << ") e (1," << h->getWidth()<<")";
             defineError(oss.str());
             return false;
 
-        } else if(h.isZoneTacken(x,y)){
+        } else if(h->isZoneTacken(x,y)){
             oss << "A posicao (" << x << "," << y <<") esta preenchida";
             defineError(oss.str());
             return false;
         }
 
 
-        h.addZone(x, y);
+        h->addZone(x, y);
         oss << "Foi criada a zona em (" << x << "," << y << ")";
         defineError(oss.str());
         return true;
@@ -65,19 +126,25 @@ bool Znova::Execute(habitacao::Habitacao &h, std::string args) {
 
 
 Zrem::Zrem() {}
-bool Zrem::Execute(habitacao::Habitacao &h, std::string args) {
+bool Zrem::Execute(habitacao::Habitacao *&h, std::string args) {
     std::ostringstream oss;
     std::istringstream iss(args);
+
     int id;
     if (iss >> id) {
 
-        if(!h.checkZoneID(id)){
+        if(h == nullptr){
+            defineError("Tem primeiro de criar uma habitacao: hnova <numLinhas> <numColunas>");
+            return false;
+        }
+
+        if(!h->checkZoneID(id)){
             oss << "A Zona com o id=" << id << " nao existe";
             defineError(oss.str());
             return false;
         }
 
-        h.removeZone(id);
+        h->removeZone(id);
         oss << "A Zona_" << id << " foi removida";
         defineError(oss.str());
         return true;
@@ -89,8 +156,7 @@ bool Zrem::Execute(habitacao::Habitacao &h, std::string args) {
 }
 
 Pmod::Pmod() {}
-bool Pmod::Execute(habitacao::Habitacao &h, std::string args) {
-
+bool Pmod::Execute(habitacao::Habitacao *&h, std::string args) {
     std::ostringstream oss;
     std::istringstream iss(args);
 
@@ -98,12 +164,17 @@ bool Pmod::Execute(habitacao::Habitacao &h, std::string args) {
     std::string name;
     if (iss >> id >> name >> value) {
 
-        if(!h.changeZoneProp(id, name, value)){
-            defineError(h.getError());
+        if(h == nullptr){
+            defineError("Tem primeiro de criar uma habitacao: hnova <numLinhas> <numColunas>");
             return false;
         }
 
-        oss << "A Propriedade " << name << " da Zona_" << id << " foi atualizada para " << h.getError();
+        if(!h->changeZoneProp(id, name, value)){
+            defineError(h->getError());
+            return false;
+        }
+
+        oss << "A Propriedade " << name << " da Zona_" << id << " foi atualizada para " << h->getError();
         defineError(oss.str());
         return true;
 
@@ -114,8 +185,7 @@ bool Pmod::Execute(habitacao::Habitacao &h, std::string args) {
 }
 
 Cnovo::Cnovo() {}
-bool Cnovo::Execute(habitacao::Habitacao &h, std::string args) {
-
+bool Cnovo::Execute(habitacao::Habitacao *&h, std::string args) {
     std::ostringstream oss;
     std::istringstream iss(args);
 
@@ -124,12 +194,17 @@ bool Cnovo::Execute(habitacao::Habitacao &h, std::string args) {
     std::string typeOrCmd;
     if (iss >> zone_id >> type >> typeOrCmd) {
 
-        if(!h.addComponent(zone_id, type, typeOrCmd)){
-            defineError(h.getError());
+        if(h == nullptr){
+            defineError("Tem primeiro de criar uma habitacao: hnova <numLinhas> <numColunas>");
             return false;
         }
 
-        oss << h.getError() << " na Zona_" << zone_id;
+        if(!h->addComponent(zone_id, type, typeOrCmd)){
+            defineError(h->getError());
+            return false;
+        }
+
+        oss << h->getError() << " na Zona_" << zone_id;
         defineError(oss.str());
         return true;
     }
@@ -139,8 +214,7 @@ bool Cnovo::Execute(habitacao::Habitacao &h, std::string args) {
 }
 
 Crem::Crem() {}
-bool Crem::Execute(habitacao::Habitacao &h, std::string args) {
-
+bool Crem::Execute(habitacao::Habitacao *&h, std::string args) {
     std::ostringstream oss;
     std::istringstream iss(args);
 
@@ -149,12 +223,17 @@ bool Crem::Execute(habitacao::Habitacao &h, std::string args) {
     std::string typeOrCmd;
     if (iss >> zone_id >> type >> comp_id) {
 
-        if(!h.removeComponent(zone_id, type, comp_id)){
-            defineError(h.getError());
+        if(h == nullptr){
+            defineError("Tem primeiro de criar uma habitacao: hnova <numLinhas> <numColunas>");
             return false;
         }
 
-        oss << h.getError() << " na Zona_" << zone_id;
+        if(!h->removeComponent(zone_id, type, comp_id)){
+            defineError(h->getError());
+            return false;
+        }
+
+        oss << h->getError() << " na Zona_" << zone_id;
         defineError(oss.str());
         return true;
     }
@@ -164,22 +243,27 @@ bool Crem::Execute(habitacao::Habitacao &h, std::string args) {
 }
 
 Rnova::Rnova() {}
-bool Rnova::Execute(habitacao::Habitacao &h, std::string args) {
-
+bool Rnova::Execute(habitacao::Habitacao *&h, std::string args) {
     std::ostringstream oss;
     std::istringstream iss(args);
 
     int zone_id, proc_id, sens_id;
     std::string rule_type, params;
     if (iss >> zone_id >> proc_id >> rule_type >> sens_id ) {
-        std::getline(iss >> std::ws, params);
 
-        if(!h.addRule(zone_id, proc_id, sens_id, rule_type, params)){
-            defineError(h.getError());
+        if(h == nullptr){
+            defineError("Tem primeiro de criar uma habitacao: hnova <numLinhas> <numColunas>");
             return false;
         }
 
-        oss << h.getError() << " na Zona_" << zone_id;
+        std::getline(iss >> std::ws, params);
+
+        if(!h->addRule(zone_id, proc_id, sens_id, rule_type, params)){
+            defineError(h->getError());
+            return false;
+        }
+
+        oss << h->getError() << " na Zona_" << zone_id;
         defineError(oss.str());
         return true;
 
@@ -190,8 +274,7 @@ bool Rnova::Execute(habitacao::Habitacao &h, std::string args) {
 }
 
 Pmuda::Pmuda() {}
-bool Pmuda::Execute(habitacao::Habitacao &h, std::string args) {
-
+bool Pmuda::Execute(habitacao::Habitacao *&h, std::string args) {
     std::ostringstream oss;
     std::istringstream iss(args);
 
@@ -199,12 +282,17 @@ bool Pmuda::Execute(habitacao::Habitacao &h, std::string args) {
     std::string new_cmd;
     if (iss >> zone_id >> proc_id >> new_cmd) {
 
-        if(!h.changeProcCmd(zone_id, proc_id, new_cmd)){
-            defineError(h.getError());
+        if(h == nullptr){
+            defineError("Tem primeiro de criar uma habitacao: hnova <numLinhas> <numColunas>");
             return false;
         }
 
-        oss << h.getError() << " na Zona_" << zone_id;
+        if(!h->changeProcCmd(zone_id, proc_id, new_cmd)){
+            defineError(h->getError());
+            return false;
+        }
+
+        oss << h->getError() << " na Zona_" << zone_id;
         defineError(oss.str());
         return true;
 
@@ -215,17 +303,21 @@ bool Pmuda::Execute(habitacao::Habitacao &h, std::string args) {
 }
 
 Rlista::Rlista() {}
-bool Rlista::Execute(habitacao::Habitacao &h, std::string args) {
-
+bool Rlista::Execute(habitacao::Habitacao *&h, std::string args) {
     std::istringstream iss(args);
     bool result;
 
     int zone_id, proc_id;
     if (iss >> zone_id >> proc_id) {
 
-        result = h.getProcessorRules(zone_id, proc_id);
+        if(h == nullptr){
+            defineError("Tem primeiro de criar uma habitacao: hnova <numLinhas> <numColunas>");
+            return false;
+        }
 
-        defineError(h.getError());
+        result = h->getProcessorRules(zone_id, proc_id);
+
+        defineError(h->getError());
         return result;
     }
 
@@ -234,16 +326,20 @@ bool Rlista::Execute(habitacao::Habitacao &h, std::string args) {
 }
 
 Rrem::Rrem() {}
-bool Rrem::Execute(habitacao::Habitacao &h, std::string args) {
-
+bool Rrem::Execute(habitacao::Habitacao *&h, std::string args) {
     std::istringstream iss(args);
     bool result;
 
     int zone_id, proc_id, rule_id;
     if (iss >> zone_id >> proc_id >> rule_id) {
 
-        result = h.removeRule(zone_id, proc_id, rule_id);
-        defineError(h.getError());
+        if(h == nullptr){
+            defineError("Tem primeiro de criar uma habitacao: hnova <numLinhas> <numColunas>");
+            return false;
+        }
+
+        result = h->removeRule(zone_id, proc_id, rule_id);
+        defineError(h->getError());
 
         return result;
     }
@@ -253,16 +349,20 @@ bool Rrem::Execute(habitacao::Habitacao &h, std::string args) {
 }
 
 Asoc::Asoc() {}
-bool Asoc::Execute(habitacao::Habitacao &h, std::string args) {
-
+bool Asoc::Execute(habitacao::Habitacao *&h, std::string args) {
     std::istringstream iss(args);
     bool result;
 
     int zone_id, proc_id, gadget_id;
     if (iss >> zone_id >> proc_id >> gadget_id) {
 
-        result = h.linkProcAndGadget(zone_id, proc_id, gadget_id);
-        defineError(h.getError());
+        if(h == nullptr){
+            defineError("Tem primeiro de criar uma habitacao: hnova <numLinhas> <numColunas>");
+            return false;
+        }
+
+        result = h->linkProcAndGadget(zone_id, proc_id, gadget_id);
+        defineError(h->getError());
 
         return result;
     }
@@ -272,16 +372,20 @@ bool Asoc::Execute(habitacao::Habitacao &h, std::string args) {
 }
 
 Ades::Ades() {}
-bool Ades::Execute(habitacao::Habitacao &h, std::string args) {
-
+bool Ades::Execute(habitacao::Habitacao *&h, std::string args) {
     std::istringstream iss(args);
     bool result;
 
     int zone_id, proc_id, gadget_id;
     if (iss >> zone_id >> proc_id >> gadget_id) {
 
-        result = h.unlinkProcAndGadget(zone_id, proc_id, gadget_id);
-        defineError(h.getError());
+        if(h == nullptr){
+            defineError("Tem primeiro de criar uma habitacao: hnova <numLinhas> <numColunas>");
+            return false;
+        }
+
+        result = h->unlinkProcAndGadget(zone_id, proc_id, gadget_id);
+        defineError(h->getError());
 
         return result;
     }
@@ -291,8 +395,7 @@ bool Ades::Execute(habitacao::Habitacao &h, std::string args) {
 }
 
 Acom::Acom() {}
-bool Acom::Execute(habitacao::Habitacao &h, std::string args) {
-
+bool Acom::Execute(habitacao::Habitacao *&h, std::string args) {
     std::istringstream iss(args);
     bool result;
 
@@ -300,8 +403,13 @@ bool Acom::Execute(habitacao::Habitacao &h, std::string args) {
     std::string cmd;
     if (iss >> zone_id >> gadget_id >> cmd) {
 
-        result = h.sendCommandToGadget(zone_id, gadget_id, cmd);
-        defineError(h.getError());
+        if(h == nullptr){
+            defineError("Tem primeiro de criar uma habitacao: hnova <numLinhas> <numColunas>");
+            return false;
+        }
+
+        result = h->sendCommandToGadget(zone_id, gadget_id, cmd);
+        defineError(h->getError());
 
         return result;
     }

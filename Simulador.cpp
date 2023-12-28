@@ -87,10 +87,7 @@ namespace simulador {
 
 
         if(cmd.empty()){
-            output << term::set_color(COLOR_ERROR) << "Comando vazio";
-
-        } else if(h == nullptr && cmd != "hnova" && cmd != "exec" && cmd != "sair" && cmd != "help"){
-            output << term::set_color(COLOR_ERROR) << "Tem primeiro de criar uma habitacao: hnova <numLinhas> <numColunas>\n";
+            output << term::set_color(COLOR_ERROR) << " Erro: Comando vazio";
 
         } else if(cmd == "prox"){
 
@@ -102,7 +99,7 @@ namespace simulador {
             if (iss >> n) {
                 exe = new Prox;
                 for (int i = 0; i < n; i++) {
-                    if (exe->Execute(*h, ""))
+                    if (exe->Execute(h, ""))
                         output << term::set_color(COLOR_SUCCESS) << exe->getError();
                     else
                         output << term::set_color(COLOR_ERROR) << exe->getError();
@@ -114,37 +111,11 @@ namespace simulador {
 
         } else if(cmd == "hnova"){
 
-            int width, height;
-            if (iss >> width >> height){
-
-                if(h != nullptr){
-                    output << term::set_color(COLOR_ERROR) << "Erro: Ja tem uma Habitacao criada";
-                    return;
-
-                } else if(width < 0 || height < 0 || width > 4 || height > 4){
-                    output << term::set_color(COLOR_ERROR) << " Erro: <num linhas> e <num colunas> tem de estar compreendido entre [1, 4]";
-                    return;
-
-                }
-
-                h = new habitacao::Habitacao(width, height);
-
-                output << term::set_color(COLOR_SUCCESS) << " Habitacao " << width << "x" << height << " criada";
-
-            } else
-                output << term::set_color(COLOR_ERROR) << " Erro: hnova <num linhas> <num colunas>";
+            exe = new Hnova;
 
         } else if(cmd == "hrem"){
 
-            if(!args.empty()){
-                output << term::set_color(COLOR_ERROR) << "Erro de formatacao : hrem";
-
-            } else {
-                delete h;
-                h = nullptr;
-                output << term::set_color(COLOR_SUCCESS) << "A Habitacao foi removida";
-            }
-            return;
+            exe = new Hrem;
 
         } else if(cmd == "znova"){
 
@@ -157,20 +128,19 @@ namespace simulador {
         } else if(cmd == "zlista"){
 
             if(!args.empty()){
-                output << term::set_color(COLOR_ERROR) << "Erro: zlista";
+                output << term::set_color(COLOR_ERROR) << " Erro: zlista";
                 return;
             }
 
             if(h->getNumberOfZones() == 0){
-                output << term::set_color(COLOR_ERROR) << "Nao existem Zonas criadas";
+                output << term::set_color(COLOR_ERROR) << " Nao existem Zonas criadas";
                 return;
             }
 
             for(int i=0; i < h->getNumberOfZones(); i++){
                 zona::Zona z = h->getZone(i);
                 output
-                << term::set_color(COLOR_MESSAGE) << "Zona_" << z.getID()<< term::set_color(COLOR_DEFAULT) <<
-                " (" << z.getPosX() << "," << z.getPosY() << ") : "
+                << term::set_color(COLOR_MESSAGE) << "Zona_" << z.getID()<< term::set_color(COLOR_DEFAULT) << " (" << z.getPosX() << "," << z.getPosY() << ") : "
                 << "sensores=" << z.getNumberOfSensors() << " processadores=" << z.getNumberOfProcessors() << " aparelhos=" << z.getNumberOfGadgets() <<"\n";
             }
 
@@ -180,7 +150,7 @@ namespace simulador {
             if (iss >> id) {
 
                 if(h->getNumberOfZones() == 0){
-                    output << term::set_color(COLOR_ERROR) << "Nao existem Zonas criadas";
+                    output << term::set_color(COLOR_ERROR) << " Nao existem Zonas criadas";
                     return;
                 }
 
@@ -190,7 +160,7 @@ namespace simulador {
                 << term::set_color(COLOR_DEFAULT) << z.getComponentsStr();
 
             } else
-                output << term::set_color(COLOR_ERROR) << "Erro de formatacao : zcomp <ID zona>";
+                output << term::set_color(COLOR_ERROR) << " Erro: zcomp <ID zona>";
 
 
         }  else if(cmd == "zprops"){
@@ -199,7 +169,7 @@ namespace simulador {
             if (iss >> id)
                 printZoneProps(h->getZoneByID(id), output);
             else
-                output << term::set_color(COLOR_ERROR) << "Erro de formatacao : zprops <ID zona>";
+                output << term::set_color(COLOR_ERROR) << " Erro: zprops <ID zona>";
 
         } else if(cmd == "pmod"){
 
@@ -224,7 +194,7 @@ namespace simulador {
         } else if(cmd == "rlista"){
 
             exe = new Rlista;
-            if(exe->Execute(*h, args)) {
+            if(exe->Execute(h, args)) {
                 std::string text = exe->getError();
                 std::istringstream issOut(text);
                 std::string line;
@@ -329,7 +299,7 @@ namespace simulador {
         if(exe == nullptr)
             return;
 
-        if(exe->Execute(*h, args))
+        if(exe->Execute(h, args))
             output << term::set_color(COLOR_SUCCESS) << " " << exe->getError() << "\n";
         else
             output << term::set_color(COLOR_ERROR) << " Erro: " << exe->getError() << "\n";
