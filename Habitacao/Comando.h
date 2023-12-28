@@ -11,7 +11,7 @@ private:
 
 public:
 // -- FUNCS VIRTUAIS
-    virtual ~Comando(){}
+    virtual ~Comando() = default;
 
     virtual bool Execute(habitacao::Habitacao *&h, std::string args) = 0;
     // funcao para executar o comando
