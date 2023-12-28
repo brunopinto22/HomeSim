@@ -93,7 +93,7 @@ namespace aparelho {
 
             if (it != props.end()){
                 if((*it)->getValue() == propriedades::UNSET)
-                    (*it)->setValue(0);
+                    (*it)->setValue(1);
                 else
                     (*it)->setValue((*it)->getValue() + 1);
             }
