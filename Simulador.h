@@ -20,7 +20,7 @@ namespace simulador {
         std::string title;
 
         // janelas
-        std::map<std::pair<int, int>, term::Window*> zonas;
+        std::map<std::pair<int, int>, term::Window*> zonas_windows;
 
         // habitacao
         habitacao::Habitacao* h;

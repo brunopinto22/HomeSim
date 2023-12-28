@@ -314,9 +314,9 @@ namespace simulador {
 
     void Simulador::printZones() {
         // limpa o mapa
-        for (auto& zone : zonas)
+        for (auto& zone : zonas_windows)
             delete zone.second;
-        zonas.clear();
+        zonas_windows.clear();
 
         // verifica se existe uma habitacao
         if (h == nullptr)
@@ -325,7 +325,7 @@ namespace simulador {
         // cria as janelas das zonas
         for (int x = 0; x < h->getHeight(); x++)
             for (int y = 0; y < h->getWidth(); y++)
-                zonas[std::make_pair(x, y)] = new term::Window(72 + 30 * x, 6 + 10 * y, 30, 10, true);
+                zonas_windows[std::make_pair(x, y)] = new term::Window(72 + 30 * x, 6 + 10 * y, 30, 10, true);
 
         // verifica se existem zonas
         if (h->getNumberOfZones() <= 0)
@@ -337,7 +337,7 @@ namespace simulador {
                 // vai buscar a zona correspondente
                 zona::Zona current_zone = h->getZone(y + 1, x + 1);
                 if (current_zone.getID() != -1)
-                    *zonas.at(std::make_pair(x, y)) << term::set_color(COLOR_ID) << "Zona_" << current_zone.getID()
+                    *zonas_windows.at(std::make_pair(x, y)) << term::set_color(COLOR_ID) << "Zona_" << current_zone.getID()
                                                     << term::set_color(COLOR_DEFAULT) << "\n" << current_zone.getComponents();
             }
         }
