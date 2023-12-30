@@ -79,6 +79,8 @@ You'll need **PDcurses** installed on your system and to configure **CLion**
   
 * `exec <file name.txt>` : Executes all the commands in a given **text file**
 
+> in the [tests](/tests/) folder there are some .txt files that show how the files should be, and can be ran by the Simulator
+
 * `help` : Lists all the commands
   
 * `sair` : Closes the program
