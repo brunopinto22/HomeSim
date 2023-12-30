@@ -4,8 +4,12 @@
 
 
 namespace processador {
-    Processador::Processador(int id, std::string command)
-    : componente::Componente(id, static_cast<char>(componente::ComponenteType::PROCESSADOR), "processador"), command(std::move(command)), sent(false) { }
+    Processador::Processador() : zone_id(-1),
+    componente::Componente(-1, static_cast<char>(componente::ComponenteType::PROCESSADOR), "processador"), command(std::move("")), sent(false) { }
+
+
+    Processador::Processador(int id, int zone_id, std::string command) : zone_id(zone_id),
+    componente::Componente(id, static_cast<char>(componente::ComponenteType::PROCESSADOR), "processador"), command(std::move(command)), sent(false) { }
 
     void Processador::changeType(std::string cmd) {
         this->command = std::move(cmd);
@@ -17,6 +21,8 @@ namespace processador {
 
         return oss.str();
     }
+
+    int Processador::getOrigin() const { return zone_id; }
 
     bool Processador::areRulesTrue() {
         if(rules.empty())

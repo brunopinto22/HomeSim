@@ -11,6 +11,7 @@ namespace processador {
 
     class Processador : public componente::Componente{
     private:
+        int zone_id;
         std::string command;
         bool sent;
 
@@ -18,7 +19,8 @@ namespace processador {
         std::vector<regra::Regra*> rules;
 
     public:
-        Processador(int id, std::string command);
+        Processador();
+        Processador(int id, int zone_id, std::string command);
 
         void changeType(std::string cmd);
         // muda o tipo de Processador
@@ -27,6 +29,9 @@ namespace processador {
 
         virtual std::string getInfo() const override;
         // devolve a informacao do componente
+
+        int getOrigin() const;
+        // devolve o id da Zona de onde pertence
 
         bool areRulesTrue();
         // verifica se as regras sao todas verdade
