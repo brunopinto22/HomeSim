@@ -237,12 +237,7 @@ namespace simulador {
 
         } else if(cmd == "prem"){
 
-            std::string name;
-            if (iss >> name) {
-                output << term::set_color(COLOR_SUCCESS) << "A apagar a copia do processador \'" << name << "\'";
-
-            } else
-                output << term::set_color(COLOR_ERROR) << "Erro de formatacao : prem <nome>";
+            exe = new Prem;
 
         } else if(cmd == "plista"){
 

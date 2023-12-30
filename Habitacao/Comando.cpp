@@ -449,6 +449,29 @@ bool Psalva::Execute(habitacao::Habitacao *&h, std::string args) {
     return false;
 }
 
+Prem::Prem() {}
+bool Prem::Execute(habitacao::Habitacao *&h, std::string args) {
+    std::istringstream iss(args);
+    bool result;
+
+    std::string name;
+    if (iss >> name) {
+
+        if(h == nullptr){
+            defineError("Tem primeiro de criar uma habitacao: hnova <numLinhas> <numColunas>");
+            return false;
+        }
+
+        result = h->removedSaved(name);
+        defineError(h->getError());
+
+        return result;
+    }
+
+    defineError("prem <nome>");
+    return false;
+}
+
 Plista::Plista() {}
 bool Plista::Execute(habitacao::Habitacao *&h, std::string args) {
     std::istringstream iss(args);

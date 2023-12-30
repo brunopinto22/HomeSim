@@ -195,6 +195,29 @@ namespace habitacao {
         return true;
     }
 
+    bool Habitacao::removedSaved(const std::string& name) {
+        std::ostringstream oss;
+
+        // procurar o Processador
+        auto it = saved_processors.find(name);
+
+        if (it != saved_processors.end()) {
+            // remover o Processador
+            saved_processors.erase(it);
+
+            oss << "Processador salvo com o nome \'" << name << "\' foi removido";
+            error = oss.str();
+            return true;
+
+        } else {
+            oss << "Nao existe um Processador guardado com o nome \'" << name << "\'";
+            error = oss.str();
+            return false;
+        }
+
+    }
+
+
     std::string Habitacao::getSavedProcessors() const{
         std::ostringstream oss;
 
