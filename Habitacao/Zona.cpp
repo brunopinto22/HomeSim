@@ -319,66 +319,59 @@ namespace zona {
 
         processador::Processador* proc = dynamic_cast<processador::Processador*>(*processorIt);
         sensor::Sensor* sen = dynamic_cast<sensor::Sensor*>(*sensorIt);
-        regra::Regra* rule = nullptr;
 
         int val1, val2;
         switch (regra::checkRuleType(rule_type)) {
-
             case regra::IGUAL:
-                if(iss >> val1)
-                    rule = new regra::RegraIgual(rule_id, *sen, val1);
+                if(iss >> val1){}
                 else {
                     error = "rnova <ID zona> <ID proc. regras> <regra> <ID sensor> [param1]";
                     return false;
                 }
-            break;
+                break;
 
             case regra::MAIOR:
-                if(iss >> val1)
-                    rule = new regra::RegraMaior(rule_id, *sen, val1);
+                if(iss >> val1){}
                 else {
                     error = "rnova <ID zona> <ID proc. regras> <regra> <ID sensor> [param1]";
                     return false;
                 }
-            break;
+                break;
 
             case regra::MENOR:
-                if(iss >> val1)
-                    rule = new regra::RegraMenor(rule_id, *sen, val1);
+                if(iss >> val1){}
                 else {
                     error = "rnova <ID zona> <ID proc. regras> <regra> <ID sensor> [param1]";
                     return false;
                 }
-            break;
+                break;
 
             case regra::ENTRE:
-                if(iss >> val1 >> val2)
-                    rule = new regra::RegraEntre(rule_id, *sen, val1, val2);
+                if(iss >> val1 >> val2){}
                 else {
                     error = "rnova <ID zona> <ID proc. regras> <regra> <ID sensor> [param1] [param2]";
                     return false;
                 }
-            break;
+                break;
 
             case regra::FORA:
-                if(iss >> val1 >> val2)
-                    rule = new regra::RegraFora(rule_id, *sen, val1, val2);
+                if(iss >> val1 >> val2){}
                 else {
                     error = "rnova <ID zona> <ID proc. regras> <regra> <ID sensor> [param1] [param2]";
                     return false;
                 }
-            break;
+                break;
 
             default:
                 oss << "O tipo de Regra \'" << rule_type << "\' nao existe";
                 error = oss.str();
-                return false;
+            return false;
         }
 
         // adicionar a Regra ao Processador
-        proc->addRule(rule);
+        proc->addRule(regra::checkRuleType(rule_type), rule_id, sen, values);
 
-        oss << "Foi criada uma Regra \'r" << rule->getID() << "\' acossiada ao Processador " << proc_id ;
+        oss << "Foi criada uma Regra \'r" << rule_id << "\' acossiada ao Processador " << proc_id ;
         error = oss.str();
         return true;
     }
