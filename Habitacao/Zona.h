@@ -92,11 +92,6 @@ namespace zona {
         // retorna:     true caso o encontre e remova
         //              false em caso de erro
 
-        bool checkComponent(std::string component_id) const;
-        // verifica se um Componente existe na zona
-        // retorna:     true caso exista
-        //              false caso nao exista
-
         std::string getComponents();
         // devolve os componentes da Zona
 

@@ -268,18 +268,11 @@ namespace zona {
         return false;
     }
 
-    bool Zona::checkComponent(std::string component_id) const {
-        auto checkComp = std::find_if(comps.begin(), comps.end(), [component_id](const componente::Componente* comp) {
-            return comp->getID() == component_id;
-        });
-        return checkComp != comps.end();
-    }
-
     std::string Zona::getComponents() {
         std::ostringstream oss;
 
         for(const auto & c : comps)
-            oss << c->getType() << " ";
+            oss << " " << c->getType();
 
         return oss.str();
     }
