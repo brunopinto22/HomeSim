@@ -1,0 +1,9 @@
+znova 1 1
+cnovo 1 p ligar
+cnovo 1 p desligar
+cnovo 1 s t
+cnovo 1 a a
+rnova 1 1 menor_que 3 5
+rnova 1 2 maior_que 3 10
+asoc 1 1 4
+asoc 1 2 4
