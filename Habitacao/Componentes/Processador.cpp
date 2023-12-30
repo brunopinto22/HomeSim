@@ -44,7 +44,7 @@ namespace processador {
 
     bool Processador::ruleExists(int rule_id) const {
         // procura a Regra pelo ID
-        auto it = std::find_if(rules.begin(), rules.end(), [rule_id](regra::Regra *rule) {
+        auto it = std::find_if(rules.begin(), rules.end(), [rule_id](const regra::Regra* rule) {
             return rule->getID() == rule_id;
         });
 
@@ -60,18 +60,49 @@ namespace processador {
         return oss.str();
     }
 
-    void Processador::addRule(regra::Regra *rule) {
-        rules.push_back(rule);
+    void Processador::addRule(regra::RegraType type, int id, sensor::Sensor* sen, const std::string& values) {
+        std::istringstream iss(values);
+
+        int val1, val2;
+
+        switch (type) {
+            case regra::IGUAL:
+                if (iss >> val1)
+                    rules.push_back(new regra::RegraIgual(id, sen, val1));
+                break;
+
+            case regra::MAIOR:
+                if (iss >> val1)
+                    rules.push_back(new regra::RegraMaior(id, sen, val1));
+                break;
+
+            case regra::MENOR:
+                if (iss >> val1)
+                    rules.push_back(new regra::RegraMenor(id, sen, val1));
+                break;
+
+            case regra::ENTRE:
+                if (iss >> val1 >> val2)
+                    rules.push_back(new regra::RegraEntre(id, sen, val1, val2));
+                break;
+
+            case regra::FORA:
+                if (iss >> val1 >> val2)
+                    rules.push_back(new regra::RegraFora(id, sen, val1, val2));
+                break;
+
+            default:
+                break;
+        }
+
     }
+
 
     void Processador::removeRule(int rule_id) {
         // procurar a Regra
-        auto it = std::remove_if(rules.begin(), rules.end(), [rule_id](regra::Regra *rule) {
+        rules.erase(std::remove_if(rules.begin(), rules.end(), [rule_id](const regra::Regra* rule) {
             return rule->getID() == rule_id;
-        });
-
-        // remover a Regra
-        rules.erase(it, rules.end());
+        }), rules.end());
     }
 
     bool Processador::gadgetExists(int gadget_id) const {

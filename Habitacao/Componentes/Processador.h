@@ -47,7 +47,7 @@ namespace processador {
         std::string getRules() const;
         // devolve a lista de Regras
 
-        void addRule(regra::Regra* rule);
+        void addRule(regra::RegraType type, int id, sensor::Sensor *sen, const std::string& values);
         // adiciona uma Regra ao Processador
 
         void removeRule(int rule_id);
