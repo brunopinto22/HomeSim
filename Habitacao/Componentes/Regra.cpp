@@ -39,7 +39,7 @@ namespace regra {
         }
     }
 
-    Regra::Regra(int id, sensor::Sensor &sensor, RegraType type) : id(id), type(type), sensor(sensor) {}
+    Regra::Regra(int id, sensor::Sensor* sensor, RegraType type) : id(id), type(type), sensor(sensor) {}
 
     int Regra::getID() const{ return id; }
 
@@ -48,39 +48,77 @@ namespace regra {
     std::string Regra::getInfo() const {
         std::ostringstream oss;
 
-        oss << checkRuleType(type) << " > r" << getID() << " : " << sensor.getInfo();
+        oss << checkRuleType(type) << " > r" << getID() << " : " << sensor->getValueStr();
 
         return oss.str();
+    }
+
+    Regra& Regra::operator=(const Regra& other) {
+        if (this != &other) {
+            id = other.id;
+            type = other.type;
+            sensor = nullptr;
+        }
+        return *this;
     }
 
 
     bool Regra::check() const { return false; }
 
 
-
-    RegraIgual::RegraIgual(int id, sensor::Sensor& sensor, int value) : Regra(id, sensor, IGUAL), value(value) { }
+    RegraIgual::RegraIgual(int id, sensor::Sensor* sensor, int value) : Regra(id, sensor, IGUAL), value(value) { }
     bool RegraIgual::check() const {
-        return sensor.getValue() == value;
+        return sensor->getValue() == value;
+    }
+    std::string RegraIgual::getInfo() const {
+        std::ostringstream oss;
+
+        oss << Regra::getInfo() << " : " << sensor->getValueStr() << " == " << value;
+        return oss.str();
     }
 
-    RegraMaior::RegraMaior(int id, sensor::Sensor& sensor, int value) : Regra(id, sensor, MAIOR), value(value) { }
+    RegraMaior::RegraMaior(int id, sensor::Sensor* sensor, int value) : Regra(id, sensor, MAIOR), value(value) { }
     bool RegraMaior::check() const {
-        return sensor.getValue() > value;
+        return sensor->getValue() > value;
+    }
+    std::string RegraMaior::getInfo() const {
+        std::ostringstream oss;
+
+        oss << Regra::getInfo() << " : " << sensor->getValueStr() << " > " << value;
+        return oss.str();
     }
 
-    RegraMenor::RegraMenor(int id, sensor::Sensor& sensor, int value) : Regra(id, sensor, MENOR), value(value) { }
+    RegraMenor::RegraMenor(int id, sensor::Sensor* sensor, int value) : Regra(id, sensor, MENOR), value(value) { }
     bool RegraMenor::check() const {
-        return sensor.getValue() < value;
+        return sensor->getValue() < value;
+    }
+    std::string RegraMenor::getInfo() const {
+        std::ostringstream oss;
+
+        oss << Regra::getInfo() << " : " << sensor->getValueStr() << " < " << value;
+        return oss.str();
     }
 
-    RegraEntre::RegraEntre(int id, sensor::Sensor& sensor, int value, int value2) : Regra(id, sensor, ENTRE), value(value), value2(value2) { }
+    RegraEntre::RegraEntre(int id, sensor::Sensor* sensor, int value, int value2) : Regra(id, sensor, ENTRE), value(value), value2(value2) { }
     bool RegraEntre::check() const {
-        return sensor.getValue() >= value && sensor.getValue() <= value2;
+        return sensor->getValue() >= value && sensor->getValue() <= value2;
+    }
+    std::string RegraEntre::getInfo() const {
+        std::ostringstream oss;
+
+        oss << Regra::getInfo() << " : " << value << " > " << sensor->getValueStr() << " > " << value2;
+        return oss.str();
     }
 
-    RegraFora::RegraFora(int id, sensor::Sensor& sensor, int value, int value2) : Regra(id, sensor, FORA), value(value), value2(value2) { }
+    RegraFora::RegraFora(int id, sensor::Sensor* sensor, int value, int value2) : Regra(id, sensor, FORA), value(value), value2(value2) { }
     bool RegraFora::check() const {
-        return sensor.getValue() <= value && sensor.getValue() >= value2;
+        return sensor->getValue() <= value && sensor->getValue() >= value2;
+    }
+    std::string RegraFora::getInfo() const {
+        std::ostringstream oss;
+
+        oss << Regra::getInfo() << " : " << value << " > " << sensor->getValueStr() << " < " << value2;
+        return oss.str();
     }
 
 } // regra

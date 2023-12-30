@@ -22,9 +22,9 @@ namespace regra {
         RegraType type;
 
     protected:
-        sensor::Sensor& sensor;
+        sensor::Sensor* sensor;
     public:
-        Regra(int id, sensor::Sensor &sensor, RegraType type);
+        Regra(int id, sensor::Sensor* sensor, RegraType type);
 
         int getID() const;
         // devolve o Id da Regra
@@ -32,8 +32,10 @@ namespace regra {
         RegraType getType() const;
         // devolve o tipo de Regra
 
-        std::string getInfo() const;
+        virtual std::string getInfo() const;
         // devolve a informacao da Regra
+
+        Regra& operator=(const Regra& other);
 
         virtual bool check() const;
         // verifica se a regra e verdade
@@ -46,22 +48,25 @@ namespace regra {
     private:
         int value;
     public:
-        RegraIgual(int id, sensor::Sensor& sensor, int value);
+        RegraIgual(int id, sensor::Sensor* sensor, int value);
         bool check() const override;
+        std::string getInfo() const override;
     };
     class RegraMaior : public Regra{
     private:
         int value;
     public:
-        RegraMaior(int id, sensor::Sensor& sensor, int value);
+        RegraMaior(int id, sensor::Sensor* sensor, int value);
         bool check() const override;
+        std::string getInfo() const override;
     };
     class RegraMenor : public Regra{
     private:
         int value;
     public:
-        RegraMenor(int id, sensor::Sensor& sensor, int value);
+        RegraMenor(int id, sensor::Sensor* sensor, int value);
         bool check() const override;
+        std::string getInfo() const override;
     };
 
 
@@ -69,15 +74,17 @@ namespace regra {
     private:
         int value, value2;
     public:
-        RegraEntre(int id, sensor::Sensor& sensor, int value, int value2);
+        RegraEntre(int id, sensor::Sensor* sensor, int value, int value2);
         bool check() const override;
+        std::string getInfo() const override;
     };
     class RegraFora : public Regra{
     private:
         int value, value2;
     public:
-        RegraFora(int id, sensor::Sensor& sensor, int value, int value2);
+        RegraFora(int id, sensor::Sensor* sensor, int value, int value2);
         bool check() const override;
+        std::string getInfo() const override;
     };
 
 
