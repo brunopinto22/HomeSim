@@ -59,7 +59,7 @@ namespace propriedades {
     }
 
 
-    Temperatura::Temperatura() : Propriedade(TEMPERATURA, "temperatura", "C", 0, propriedades::UNSET) { }
+    Temperatura::Temperatura() : Propriedade(TEMPERATURA, "temperatura", "C", -273, propriedades::UNSET) { }
 
     Luz::Luz() : Propriedade(LUZ, "luz", "Lumens", 0, propriedades::UNSET) { }
 
