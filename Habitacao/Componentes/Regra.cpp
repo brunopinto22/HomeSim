@@ -48,7 +48,7 @@ namespace regra {
     std::string Regra::getInfo() const {
         std::ostringstream oss;
 
-        oss << checkRuleType(type) << " > r" << getID() << " : " << sensor->getValueStr();
+        oss << checkRuleType(type) << " > r" << getID();
 
         return oss.str();
     }
