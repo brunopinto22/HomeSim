@@ -138,5 +138,27 @@ public:
     bool Execute(habitacao::Habitacao *&h, std::string args) override;
 };
 
+class Psalva : public Comando {
+public:
+    Psalva();
+
+    bool Execute(habitacao::Habitacao *&h, std::string args) override;
+};
+
+class Prepoe : public Comando {
+public:
+    Prepoe();
+
+    bool Execute(habitacao::Habitacao *&h, std::string args) override;
+};
+
+
+class Prem : public Comando {
+public:
+    Prem();
+
+    bool Execute(habitacao::Habitacao *&h, std::string args) override;
+};
+
 
 #endif //HOMESIM_COMANDO_H

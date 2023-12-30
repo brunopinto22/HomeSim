@@ -417,3 +417,34 @@ bool Acom::Execute(habitacao::Habitacao *&h, std::string args) {
     defineError("acom <ID zona> <ID aparelho> <comando>");
     return false;
 }
+
+Psalva::Psalva() {}
+bool Psalva::Execute(habitacao::Habitacao *&h, std::string args) {
+    std::istringstream iss(args);
+    std::ostringstream oss;
+    bool result;
+
+    int zone_id, proc_id;
+    std::string name;
+    if (iss >> zone_id >> proc_id >> name) {
+
+        if(h == nullptr){
+            defineError("Tem primeiro de criar uma habitacao: hnova <numLinhas> <numColunas>");
+            return false;
+        }
+
+        if(!h->checkZoneID(zone_id)){
+            oss << "A Zona com o id=" << zone_id << " nao existe";
+            defineError(oss.str());
+            return false;
+        }
+
+        result = h->saveProcessor(zone_id, proc_id, name);
+        defineError(h->getError());
+
+        return result;
+    }
+
+    defineError("psalva <ID zona> <ID proc. regras> <nome>");
+    return false;
+}

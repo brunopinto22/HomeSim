@@ -224,13 +224,7 @@ namespace simulador {
 
         } else if(cmd == "psalva"){
 
-            int idZone, idPross;
-            std::string name;
-            if (iss >> idZone >> idPross >> name) {
-                output << term::set_color(COLOR_SUCCESS) << "A guardar o processador " << idPross << " da zona " << idZone << " no nome \'" << name << "\'";
-
-            } else
-                output << term::set_color(COLOR_ERROR) << "Erro de formatacao : psalva <ID zona> <ID proc. regras> <nome>";
+            exe = new Psalva;
 
         } else if(cmd == "prepoe"){
 
