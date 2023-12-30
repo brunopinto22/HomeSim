@@ -64,8 +64,10 @@ namespace aparelho {
     };
 
     class Aspersor : public Aparelho {
+        bool off;
     public:
         Aspersor(int id);
+        void runCommand(std::string command) override;
         void run(std::vector<propriedades::Propriedade *> &props) override;
     };
 

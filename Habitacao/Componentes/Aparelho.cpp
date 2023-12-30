@@ -102,9 +102,32 @@ namespace aparelho {
     }
 
 
-    Aspersor::Aspersor(int id) : Aparelho(id, AparelhoType::ASPERSOR, "aspersor") { }
+    Aspersor::Aspersor(int id) : Aparelho(id, AparelhoType::ASPERSOR, "aspersor"), off(false) { }
+    void Aspersor::runCommand(std::string command) {
+
+        if(command == "ligar")
+            turnOn();
+
+        else if(command == "desligar") {
+            resetTicks();
+            off = true;
+        }
+
+    }
     void Aspersor::run(std::vector<propriedades::Propriedade *> &props) {
         Aparelho::run(props);
+
+        // se for para desligar
+        if(off) {
+            // mantem se ligado até chegar aos 5 ticks
+            if(getTicks() == 5) {
+                turnOff();
+                off = false;
+            }
+
+            return;
+        }
+
 
         // primeiro instante ligado
         if(getIsOn() && getTicks() == 1) {
@@ -132,7 +155,7 @@ namespace aparelho {
 
             if (vib != props.end()){
                 if((*vib)->getValue() == propriedades::UNSET)
-                    (*vib)->setValue(0);
+                    (*vib)->setValue(100);
                 else
                     (*vib)->setValue((*vib)->getValue() + 100);
             }
@@ -148,21 +171,14 @@ namespace aparelho {
                 (*it)->setValue(0);
         }
 
-        if(getIsOn() && getTicks() == 5)
-            turnOff();
-
         // primeiro instante desligado
         if(!getIsOn() && getTicks() == 1) {
             auto it = std::find_if(props.begin(), props.end(), [](const propriedades::Propriedade* p) {
                 return p->getType() == propriedades::PropriedadeType::VIBRACAO;
             });
 
-            if (it != props.end()){
-                if((*it)->getValue() == propriedades::UNSET)
-                    (*it)->setValue(0);
-                else
-                    (*it)->setValue((*it)->getValue() - 100);
-            }
+            if (it != props.end())
+                (*it)->setValue((*it)->getValue() - 100);
 
         }
 
