@@ -195,6 +195,15 @@ namespace habitacao {
         return true;
     }
 
+    std::string Habitacao::getSavedProcessors() const{
+        std::ostringstream oss;
+
+        for(auto& p : saved_processors)
+            oss << " " << p.first << " : Zona_" << p.second.getOrigin() << " : " << p.second.getInfo() << "\n";
+
+        return oss.str();
+    }
+
     bool Habitacao::addRule(int zone_id, int proc_id, int sens_id, const std::string& rule_type, const std::string& values) {
         std::ostringstream oss;
 

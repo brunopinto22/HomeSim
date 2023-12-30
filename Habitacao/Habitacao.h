@@ -98,6 +98,9 @@ namespace habitacao {
         // retorna:     true caso corra tudo bem
         //              false em caso de algum erro
 
+        std::string getSavedProcessors() const;
+        // devolve a lista de todos os Processadores guadados em memoria
+
         bool addRule(int zone_id, int proc_id, int sens_id, const std::string& rule_type, const std::string& values);
         // adiciona uma Regra a um Processador numa dada Zona
         // retorna:     true caso corra tudo bem

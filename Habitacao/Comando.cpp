@@ -448,3 +448,30 @@ bool Psalva::Execute(habitacao::Habitacao *&h, std::string args) {
     defineError("psalva <ID zona> <ID proc. regras> <nome>");
     return false;
 }
+
+Plista::Plista() {}
+bool Plista::Execute(habitacao::Habitacao *&h, std::string args) {
+    std::istringstream iss(args);
+    std::ostringstream oss;
+
+    if (args.empty()) {
+
+        if(h == nullptr){
+            defineError("Tem primeiro de criar uma habitacao: hnova <numLinhas> <numColunas>");
+            return false;
+        }
+
+        oss << h->getSavedProcessors();
+
+        if(oss.str().empty()){
+            defineError("Nao existem Processadores guardados");
+            return false;
+        }
+
+        defineError("Processadores Salvos\n" + oss.str());
+        return true;
+    }
+
+    defineError("plista");
+    return false;
+}

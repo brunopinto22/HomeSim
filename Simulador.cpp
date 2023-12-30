@@ -246,10 +246,22 @@ namespace simulador {
 
         } else if(cmd == "plista"){
 
-            if(!args.empty())
-                output << term::set_color(COLOR_ERROR) << "Erro de formatacao : plista";
+            exe = new Plista;
+            if(exe->Execute(h, args)) {
+                std::string text = exe->getError();
+                std::istringstream issOut(text);
+                std::string line;
+
+                // seperar o titulo do resto do conteudo
+                std::getline(issOut, line);
+                output << term::set_color(COLOR_MESSAGE) << line << "\n" << term::set_color(COLOR_DEFAULT);
+                while (std::getline(issOut, line))
+                    output << line << "\n";
+            }
             else
-                output << term::set_color(COLOR_SUCCESS) << "A listar as copias guardadas\n";
+                output << term::set_color(COLOR_ERROR) << " Erro: " << exe->getError();
+
+            return;
 
         } else if(cmd == "exec"){
 
