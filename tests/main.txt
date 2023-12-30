@@ -1,2 +1,2 @@
 hnova 4 4
-exec Zona1.txt
+exec ../tests/Zona1.txt
