@@ -64,7 +64,7 @@ namespace processador {
         void unlink(int gadget_id);
         // remove um aparelho a saida do Processador
 
-        void notifyGadgets();
+        std::string notifyGadgets();
         // envia o comando para os Aparelhos associados
 
         std::string getAction() const;
@@ -72,7 +72,7 @@ namespace processador {
         // retorna:     true - ligar
         //              false - desligar
 
-        void run(std::vector<propriedades::Propriedade *> &props) override;
+        std::string run(std::vector<propriedades::Propriedade *> &props) override;
         // corre o Processador
 
     };

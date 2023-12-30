@@ -31,7 +31,7 @@ namespace componente {
         virtual std::string getInfo() const;
         // devolve a informacao do componente
 
-        virtual void run(std::vector<propriedades::Propriedade *> &props);
+        virtual std::string run(std::vector<propriedades::Propriedade *> &props);
         // corre o componente
 
     // -- FUNCS GLOBAIS

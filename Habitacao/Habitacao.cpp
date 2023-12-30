@@ -380,11 +380,16 @@ namespace habitacao {
 
     bool Habitacao::tick() {
         std::ostringstream oss;
+        std::string output;
         ticks++;
 
         for(auto& zona : zonas) {
+
             zona->tick();
-            oss << zona->getError();
+            output = zona->getError();
+
+            if(!output.empty())
+                oss << "Zona_" << zona->getID() << "\n" << output;
         }
 
         error = oss.str();

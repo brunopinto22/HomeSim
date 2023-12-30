@@ -127,23 +127,30 @@ namespace processador {
         gadgets.erase(it, gadgets.end());
     }
 
-    void Processador::notifyGadgets() {
+    std::string Processador::notifyGadgets() {
         if(sent)
-            return;
+            return "";
 
         for(const auto& ap : gadgets)
             ap->runCommand(getAction());
 
         sent = true;
+        return "O Processador " + getID() + " enviou o comando \'" + command + "\'\n";
     }
 
     std::string Processador::getAction() const {
         return command;
     }
 
-    void Processador::run(std::vector<propriedades::Propriedade *> &props) {
-        if(areRulesTrue())
-            notifyGadgets();
+    std::string Processador::run(std::vector<propriedades::Propriedade *> &props) {
+        std::ostringstream oss;
+
+        if(areRulesTrue()){
+            oss << notifyGadgets();
+            return oss.str();
+        }
+
+        return "";
     }
 
 

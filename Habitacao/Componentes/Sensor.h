@@ -23,7 +23,7 @@ namespace sensor {
         std::string getValueStr() const;
         // devolve o valor da Propriedade que esta a ver
 
-        void run(std::vector<propriedades::Propriedade *> &props) override;
+        std::string run(std::vector<propriedades::Propriedade *> &props) override;
         // corre o Sensor
 
     };

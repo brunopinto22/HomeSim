@@ -38,7 +38,7 @@ namespace aparelho {
 
     }
 
-    void Aparelho::run(std::vector<propriedades::Propriedade *> &props) { ticks_passed++; }
+    std::string Aparelho::run(std::vector<propriedades::Propriedade *> &props) { ticks_passed++; return ""; }
 
     std::string Aparelho::getInfo() const {
         std::ostringstream oss;
@@ -53,8 +53,9 @@ namespace aparelho {
 
 
     Aquecedor::Aquecedor(int id) : Aparelho(id, AparelhoType::AQUECEDOR, "aquecedor") { }
-    void Aquecedor::run(std::vector<propriedades::Propriedade *> &props) {
+    std::string Aquecedor::run(std::vector<propriedades::Propriedade *> &props) {
         Aparelho::run(props);
+        std::ostringstream oss;
 
         // primeiro instante ligado
         if (getIsOn() && getTicks() == 1) {
@@ -69,6 +70,8 @@ namespace aparelho {
                     (*it)->setValue((*it)->getValue() + 5);
             }
 
+            oss << "O Som foi alterado para " << (*it)->getValueStr() << "\n";
+            return oss.str();
         }
 
         // primeiro instante desligado
@@ -83,6 +86,9 @@ namespace aparelho {
                 else
                     (*it)->setValue((*it)->getValue() - 5);
             }
+
+            oss << "O Som foi alterado para " << (*it)->getValueStr() << "\n";
+            return oss.str();
         }
 
         // efeito default ligado
@@ -97,8 +103,12 @@ namespace aparelho {
                 else
                     (*it)->setValue((*it)->getValue() + 1);
             }
+
+            oss << "A Temperatura foi alterada para " << (*it)->getValueStr() << "\n";
+            return oss.str();
         }
 
+        return "";
     }
 
 
@@ -114,8 +124,9 @@ namespace aparelho {
         }
 
     }
-    void Aspersor::run(std::vector<propriedades::Propriedade *> &props) {
+    std::string Aspersor::run(std::vector<propriedades::Propriedade *> &props) {
         Aparelho::run(props);
+        std::ostringstream oss;
 
         // se for para desligar
         if(off) {
@@ -125,7 +136,7 @@ namespace aparelho {
                 off = false;
             }
 
-            return;
+            return "";
         }
 
 
@@ -151,6 +162,7 @@ namespace aparelho {
 
                 }
 
+                oss << "A Humidade foi alterada para " << (*humid)->getValueStr() << "\n";
             }
 
             if (vib != props.end()){
@@ -158,7 +170,11 @@ namespace aparelho {
                     (*vib)->setValue(100);
                 else
                     (*vib)->setValue((*vib)->getValue() + 100);
+
+                oss << "A Vibracao foi alterada para " << (*vib)->getValueStr() << "\n";
             }
+
+            return oss.str();
 
         }
 
@@ -169,6 +185,9 @@ namespace aparelho {
 
             if (it != props.end())
                 (*it)->setValue(0);
+
+            oss << "O Fumo foi alterada para " << (*it)->getValueStr() << "\n";
+            return oss.str();
         }
 
         // primeiro instante desligado
@@ -180,14 +199,19 @@ namespace aparelho {
             if (it != props.end())
                 (*it)->setValue((*it)->getValue() - 100);
 
+            oss << "A Vibracao foi alterada para " << (*it)->getValueStr() << "\n";
+            return oss.str();
         }
+
+        return "";
 
     }
 
 
     Refrigerador::Refrigerador(int id) : Aparelho(id, AparelhoType::REFRIGERADOR, "refrigerador") { }
-    void Refrigerador::run(std::vector<propriedades::Propriedade *> &props) {
+    std::string Refrigerador::run(std::vector<propriedades::Propriedade *> &props) {
         Aparelho::run(props);
+        std::ostringstream oss;
 
         // primeiro instante ligado
         if(getIsOn() && getTicks() == 1) {
@@ -197,6 +221,9 @@ namespace aparelho {
 
             if (it != props.end())
                 (*it)->setValue((*it)->getValue() + 20);
+
+            oss << "O Som foi alterado para " << (*it)->getValueStr() << "\n";
+            return oss.str();
         }
 
         // primeiro instante desligado
@@ -211,6 +238,9 @@ namespace aparelho {
                 else
                     (*it)->setValue((*it)->getValue() - 20);
             }
+
+            oss << "O Som foi alterado para " << (*it)->getValueStr() << "\n";
+            return oss.str();
 
         }
 
@@ -227,14 +257,20 @@ namespace aparelho {
                     (*it)->setValue((*it)->getValue() + 1);
             }
 
+            oss << "A Temperatura foi alterada para " << (*it)->getValueStr() << "\n";
+            return oss.str();
+
         }
+
+        return "";
 
     }
 
 
     Lampada::Lampada(int id) : Aparelho(id, AparelhoType::LAMPADA, "lampada") { }
-    void Lampada::run(std::vector<propriedades::Propriedade *> &props) {
+    std::string Lampada::run(std::vector<propriedades::Propriedade *> &props) {
         Aparelho::run(props);
+        std::ostringstream oss;
 
         // primeiro instante ligado
         if(getIsOn() && getTicks() == 1) {
@@ -249,6 +285,8 @@ namespace aparelho {
                     (*it)->setValue((*it)->getValue() + 900);
             }
 
+            oss << "A Luz foi alterada para " << (*it)->getValueStr() << "\n";
+            return oss.str();
         }
 
         // primeiro instante desligado
@@ -263,7 +301,12 @@ namespace aparelho {
                 else
                     (*it)->setValue((*it)->getValue() - 900);
             }
+
+            oss << "A Luz foi alterada para " << (*it)->getValueStr() << "\n";
+            return oss.str();
         }
+
+        return "";
 
     }
 

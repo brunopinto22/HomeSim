@@ -18,7 +18,7 @@ namespace componente {
         return oss.str();
     }
 
-    void Componente::run(std::vector<propriedades::Propriedade *> &props) { }
+    std::string Componente::run(std::vector<propriedades::Propriedade *> &props) { return ""; }
 
     std::string Componente::getName() const { return name; }
 

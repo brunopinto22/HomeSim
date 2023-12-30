@@ -88,6 +88,12 @@ namespace simulador {
         } else if(cmd == "prox"){
 
             exe = new Prox;
+            if (exe->Execute(h, args))
+                output << term::set_color(COLOR_DEFAULT) << exe->getError();
+            else
+                output << term::set_color(COLOR_ERROR) << exe->getError();
+
+            return;
 
         } else if(cmd == "avanca"){
 

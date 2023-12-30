@@ -279,7 +279,8 @@ namespace zona {
         std::ostringstream oss;
 
         for(const auto & c : comps)
-            oss << " " << c->getType();
+            if(c->getType() != static_cast<char>(componente::ComponenteType::PROCESSADOR))
+                oss << " " << c->getType();
 
         return oss.str();
     }
@@ -562,13 +563,17 @@ namespace zona {
     }
 
     bool Zona::tick() {
-        std::string output, cmd;
+        std::ostringstream oss;
+        std::string output;
 
         // correr cada Componente
-        for (auto& comp : comps)
-            comp->run(props);
+        for (auto& comp : comps){
+            output = comp->run(props);
+            if(!output.empty())
+                oss << " " << output;
+        }
 
-        error = "";
+        error = oss.str();
         return true;
     }
 
