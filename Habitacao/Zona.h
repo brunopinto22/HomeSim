@@ -6,6 +6,7 @@
 #include <memory>
 #include "Propriedade.h"
 #include "Componentes/Componente.h"
+#include "Componentes/Processador.h"
 
 namespace zona {
 
@@ -92,11 +93,19 @@ namespace zona {
         // retorna:     true caso o encontre e remova
         //              false em caso de erro
 
+        bool checkComponent(std::string component_id) const;
+        // verifica se um Componente existe na zona
+        // retorna:     true caso exista
+        //              false caso nao exista
+
         std::string getComponents();
         // devolve os componentes da Zona
 
         std::string getComponentsStr();
         // devolve os componentes da Zona com toda a sua informacao
+
+        processador::Processador getProcessor(int id) const;
+        // devolve uma copia de um Processador baseado no id
 
         bool addRule(int rule_id, int sens_id, const std::string &rule_type, const std::string &values, int proc_id);
         // adicona uma Regra acossiada a um Processador e a um Sensor

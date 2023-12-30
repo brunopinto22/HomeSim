@@ -156,7 +156,7 @@ namespace zona {
         std::ostringstream oss;
 
         count_Processors++;
-        comps.push_back(new processador::Processador(number_id, cmd));
+        comps.push_back(new processador::Processador(number_id, this->getID(), cmd));
         oss << "Foi adicionado um Processador \'p" << number_id << "\' do tipo \'" << cmd << "\'";
         error = oss.str();
         return true;
@@ -268,6 +268,13 @@ namespace zona {
         return false;
     }
 
+    bool Zona::checkComponent(std::string component_id) const {
+        auto checkComp = std::find_if(comps.begin(), comps.end(), [component_id](const componente::Componente* comp) {
+            return comp->getID() == component_id;
+        });
+        return checkComp != comps.end();
+    }
+
     std::string Zona::getComponents() {
         std::ostringstream oss;
 
@@ -374,6 +381,20 @@ namespace zona {
         oss << "Foi criada uma Regra \'r" << rule->getID() << "\' acossiada ao Processador " << proc_id ;
         error = oss.str();
         return true;
+    }
+
+    processador::Processador Zona::getProcessor(int id) const {
+        // procura o Processador
+        std::string targetID = static_cast<char>(componente::ComponenteType::PROCESSADOR) + std::to_string(id);
+        auto it = std::find_if(comps.begin(), comps.end(), [targetID](const componente::Componente* comp) {
+            return comp->getID() == targetID;
+        });
+
+        if (it != comps.end()) {
+            return dynamic_cast<const processador::Processador&>(*(*it));
+        } else {
+            return {};
+        }
     }
 
     bool Zona::removeRule(int proc_id, int rule_id) {

@@ -167,6 +167,34 @@ namespace habitacao {
         return true;
     }
 
+    bool  Habitacao::saveProcessor(int zone_id, int proc_id, std::string name) {
+        std::ostringstream oss;
+
+        // Procura e guarda a zona
+        auto it = std::find_if(zonas.begin(), zonas.end(), [zone_id](const zona::Zona* z) { return z->getID() == zone_id; });
+        zona::Zona* target = *it;
+
+        // verifica se o Processador existe
+        if(!target->checkComponent((static_cast<char>(componente::ComponenteType::PROCESSADOR) + std::to_string(proc_id)))) {
+            oss << "O Processador com o id=" << proc_id << " na Zona_" << zone_id;
+            error = oss.str();
+            return false;
+        }
+
+        // Verifica se o nome já existe no mapa
+        if (saved_processors.find(name) != saved_processors.end()) {
+            // Name already exists, handle accordingly (return false, throw an exception, etc.)
+            return false;
+        }
+
+        // Guarda o processador no mapa usando o nome como chave
+        saved_processors[name] = target->getProcessor(proc_id);
+
+        oss << "O Processador \'" << static_cast<char>(componente::ComponenteType::PROCESSADOR) << proc_id << " foi salvo sobre o nome \'" << name << "\'";
+        error = oss.str();
+        return true;
+    }
+
     bool Habitacao::addRule(int zone_id, int proc_id, int sens_id, const std::string& rule_type, const std::string& values) {
         std::ostringstream oss;
 

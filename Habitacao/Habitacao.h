@@ -2,7 +2,9 @@
 #define HOMESIM_HABITACAO_H
 
 #include <vector>
+#include <map>
 #include "Zona.h"
+#include "./Componentes/Processador.h"
 
 namespace habitacao {
 
@@ -18,6 +20,9 @@ namespace habitacao {
 
         int number_of_zones; // contador de zonas
         std::vector<zona::Zona*> zonas;
+
+        // processadores guardados em memoria
+        std::map<std::string, processador::Processador> saved_processors;
 
         std::string error;
 
@@ -85,6 +90,11 @@ namespace habitacao {
 
         bool removeComponent(int zone_id, char type, int comp_id);
         // remove um Componente de uma dada Zona
+        // retorna:     true caso corra tudo bem
+        //              false em caso de algum erro
+
+        bool saveProcessor(int zone_id, int proc_id, std::string name);
+        // guarda em memoria um Processador de uma dada Zona
         // retorna:     true caso corra tudo bem
         //              false em caso de algum erro
 
