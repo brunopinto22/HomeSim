@@ -40,7 +40,7 @@ namespace simulador {
         void executeCommand(std::string& prompt, term::Window& output, bool isFromExec);
         // executa os comandos
 
-        void getInfo(term::Window& output);
+        void printInfo(term::Window& output);
         // imprime a informacao do Simulador
 
         void printZones();

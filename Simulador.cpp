@@ -9,7 +9,7 @@ namespace simulador {
         // iniciar cores
         for(int i=1; i<20; i++) { t.init_color(i, i, 0); }
 
-        title =   "   _____  _____  _____  _____    _____  _____  _____\n  |  |  ||     ||     ||   __|  |   __||     ||     |\n  |     ||  |  || | | ||   __|  |__   ||-   -|| | | |\n  |__|__||_____||_|_|_||_____|  |_____||_____||_|_|_|";
+        title =   "      _____  _____  _____  _____    _____  _____  _____\n     |  |  ||     ||     ||   __|  |   __||     ||     |\n     |     ||  |  || | | ||   __|  |__   ||-   -|| | | |\n     |__|__||_____||_|_|_||_____|  |_____||_____||_|_|_|";
 
     }
 
@@ -20,7 +20,7 @@ namespace simulador {
         // criacao das janelas
         term::Window titleW = term::Window(1,1,70,5, false);
         term::Window reader = term::Window(1,6,70,7, true);
-        term::Window output = term::Window(1, 13, 70, 33, true);
+        term::Window output = term::Window(1, 13, 70, 37, true);
         term::Window info = term::Window(72,1,120,5, true);
 
         titleW << term::set_color(COLOR_MESSAGE) << title;
@@ -36,11 +36,7 @@ namespace simulador {
             printZones();
 
             // imprimir informacao sobre a simulacao
-            info.clear();
-            if(h != nullptr)
-                getInfo(info);
-            else
-                info << term::set_color(COLOR_ERROR) << "\n\tAinda nao existe uma Habitacao";
+            printInfo(info);
 
             // ler comando
             reader >> prompt;
@@ -102,7 +98,7 @@ namespace simulador {
                 exe = new Prox;
                 for (int i = 0; i < n; i++) {
                     if (exe->Execute(h, ""))
-                        output << term::set_color(COLOR_SUCCESS) << exe->getError();
+                        output << term::set_color(COLOR_DEFAULT) << exe->getError();
                     else
                         output << term::set_color(COLOR_ERROR) << exe->getError();
                 }
@@ -142,8 +138,10 @@ namespace simulador {
             for(int i=0; i < h->getNumberOfZones(); i++){
                 zona::Zona z = h->getZone(i);
                 output
-                << term::set_color(COLOR_MESSAGE) << "Zona_" << z.getID()<< term::set_color(COLOR_DEFAULT) << " (" << z.getPosX() << "," << z.getPosY() << ") : "
-                << "sensores=" << z.getNumberOfSensors() << " processadores=" << z.getNumberOfProcessors() << " aparelhos=" << z.getNumberOfGadgets() <<"\n";
+                << term::set_color(COLOR_ID) << "Zona_" << z.getID() << term::set_color(COLOR_DEFAULT) << " (" << z.getPosX() << "," << z.getPosY() << ")\n"
+                << term::set_color(COLOR_MESSAGE) << " sensores : " << term::set_color(COLOR_DEFAULT) << z.getNumberOfSensors()
+                << term::set_color(COLOR_MESSAGE) << " | processadores : " << term::set_color(COLOR_DEFAULT) << z.getNumberOfProcessors()
+                << term::set_color(COLOR_MESSAGE) << " | aparelhos : " << term::set_color(COLOR_DEFAULT) << z.getNumberOfGadgets() <<"\n";
             }
 
         } else if(cmd == "zcomp"){
@@ -310,7 +308,13 @@ namespace simulador {
     }
 
 
-    void Simulador::getInfo(term::Window &output) {
+    void Simulador::printInfo(term::Window &output) {
+        output.clear();
+
+        if(h == nullptr)
+            output << term::set_color(COLOR_ERROR) << "\n\tAinda nao existe uma Habitacao";
+
+        else
         output  << term::set_color(COLOR_ID) << "\n\tHabitacao:" << term::set_color(COLOR_DEFAULT) << h->getWidth() << "x" << h->getHeight()
                 << term::set_color(COLOR_MESSAGE) << "  |  "
                 << term::set_color(COLOR_ID) << "Ticks:" << term::set_color(COLOR_DEFAULT) << h->getTicks()
@@ -332,7 +336,7 @@ namespace simulador {
         // cria as janelas das zonas
         for (int x = 0; x < h->getHeight(); x++)
             for (int y = 0; y < h->getWidth(); y++)
-                zonas_windows[std::make_pair(x, y)] = new term::Window(72 + 30 * x, 6 + 10 * y, 30, 10, true);
+                zonas_windows[std::make_pair(x, y)] = new term::Window(72 + 30 * x, 6 + 11 * y, 30, 11, true);
 
         // verifica se existem zonas
         if (h->getNumberOfZones() <= 0)
