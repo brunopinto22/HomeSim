@@ -1,0 +1,17 @@
+hnova 4 4
+znova 1 1
+znova 1 2
+znova 1 3
+znova 1 4
+znova 2 1
+znova 2 2
+znova 2 3
+znova 2 4
+znova 3 1
+znova 3 2
+znova 3 3
+znova 3 4
+znova 4 1
+znova 4 2
+znova 4 3
+znova 4 4
