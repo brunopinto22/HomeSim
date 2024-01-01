@@ -89,4 +89,6 @@ You'll need **PDcurses** installed on your system and to configure **CLion**
 
 ## Documents 📁
 
+* [Relatório](/docs/Relatório.pdf)
+
 * [POO - 2324 - Enunciado Trabalho Pratico](/docs/POO%20-%202324%20-%20Enunciado%20Trabalho%20Pratico.pdf)
