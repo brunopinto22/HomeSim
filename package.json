@@ -1,6 +1,6 @@
 {
   "name": "homesim",
-  "version": "0.7.8",
+  "version": "1.0.0",
   "description": "Smart Home Simulator in C++ and PDcurses",
   "main": "main.cpp",
   "scripts": {
