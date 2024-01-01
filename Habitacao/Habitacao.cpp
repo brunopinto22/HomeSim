@@ -196,6 +196,49 @@ namespace habitacao {
         return true;
     }
 
+    bool Habitacao::resetProcessor(const std::string& name) {
+        std::ostringstream oss;
+
+        // procurar o Processador
+        auto it = saved_processors.find(name);
+
+        if (it != saved_processors.end()) {
+
+            // verifica se a Zona existe
+            if(!checkZoneID((*it).second.getOrigin())){
+                oss << "A Zona com o id=" << (*it).second.getOrigin() << " nao existe";
+                error = oss.str();
+                return false;
+            }
+
+
+            std::istringstream iss((*it).second.getID());
+            char idC; int id;
+            std::string cmd = (*it).second.getAction();
+            if(iss >> idC >> id) {
+
+                // procura e guarda a zona
+                auto zone = std::find_if(zonas.begin(), zonas.end(), [id](const zona::Zona* z) { return z->getID() == id; });
+                zona::Zona* target = *zone;
+
+                if(!target->addProcessor(id, cmd)){
+                    error = target->getError();
+                    return false;
+                }
+            }
+
+            oss << "Processador salvo com o nome \'" << name << "\' foi removido";
+            error = oss.str();
+            return true;
+
+        } else {
+            oss << "Nao existe um Processador guardado com o nome \'" << name << "\'";
+            error = oss.str();
+            return false;
+        }
+
+    }
+
     bool Habitacao::removedSaved(const std::string& name) {
         std::ostringstream oss;
 

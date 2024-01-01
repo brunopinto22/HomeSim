@@ -155,6 +155,16 @@ namespace zona {
     bool Zona::addProcessor(int number_id, std::string &cmd) {
         std::ostringstream oss;
 
+        // verificar se o id existe
+        // Check if the ID already exists
+        for (const auto& comp : comps) {
+            if (comp->getID() == (static_cast<char>(componente::ComponenteType::PROCESSADOR) + std::to_string(number_id))) {
+                oss << "O Processador com o ID \'p" << number_id << "\' já existe na Zona_" << getID();
+                error = oss.str();
+                return false;
+            }
+        }
+
         count_Processors++;
         comps.push_back(new processador::Processador(number_id, this->getID(), cmd));
         oss << "Foi adicionado um Processador \'p" << number_id << "\' do tipo \'" << cmd << "\'";

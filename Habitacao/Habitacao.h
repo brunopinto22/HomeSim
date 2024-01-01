@@ -98,6 +98,11 @@ namespace habitacao {
         // retorna:     true caso corra tudo bem
         //              false em caso de algum erro
 
+        bool resetProcessor(const std::string& name);
+        // repoe um Processador gaurdado em memoria
+        // retorna:     true caso corra tudo bem
+        //              false em caso de algum erro
+
         bool removedSaved(const std::string& name);
         // remove um Processador guarda em memoria
         // retorna:     true caso corra tudo bem

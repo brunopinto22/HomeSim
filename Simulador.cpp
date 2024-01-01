@@ -232,12 +232,7 @@ namespace simulador {
 
         } else if(cmd == "prepoe"){
 
-            std::string name;
-            if (iss >> name) {
-                output << term::set_color(COLOR_SUCCESS) << "A repor a copia do processador \'" << name << "\'";
-
-            } else
-                output << term::set_color(COLOR_ERROR) << "Erro de formatacao : prepoe <nome>";
+            exe = new Prepoe;
 
         } else if(cmd == "prem"){
 

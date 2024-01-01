@@ -449,6 +449,30 @@ bool Psalva::Execute(habitacao::Habitacao *&h, std::string args) {
     return false;
 }
 
+Prepoe::Prepoe() {}
+bool Prepoe::Execute(habitacao::Habitacao *&h, std::string args) {
+    std::istringstream iss(args);
+    std::ostringstream oss;
+    bool result;
+
+    std::string name;
+    if (iss >> name) {
+
+        if(h == nullptr){
+            defineError("Tem primeiro de criar uma habitacao: hnova <numLinhas> <numColunas>");
+            return false;
+        }
+
+        result = h->resetProcessor(name);
+        defineError(h->getError());
+
+        return result;
+    }
+
+    defineError("prepoe <nome>");
+    return false;
+}
+
 Prem::Prem() {}
 bool Prem::Execute(habitacao::Habitacao *&h, std::string args) {
     std::istringstream iss(args);
