@@ -183,7 +183,8 @@ namespace habitacao {
 
         // Verifica se o nome já existe no mapa
         if (saved_processors.find(name) != saved_processors.end()) {
-            // Name already exists, handle accordingly (return false, throw an exception, etc.)
+            oss << "Ja existe um Processador guardado com o nome \'" << name << "\'";
+            error = oss.str();
             return false;
         }
 
