@@ -3,6 +3,10 @@
 # HomeSim
 Terminal Based **Smart Home Simulator** made in [C++](https://cplusplus.com) and [PDcurses](https://pdcurses.org) for the User Interface.
 
+<img alt="GitHub Language Count" src="https://img.shields.io/github/languages/count/brunopinto22/HomeSim" />
+<img alt="" src="https://img.shields.io/github/repo-size/brunopinto22/HomeSim" />
+<img alt="GitHub Last Commit" src="https://img.shields.io/github/last-commit/brunopinto22/HomeSim" />
+
 <br>
 
 ## Features 📑
